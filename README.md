@@ -1,0 +1,2 @@
+# Blockly_IchigoJam
+IchigoJam用のビジュアルプログラミングツールの開発ログです。
