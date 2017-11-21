@@ -1,0 +1,23 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#workspace {
+  height: 83%;
+  width: 100%;
+}
+
+#blocklyArea {
+  height: 99%;
+  background: #fff;
+  text-align: center;
+}
+
+#outputArea {
+  font-size: 18px;
+}
+
+#status {
+  color: #e73700;
+}
