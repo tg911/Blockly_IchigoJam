@@ -6,13 +6,18 @@
   <!--本体モジュール-->
   <script src="js/blockly_compressed.js"></script>
   <!--Block定義モジュール-->
-  <script src="js/blocks_compressed.js"></script>
+  <!-- <script src="js/blocks_compressed.js"></script> -->
   <!--ソースコードジェネレーターモジュール-->
-  <script src="js/ichigojambasic_compressed.js"></script>
+  <!-- <script src="js/ichigojambasic_compressed.js"></script> -->
   <!--翻訳-->
   <script src="js/ja.js"></script>
   <!-- 半角カナの文字コード変換に対応する -->
   <script src="js/encoding.js"></script>
+
+  <!-- ブロック -->
+  <script src="js/blocks.js"></script>
+  <script src="js/ichigojam-basic.js"></script>
+  <script src="js/code.js"></script>
 
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/my.css">
@@ -255,71 +260,21 @@
     <!-- <category name="スタート" colour="120">
       <block type="start"></block>
     </category> -->
-    <category name="うごかす" colour="180">
-      <block type="unko"></block>
+    <category name="うごかす" colour="180" id="category1">
+    </category>
+    <category name="くりかえす" colour="65" id="category2">
+    </category>
+    <category name="もし～なら" colour="0" id="category3">
+    </category>
+    <!-- <category name="うごかす" colour="180">
       <block type="led_on_kids"></block>
-      <block type="led_off_kids"></block>
-      <block type="out_led_on"></block>
-      <block type="out_led_off"></block>
-      <block type="play">
-        <value name="note">
-          <block type="note_c">
-            <value name="nextNote">
-              <block type="note_d">
-                <value name="nextNote">
-                  <block type="note_e"></block>
-                </value>
-              </block>
-            </value>
-          </block>
-        </value>
-      </block>
-      <block type="out_2"></block>
-      <block type="play_tune"></block>
-      <block type="servo"></block>
-      <block type="wait_kids">
-        <value name="second">
-          <block type="number">
-            <field name="num">1</field>
-          </block>
-        </value>
-      </block>
     </category>
     <category name="くりかえす" colour="65">
       <block type="loop_infinite"></block>
-      <block type="loop_number">
-        <value name="number">
-          <block type="number">
-            <field name="num">3</field>
-          </block>
-        </value>
-      </block>
     </category>
     <category name="もし～なら" colour="0">
       <block type="if_kids"></block>
-      <block type="if_else_kids"></block>
-      <block type="btn_kids"></block>
-      <block type="ana_infrared_sensor"></block>
-      <block type="ana_light_sensor"></block>
-    </category>
-    <category name="音色" colour="260">
-      <block type="note_c"></block>
-      <block type="note_d"></block>
-      <block type="note_e"></block>
-      <block type="note_f"></block>
-      <block type="note_g"></block>
-      <block type="note_a"></block>
-      <block type="note_b"></block>
-      <block type="note_r_kids"></block>
-      <block type="note_length"></block>
-      <block type="semitone"></block>
-      <block type="note_tempo"></block>
-      <block type="note_length_init"></block>
-      <block type="octave"></block>
-      <block type="octave_updown"></block>
-      <block type="note_loop"></block>
-      <block type="note_end"></block>
-    </category>
+    </category> -->
   </xml>
 
   <script src="js/jquery-3.2.1.min.js"></script>

@@ -481,7 +481,7 @@ function modeChange() {
   }
   workspace.updateToolbox(toolbox);
 };
-document.getElementById("modeSelecter").addEventListener("click", modeChange, false);
+// document.getElementById("modeSelecter").addEventListener("click", modeChange, false);
 
 // ツールボックスのフライアウトが開いた状態でモードを切り替えると、どこかクリックするまでフライアウトが残るのを防ぐ
 function settingEvent() {
@@ -541,3 +541,53 @@ function editPinLabel() {
 }
 
 document.getElementById("pinLabelOk").addEventListener("click", editPinLabel, false);
+
+function addToolbox() {
+  var toolbox = document.getElementById("toolbox");
+  console.log(toolbox);
+  var blocks = Blockly.Blocks;
+  // console.log("blocks:",blocks);
+
+  var category;
+  var blockId;
+  var blockDiv;
+  for (var block in blocks) {
+    blockCategory = blocks[block].category;
+    if (blockCategory != "category0") {
+      blockDiv = document.createElement("block");
+      blockDiv.setAttribute("type", block);
+      // console.log(toolbox.children[blockId]);
+      toolbox.children[blockCategory].appendChild(blockDiv);
+      // category = document.getElementById(blockId);
+      // category.appendChild(blockDiv);
+    }
+    // console.log(category);
+  }
+
+  workspace.updateToolbox(toolbox);
+}
+
+addToolbox();
+// window.onload = function(){
+//   addToolbox();
+// }
+
+// function addToolbox2() {
+//   var toolbox = document.getElementById("toolbox");
+//   console.log(toolbox);
+//   var blocks = Blockly.Blocks;
+//   // console.log("blocks:",blocks);
+// 
+//   var category;
+//   var blockDiv;
+//   for (var block in blocks) {
+//     blockDiv = document.createElement("block");
+//     blockDiv.setAttribute("type", block)
+//     toolbox.children.category1.appendChild(blockDiv);
+//     // console.log(category);
+//   }
+//
+//   workspace.updateToolbox(toolbox);
+// }
+//
+// addToolbox2();
