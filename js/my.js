@@ -504,43 +504,43 @@ function forVarCount() {
 workspace.addChangeListener(forVarCount);
 
 // test
-function createPinLabel() {
-  var options = [];
-  for (var i = 1; i <= 3; i++) {
-    var pin = document.getElementById("pin-OUT" + i).value;
-    console.log("pin:" + i + ":" + pin)
-    // options[i] = [pin, String(i+1)];
-    options.push([pin, String(i)]);
-    console.log("options:",options)
-  }
-  return options;
-};
+// function createPinLabel() {
+//   var options = [];
+//   for (var i = 1; i <= 3; i++) {
+//     var pin = document.getElementById("pin-OUT" + i).value;
+//     console.log("pin:" + i + ":" + pin)
+//     // options[i] = [pin, String(i+1)];
+//     options.push([pin, String(i)]);
+//     console.log("options:",options)
+//   }
+//   return options;
+// };
 
-function editPinLabel() {
-  // var dropdown = new Blockly.FieldDropdown(createPinLabel);
-  // // var dropdown = new Blockly.FieldDropdown([["うんこ","1"],["aaa", "2"], ["ハロー", "3"]]);
-  // console.log("cPL:" + createPinLabel())
-  // Blockly.Blocks['test'] = {
-  //   init: function() {
-  //     this.appendDummyInput()
-  //         .appendField(dropdown, "test");
-  //         // .appendField(new Blockly.FieldDropdown([["OUT1","1"], ["OUT2","2"], ["OUT3","3"]]), "test");
-  //     this.setPreviousStatement(true, null);
-  //     this.setNextStatement(true, null);
-  //     this.setColour(240);
-  //     this.setTooltip('');
-  //     this.setHelpUrl('');
-  //   }
-  // };
-  // var toolbox = document.getElementById("toolbox");
-  // workspace.toolbox_.refreshSelection();
-  // workspace.toolbox_.render;
-  var xml = Blockly.Xml.workspaceToDom(workspace);
-  workspace.clear();
-  Blockly.Xml.domToWorkspace(workspace, xml);
-}
+// function editPinLabel() {
+//   // var dropdown = new Blockly.FieldDropdown(createPinLabel);
+//   // // var dropdown = new Blockly.FieldDropdown([["うんこ","1"],["aaa", "2"], ["ハロー", "3"]]);
+//   // console.log("cPL:" + createPinLabel())
+//   // Blockly.Blocks['test'] = {
+//   //   init: function() {
+//   //     this.appendDummyInput()
+//   //         .appendField(dropdown, "test");
+//   //         // .appendField(new Blockly.FieldDropdown([["OUT1","1"], ["OUT2","2"], ["OUT3","3"]]), "test");
+//   //     this.setPreviousStatement(true, null);
+//   //     this.setNextStatement(true, null);
+//   //     this.setColour(240);
+//   //     this.setTooltip('');
+//   //     this.setHelpUrl('');
+//   //   }
+//   // };
+//   // var toolbox = document.getElementById("toolbox");
+//   // workspace.toolbox_.refreshSelection();
+//   // workspace.toolbox_.render;
+//   var xml = Blockly.Xml.workspaceToDom(workspace);
+//   workspace.clear();
+//   Blockly.Xml.domToWorkspace(workspace, xml);
+// }
 
-document.getElementById("pinLabelOk").addEventListener("click", editPinLabel, false);
+// document.getElementById("pinLabelOk").addEventListener("click", editPinLabel, false);
 
 function addToolbox() {
   var toolbox = document.getElementById("toolbox");
@@ -566,8 +566,45 @@ function addToolbox() {
 
   workspace.updateToolbox(toolbox);
 }
-
 addToolbox();
+
+function showBlockList() {
+  var toolbox = document.getElementById("toolbox");
+  var blockList = document.getElementById("blockList");
+  var li;
+
+  for (var i = 0; i < toolbox.children.length; i++) {
+    li = document.createElement("li");
+    li.setAttribute("role", "presentation");
+    li.setAttribute("class", "dropdown-header");
+    li.setAttribute("id", "bl-" + toolbox.children[i].id);
+    li.innerHTML = toolbox.children[i].getAttribute("name");
+    // console.log(li);
+    blockList.appendChild(li)
+  }
+
+  var blocks = Blockly.Blocks;
+  var a;
+  var categoryLi;
+
+  for (var block in blocks) {
+    // console.log(block);
+    li = document.createElement("li");
+    li.setAttribute("role", "presentation");
+    a = document.createElement("a");
+    a.setAttribute("href", "#");
+    a.innerHTML = block;
+    li.appendChild(a);
+    console.log(blocks[block].category);
+    if (blocks[block].category != "category0") {
+      categoryLi = document.getElementById("bl-" + blocks[block].category);
+      categoryLi.parentNode.insertBefore(li, categoryLi.nextSibling);
+    }
+  }
+}
+
+showBlockList();
+
 // window.onload = function(){
 //   addToolbox();
 // }
@@ -577,7 +614,7 @@ addToolbox();
 //   console.log(toolbox);
 //   var blocks = Blockly.Blocks;
 //   // console.log("blocks:",blocks);
-// 
+//
 //   var category;
 //   var blockDiv;
 //   for (var block in blocks) {

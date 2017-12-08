@@ -98,120 +98,22 @@
         </div>
         <div class="modal-body">
           <p>ポート：<select id="portSelecter"></select></p>
-          <p><form id="modeSelecter" action="">
+          <!-- <p><form id="modeSelecter" action="">
             モード切替：
             <input type="radio" name="mode" id="normal"> 通常
             <input type="radio" name="mode" id="evaluation" checked> 評価
-          </form></p>
+          </form></p> -->
           <p>
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#ioPinLabelEditor">入力／出力ピンにラベルを付ける</button>
-            <div class="collapse" id="ioPinLabelEditor">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>ピン</th>
-                    <th>ラベルの名前</th>
-                    <th>何をするか</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <!-- この辺の記述は面倒くさいしhtmlは全部JSから記述した方が綺麗かも -->
-                    <td><label for="pin-IN1">IN1</td>
-                      <td><form class="form-inline">
-                        <div class="form-group">
-                          <input type="text" class="form-control" id="pin-IN1" placeholder="IN1">
-                        </div>
-                      </form></td>
-                    </tr>
-                  <tr>
-                    <td><label for="pin-IN2">IN2</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-IN2" placeholder="IN2">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-IN3">IN3</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-IN3" placeholder="IN3">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-IN4">IN4</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-IN4" placeholder="IN4">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT1">OUT1</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT1" placeholder="OUT1">
-                      </div>
-                    </form></td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="outOn" placeholder="オンにする">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT2">OUT2</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT2" placeholder="OUT2">
-                      </div>
-                    </form></td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="outOff" placeholder="オフにする">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT3">OUT3</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT3" placeholder="OUT3">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT4">OUT4</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT4" placeholder="OUT4">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT5">OUT5</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT5" placeholder="OUT5">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT6">OUT6</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT6" placeholder="OUT6">
-                      </div>
-                    </form></td>
-                  </tr>
-                </tbody>
-              </table>
-              <p class="text-right">
-                <button type="button" class="btn btn-default accept" id="pinLabelOk">OK</button>
-                <button type="button" class="btn btn-default decline" id="pinLabelCancel">キャンセル</button>
-              </p>
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#blockEditor">ブロックを作成・変更する</button>
+            <div class="collapse" id="blockEditor">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                  ブロック一覧
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" id="blockList">
+                </ul>
+              </div>
             </div>
           </p>
         </div>
