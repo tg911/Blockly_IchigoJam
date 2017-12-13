@@ -4,13 +4,13 @@ Blockly.IchigoJamBASIC['start'] = function(block) {
   return code;
 };
 
-Blockly.IchigoJamBASIC['led_on_kids'] = function(block) {
+Blockly.IchigoJamBASIC['LEDを光らせる'] = function(block) {
   // TODO: Assemble IchigoJamBASIC into code variable.
   var code = "LED 1\n";
   return code;
 };
 
-Blockly.IchigoJamBASIC['led_off_kids'] = function(block) {
+Blockly.IchigoJamBASIC['LEDをけす'] = function(block) {
   // TODO: Assemble IchigoJamBASIC into code variable.
   var code = "LED 0\n";
   return code;

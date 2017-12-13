@@ -12,7 +12,7 @@ Blockly.Blocks['start'] = {
   "category": "category0"
 };
 
-Blockly.Blocks['led_on_kids'] = {
+Blockly.Blocks['LEDを光らせる'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("LEDを光らせる");
@@ -28,7 +28,7 @@ Blockly.Blocks['led_on_kids'] = {
   "category": "category1"
 };
 
-Blockly.Blocks['led_off_kids'] = {
+Blockly.Blocks['LEDをけす'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("LEDをけす");

@@ -568,20 +568,61 @@ function addToolbox() {
 }
 addToolbox();
 
+// function showBlockList() {
+//   var toolbox = document.getElementById("toolbox");
+//   var blockList = document.getElementById("blockList");
+//   var li;
+//
+//   for (var i = 0; i < toolbox.children.length; i++) {
+//     li = document.createElement("li");
+//     li.setAttribute("role", "presentation");
+//     li.setAttribute("class", "dropdown-header");
+//     li.setAttribute("id", "bl-" + toolbox.children[i].id);
+//     li.innerHTML = toolbox.children[i].getAttribute("name");
+//     // console.log(li);
+//     blockList.appendChild(li)
+//   }
+//
+//   var blocks = Blockly.Blocks;
+//   var a;
+//   var categoryLi;
+//
+//   for (var block in blocks) {
+//     // console.log(block);
+//     li = document.createElement("li");
+//     li.setAttribute("role", "presentation");
+//     a = document.createElement("a");
+//     a.setAttribute("href", "#");
+//     a.innerHTML = block;
+//     li.appendChild(a);
+//     console.log(blocks[block].category);
+//     if (blocks[block].category != "category0") {
+//       categoryLi = document.getElementById("bl-" + blocks[block].category);
+//       categoryLi.parentNode.insertBefore(li, categoryLi.nextSibling);
+//     }
+//   }
+// }
+//
+// function showBlockNameToDropdown() {
+//
+// }
+
+// document.getElementById("blockListButton").addEventListener("click", showBlockNameToDropdown , false);
+
 function showBlockList() {
   var toolbox = document.getElementById("toolbox");
   var blockList = document.getElementById("blockList");
-  var li;
+  var option;
 
-  for (var i = 0; i < toolbox.children.length; i++) {
-    li = document.createElement("li");
-    li.setAttribute("role", "presentation");
-    li.setAttribute("class", "dropdown-header");
-    li.setAttribute("id", "bl-" + toolbox.children[i].id);
-    li.innerHTML = toolbox.children[i].getAttribute("name");
-    // console.log(li);
-    blockList.appendChild(li)
-  }
+  // for (var i = 0; i < toolbox.children.length; i++) {
+  //   option = document.createElement("option");
+  //   option.setAttribute("role", "presentation");
+  //   option.setAttribute("class", "dropdown-header");
+  //   option.setAttribute("id", "bl-" + toolbox.children[i].id);
+  //   option.innerHTML = toolbox.children[i].getAttribute("name");
+  //   // console.log(option);
+  //   blockList.appendChild(option)
+  // }
 
   var blocks = Blockly.Blocks;
   var a;
@@ -589,17 +630,18 @@ function showBlockList() {
 
   for (var block in blocks) {
     // console.log(block);
-    li = document.createElement("li");
-    li.setAttribute("role", "presentation");
-    a = document.createElement("a");
-    a.setAttribute("href", "#");
-    a.innerHTML = block;
-    li.appendChild(a);
-    console.log(blocks[block].category);
-    if (blocks[block].category != "category0") {
-      categoryLi = document.getElementById("bl-" + blocks[block].category);
-      categoryLi.parentNode.insertBefore(li, categoryLi.nextSibling);
-    }
+    option = document.createElement("option");
+    option.innerHTML = block;
+    blockList.appendChild(option)
+    // a = document.createElement("a");
+    // a.setAttribute("href", "#");
+    // a.innerHTML = block;
+    // option.appendChild(a);
+    // console.log(blocks[block].category);
+    // if (blocks[block].category != "category0") {
+    //   categoryLi = document.getElementById("bl-" + blocks[block].category);
+    //   categoryLi.parentNode.insertBefore(option, categoryLi.nextSibling);
+    // }
   }
 }
 
@@ -628,3 +670,86 @@ showBlockList();
 // }
 //
 // addToolbox2();
+
+function errorHandler(e) {
+  var msg = '';
+
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      msg = 'QUOTA_EXCEEDED_ERR';
+      break;
+    case FileError.NOT_FOUND_ERR:
+      msg = 'NOT_FOUND_ERR';
+      break;
+    case FileError.SECURITY_ERR:
+      msg = 'SECURITY_ERR';
+      break;
+    case FileError.INVALID_MODIFICATION_ERR:
+      msg = 'INVALID_MODIFICATION_ERR';
+      break;
+    case FileError.INVALID_STATE_ERR:
+      msg = 'INVALID_STATE_ERR';
+      break;
+    default:
+      msg = 'Unknown Error';
+      break;
+  };
+
+  console.log('Error: ' + msg);
+}
+
+window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+
+// function onInitFs(fs) {
+//   fs.root.getFile('log.txt', {}, function(fileEntry) {
+//     console.log(fileEntry);
+//   }, errorHandler);
+// }
+
+// function onInitFs(fs) {
+//   fs.root.getFile('..\fs-test01.txt', {create: true, exclusive: true}, function(fileEntry) {
+//     // fileEntry.isFile === true
+//     // fileEntry.name == 'log.txt'
+//     // fileEntry.fullPath == '/log.txt'
+//     console.log("ok");
+//   }, errorHandler);
+// }
+//
+// window.requestFileSystem(window.TEMPORARY, 1024*1024, onInitFs, errorHandler);
+
+function createBlocksFile() {
+  var fileName = "blocks";
+  var text = "";
+  var blocks = Blockly.Blocks;
+
+  for (var block in blocks) {
+    text += "Blockly.Blocks[\"" + block + "\"] = {\n" + "init: " + blocks[block].init + ",\n" + "\"category\": \"" + blocks[block].category + "\"\n};\n"
+  }
+
+  var blob = new Blob([text], {
+    type: 'text/plain'
+  });
+  // イベントトリガがbuttonタグなので、aタグを生成する。（download属性はaタグのみ）
+  var a = document.createElement("a");
+  a.href = window.URL.createObjectURL(blob);
+  a.download = fileName + ".js";
+  a.click();
+  window.URL.revokeObjectURL(a.href); // blobとobjectURLの関連を削除（メモリ解放）
+  showAlert("success", "プログラム　<strong> " + fileName + "</strong>　を保存しました。（場所：ダウンロードフォルダ）");
+};
+// createBlocksFile();
+
+function addNewBlock(blockName, categoryName, blockColor) {
+  var blockName;
+
+  Blockly.Blocks[blockName] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField(blockName);
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(blockColor);
+    },
+    "category": categoryName
+  }
+};

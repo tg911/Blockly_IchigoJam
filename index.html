@@ -103,17 +103,41 @@
             <input type="radio" name="mode" id="normal"> 通常
             <input type="radio" name="mode" id="evaluation" checked> 評価
           </form></p> -->
-          <p>
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#blockEditor">ブロックを作成・変更する</button>
-            <div class="collapse" id="blockEditor">
-              <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                  ブロック一覧
+          <p id="blockEditor">
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#blockEditorCollapse">ブロックを作成・変更する</button>
+            <div class="collapse" id="blockEditorCollapse">
+              <!-- <div class="dropdown">
+                <label for="InputSelect">編集・追加するブロックを選んでください</label>
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="blockListButton">
+                  ブロック
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" id="blockList">
                 </ul>
+              </div> -->
+              <div class="form-group">
+                <label for="InputSelect">編集・追加するブロック</label>
+                <select class="form-control" id="blockList">
+                </select>
               </div>
+              <p>
+                <div class="form-group">
+              		<label class="control-label" for="blockEditorText">表示する文字は？</label>
+                  <!-- <div class="col-sm-9"> -->
+                    <input class="form-control" id="blockEditorText" placeholder="LEDを光らせる">
+                  <!-- </div> -->
+                </div>
+                <!-- <div class="form-inline">
+                  <label>ブロックの色は？</label>
+                  <input class="form-control" type="color" id="blockColor" name="color">
+                </div> -->
+                <div class="form-group">
+                  <label class="control-label" for="InputColor">ブロックの色は？</label>
+                  <!-- <div class="col-sm-9"> -->
+                    <span><input type="color" class="form-control" id="InputColor" placeholder="色"></span>
+                  <!-- </div> -->
+                </div>
+              </p>
             </div>
           </p>
         </div>
