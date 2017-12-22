@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Blockly for IchigoJam</title>
+  <!--本体モジュール-->
+  <script src="js/blockly_compressed.js"></script>
+  <!--Block定義モジュール-->
+  <!-- <script src="js/blocks_compressed.js"></script> -->
+  <!--ソースコードジェネレーターモジュール-->
+  <!-- <script src="js/ichigojambasic_compressed.js"></script> -->
+  <!--翻訳-->
+  <script src="js/ja.js"></script>
+  <!-- 半角カナの文字コード変換に対応する -->
+  <script src="js/encoding.js"></script>
+
+  <!-- ブロック -->
+  <script src="js/blocks.js"></script>
+  <script src="js/ichigojam-basic.js"></script>
+  <script src="js/code.js"></script>
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/my.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" id="toggle">
+  				<span class="sr-only">Toggle navigation</span>
+  				<span class="icon-bar"></span>
+  				<span class="icon-bar"></span>
+  				<span class="icon-bar"></span>
+  			</button>
+        <a class="navbar-brand" id="title">Blockly for IchigoJam</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar">
+        <p class="navbar-text" id="status">未接続</p>
+        <!-- <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-transfer" id="stepRun"> 1行実行</button> -->
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-transfer" id="communicate"> 接続</button>
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-send" data-toggle="modal" data-target="#sendToIchigoJam" id="send"> 送る</button>
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-play" id="run"> 実行</button>
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-stop" id="esc"> 停止</button>
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-save" data-toggle="modal" data-target="#save"> 保存</button>
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-folder-open" id="load"> 開く</button>
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-trash" data-toggle="modal" data-target="#discard"> 全消し</button>
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-cog navbar-right" data-toggle="modal" data-target="#settings"></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- プログラム保存時に表示するアラート -->
+  <div id="alert"></div>
+
+  <!-- モーダル・ダイアログ -->
+  <div class="modal fade" id="discard" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+          <h4 class="modal-title">ブロックを全て削除しますか？</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="discardYes">はい</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">いいえ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="save" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+          <h4 class="modal-title">プログラムに名前を付けて保存します。</h4>
+        </div>
+        <div class="modal-body">
+          <div class="input-group">
+            <span class="input-group-addon">プログラム名</span>
+            <input type="text" class="form-control" placeholder="例：LEDを点ける" id="fileName">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="saveYes">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="settings" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+          <h4 class="modal-title">設定</h4>
+        </div>
+        <div class="modal-body">
+          <p>ポート：<select id="portSelecter"></select></p>
+          <!-- <p><form id="modeSelecter" action="">
+            モード切替：
+            <input type="radio" name="mode" id="normal"> 通常
+            <input type="radio" name="mode" id="evaluation" checked> 評価
+          </form></p> -->
+          <p id="blockEditor">
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#blockEditorCollapse">ブロックを作成・変更する</button>
+            <div class="collapse" id="blockEditorCollapse">
+              <!-- <div class="dropdown">
+                <label for="InputSelect">編集・追加するブロックを選んでください</label>
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="blockListButton">
+                  ブロック
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" id="blockList">
+                </ul>
+              </div> -->
+              <div class="form-group">
+                <label for="InputSelect">編集・追加するブロック</label>
+                <select class="form-control" id="blockList">
+                </select>
+              </div>
+              <p>
+                <div class="form-group">
+              		<label class="control-label" for="blockEditorText">表示する文字は？</label>
+                  <!-- <div class="col-sm-9"> -->
+                    <input class="form-control" id="blockEditorText" placeholder="LEDを光らせる">
+                  <!-- </div> -->
+                </div>
+                <!-- <div class="form-inline">
+                  <label>ブロックの色は？</label>
+                  <input class="form-control" type="color" id="blockColor" name="color">
+                </div> -->
+                <div class="form-group">
+                  <label class="control-label" for="InputColor">ブロックの色は？</label>
+                  <!-- <div class="col-sm-9"> -->
+                    <span><input type="color" class="form-control" id="InputColor" placeholder="色"></span>
+                  <!-- </div> -->
+                </div>
+              </p>
+            </div>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="sendToIchigoJam" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span id="closeProgressBar">×</span></button>
+          <h4 class="modal-title">プログラムをIchigoJamへ送信しています・・・</h4>
+        </div>
+        <div class="modal-body">
+          <div class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" id="progressBar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- タブ・メニュー -->
+  <ul class="nav nav-tabs" id="tab">
+    <li class="active"><a href="#blocksTab" data-toggle="tab">ブロック</a></li>
+    <li><a href="#basicTab" data-toggle="tab">IchigoJamBASIC</a></li>
+  </ul>
+
+  <!-- タブ内容 -->
+  <div class="tab-content">
+    <div class="tab-pane active" id="blocksTab">
+      <!--Blockly埋め込みエリア-->
+      <!-- my.js内でoffsetParentが正しく機能するようにpostion:absolute属性付与 -->
+      <div id="workspace" style="position: absolute;">
+        <div id="blocklyArea"></div>
+      </div>
+      <!-- BlocklyをblocklyAreaに注入 -->
+      <div id="blocklyDiv" style="position: absolute;"></div>
+    </div>
+    <div class="tab-pane" id="basicTab">
+      <pre id="outputArea"></pre>
+    </div>
+  </div>
+  <!--ツールボックス-->
+  <xml id="toolbox" style="display: none">
+    <!-- <category name="スタート" colour="120">
+      <block type="start"></block>
+    </category> -->
+    <category name="うごかす" colour="180" id="category1">
+    </category>
+    <category name="くりかえす" colour="65" id="category2">
+    </category>
+    <category name="もし～なら" colour="0" id="category3">
+    </category>
+    <!-- <category name="うごかす" colour="180">
+      <block type="led_on_kids"></block>
+    </category>
+    <category name="くりかえす" colour="65">
+      <block type="loop_infinite"></block>
+    </category>
+    <category name="もし～なら" colour="0">
+      <block type="if_kids"></block>
+    </category> -->
+  </xml>
+
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/my.js"></script>
+</body>
