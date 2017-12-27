@@ -164,6 +164,7 @@
   <ul class="nav nav-tabs" id="tab">
     <li class="active"><a href="#blocksTab" data-toggle="tab">ブロック</a></li>
     <li><a href="#basicTab" data-toggle="tab">IchigoJamBASIC</a></li>
+    <li><a href="#blockFactoryTab" data-toggle="tab">ブロック工場</a></li>
   </ul>
 
   <!-- タブ内容 -->
@@ -179,6 +180,15 @@
     </div>
     <div class="tab-pane" id="basicTab">
       <pre id="outputArea"></pre>
+    </div>
+    <div class="tab-pane" id="blockFactoryTab">
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="factory/index.html"></iframe>
+      </div>
+      <!-- <div id="blockFactoryWorkspace" style="position: absolute;">
+        <div id="blockFactoryArea"></div>
+      </div>
+      <div id="blockFactoryDiv" style="position: absolute;"></div> -->
     </div>
   </div>
   <!--ツールボックス-->
@@ -202,6 +212,15 @@
       <block type="if_kids"></block>
     </category> -->
   </xml>
+  <!-- ブロック工場用ツールボックス -->
+  <!-- <xml id="blockFactoryToolbox" style="display: none">
+    <category name="うごかす" colour="180">
+    </category>
+    <category name="くりかえす" colour="65">
+    </category>
+    <category name="もし～なら" colour="0">
+    </category>
+  </xml> -->
 
   <script src="js/jquery-3.2.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>

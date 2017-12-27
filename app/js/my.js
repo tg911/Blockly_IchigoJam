@@ -53,6 +53,51 @@ window.addEventListener('resize', onResize, false);
 onResize();
 Blockly.svgResize(workspace);
 
+// マルチワークスペース（マルチツールボックス？）何故かこれで実現できない。要調査。
+// var blockFactoryArea = document.getElementById("blockFactoryArea");
+// var blockFactoryDiv = document.getElementById("blockFactoryDiv");
+// // console.log(blockFactoryDiv);
+// var blockFactoryWorkspace = Blockly.inject(blockFactoryDiv, {
+//   toolbox: document.getElementById('blockFactoryToolbox'),
+//   grid: {
+//     spacing: 20,
+//     length: 3,
+//     colour: '#ccc',
+//     snap: true
+//   },
+//   media: 'media/',
+//   zoom: {
+//     controls: true,
+//     startScale: 1.0,
+//     maxScale: 3,
+//     minScale: 0.3,
+//     scaleSpeed: 1.2
+//   },
+//   trashcan: true
+// });
+//
+// var onResizeBlockFactory = function(e) {
+//   // Compute the absolute coordinates and dimensions of blocklyArea
+//   var element = blockFactoryArea;
+//   var x = 0;
+//   var y = 0;
+//
+//   do {
+//     x += element.offsetLeft;
+//     y += element.offsetTop;
+//     element = element.offsetParent;
+//   } while (element);
+//   //Position blocklyDiv over blocklyArea
+//   blockFactoryDiv.style.left = x + 'px';
+//   blockFactoryDiv.style.top = y + 'px';
+//   blockFactoryDiv.style.width = blockFactoryArea.offsetWidth + 'px';
+//   blockFactoryDiv.style.height = blockFactoryArea.offsetHeight + 'px';
+//   Blockly.svgResize(blockFactoryWorkspace);
+// };
+// window.addEventListener('resize', onResizeBlockFactory, false);
+// onResizeBlockFactory();
+// Blockly.svgResize(blockFactoryWorkspace);
+
 // スタートブロックに接続されていないブロックは無効化する
 // メソッド化した方が良いかも？
 // 変数はどっかと競合してないか？
@@ -129,6 +174,7 @@ document.getElementById("alert").addEventListener("click", function(e) {
 function save() {
   var fileName = document.getElementById("fileName").value;
   var xml = Blockly.Xml.workspaceToDom(workspace);
+  console.log(xml);
   var xmlText = Blockly.Xml.domToPrettyText(xml);
   var blob = new Blob([xmlText], {
     type: 'text/xml'
@@ -552,7 +598,7 @@ workspace.addChangeListener(forVarCount);
 
 function addToolbox() {
   var toolbox = document.getElementById("toolbox");
-  console.log(toolbox);
+  // console.log(toolbox);
   var blocks = Blockly.Blocks;
   // console.log("blocks:",blocks);
 
