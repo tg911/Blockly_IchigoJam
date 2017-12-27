@@ -128,17 +128,17 @@ BlockLibraryView.prototype.updateButtons =
     if (!isInLibrary) {
       // Block type has not been saved to library yet. Disable the delete button
       // and allow user to save.
-      this.saveButton.textContent = 'Save "' + blockType + '"';
+      this.saveButton.textContent = '保存 "' + blockType + '"';
       this.saveButton.disabled = false;
       this.deleteButton.disabled = true;
     } else {
       // Block type has already been saved. Disable the save button unless the
       // there are unsaved changes (checked below).
-      this.saveButton.textContent = 'Update "' + blockType + '"';
+      this.saveButton.textContent = '更新 "' + blockType + '"';
       this.saveButton.disabled = true;
       this.deleteButton.disabled = false;
     }
-    this.deleteButton.textContent = 'Delete "' + blockType + '"';
+    this.deleteButton.textContent = '削除 "' + blockType + '"';
 
     // If changes to block have been made and are not saved, make button
     // green to encourage user to save the block.

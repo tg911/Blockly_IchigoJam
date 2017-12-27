@@ -28,23 +28,23 @@ Blockly.Blocks['factory_base'] = {
   init: function() {
     this.setColour(120);
     this.appendDummyInput()
-        .appendField('name')
-        .appendField(new Blockly.FieldTextInput('block_type'), 'NAME');
+        .appendField('名前')
+        .appendField(new Blockly.FieldTextInput('ブロック名'), 'NAME');
     this.appendStatementInput('INPUTS')
         .setCheck('Input')
-        .appendField('inputs');
+        .appendField('形');
     var dropdown = new Blockly.FieldDropdown([
-        ['automatic inputs', 'AUTO'],
-        ['external inputs', 'EXT'],
-        ['inline inputs', 'INT']]);
+        ['引数 自動', 'AUTO'],
+        ['引数 外側', 'EXT'],
+        ['引数 内側', 'INT']]);
     this.appendDummyInput()
         .appendField(dropdown, 'INLINE');
     dropdown = new Blockly.FieldDropdown([
-        ['no connections', 'NONE'],
-        ['← left output', 'LEFT'],
-        ['↕ top+bottom connections', 'BOTH'],
-        ['↑ top connection', 'TOP'],
-        ['↓ bottom connection', 'BOTTOM']],
+        ['接続先無し', 'NONE'],
+        ['← 左向きに接続', 'LEFT'],
+        ['↕ 上下に接続', 'BOTH'],
+        ['↑ 上向きに接続', 'TOP'],
+        ['↓ 下向きに接続', 'BOTTOM']],
         function(option) {
           this.sourceBlock_.updateShape_(option);
           // Connect a shadow block to this new input.
@@ -54,7 +54,10 @@ Blockly.Blocks['factory_base'] = {
         .appendField(dropdown, 'CONNECTIONS');
     this.appendValueInput('COLOUR')
         .setCheck('Colour')
-        .appendField('colour');
+        .appendField('色');
+    this.appendValueInput('CODE')
+        .setCheck('Code')
+        .appendField('出力コード');
     this.setTooltip('Build a custom block by plugging\n' +
         'fields, inputs and other blocks here.');
     this.setHelpUrl(
@@ -102,21 +105,21 @@ Blockly.Blocks['factory_base'] = {
     var bottomExists = this.getInput('BOTTOMTYPE');
     if (option == 'LEFT') {
       if (!outputExists) {
-        this.addTypeInput_('OUTPUTTYPE', 'output type');
+        this.addTypeInput_('OUTPUTTYPE', '種類');
       }
     } else if (outputExists) {
       this.removeInput('OUTPUTTYPE');
     }
     if (option == 'TOP' || option == 'BOTH') {
       if (!topExists) {
-        this.addTypeInput_('TOPTYPE', 'top type');
+        this.addTypeInput_('TOPTYPE', '上に繋ぐ種類');
       }
     } else if (topExists) {
       this.removeInput('TOPTYPE');
     }
     if (option == 'BOTTOM' || option == 'BOTH') {
       if (!bottomExists) {
-        this.addTypeInput_('BOTTOMTYPE', 'bottom type');
+        this.addTypeInput_('BOTTOMTYPE', '下に繋ぐ種類');
       }
     } else if (bottomExists) {
       this.removeInput('BOTTOMTYPE');
@@ -130,12 +133,12 @@ Blockly.Blocks['factory_base'] = {
   }
 };
 
-var FIELD_MESSAGE = 'fields %1 %2';
+var FIELD_MESSAGE = '内容 %1 %2';
 var FIELD_ARGS = [
   {
     "type": "field_dropdown",
     "name": "ALIGN",
-    "options": [['left', 'LEFT'], ['right', 'RIGHT'], ['centre', 'CENTRE']],
+    "options": [['左寄せ', 'LEFT'], ['右寄せ', 'RIGHT'], ['中央揃え', 'CENTRE']],
   },
   {
     "type": "input_statement",
@@ -144,7 +147,7 @@ var FIELD_ARGS = [
   }
 ];
 
-var TYPE_MESSAGE = 'type %1';
+var TYPE_MESSAGE = '種類 %1';
 var TYPE_ARGS = [
   {
     "type": "input_value",
@@ -158,12 +161,12 @@ Blockly.Blocks['input_value'] = {
   // Value input.
   init: function() {
     this.jsonInit({
-      "message0": "value input %1 %2",
+      "message0": "引数 %1 %2",
       "args0": [
         {
           "type": "field_input",
           "name": "INPUTNAME",
-          "text": "NAME"
+          "text": "名前"
         },
         {
           "type": "input_dummy"
@@ -189,12 +192,12 @@ Blockly.Blocks['input_statement'] = {
   // Statement input.
   init: function() {
     this.jsonInit({
-      "message0": "statement input %1 %2",
+      "message0": "入れ子 %1 %2",
       "args0": [
         {
           "type": "field_input",
           "name": "INPUTNAME",
-          "text": "NAME"
+          "text": "名前"
         },
         {
           "type": "input_dummy"
@@ -220,7 +223,7 @@ Blockly.Blocks['input_dummy'] = {
   // Dummy input.
   init: function() {
     this.jsonInit({
-      "message0": "dummy input",
+      "message0": "",
       "message1": FIELD_MESSAGE,
       "args1": FIELD_ARGS,
       "previousStatement": "Input",
@@ -239,7 +242,7 @@ Blockly.Blocks['field_static'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('text')
+        .appendField('テキスト')
         .appendField(new Blockly.FieldTextInput(''), 'TEXT');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
@@ -253,10 +256,10 @@ Blockly.Blocks['field_input'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('text input')
-        .appendField(new Blockly.FieldTextInput('default'), 'TEXT')
+        .appendField('入力欄')
+        .appendField(new Blockly.FieldTextInput(''), 'TEXT')
         .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+        .appendField(new Blockly.FieldTextInput('内容名'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('An input field for the user to enter text.');
@@ -272,16 +275,16 @@ Blockly.Blocks['field_number'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('numeric input')
+        .appendField('数値入力欄')
         .appendField(new Blockly.FieldNumber(0), 'VALUE')
         .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+        .appendField(new Blockly.FieldTextInput('内容名'), 'FIELDNAME');
     this.appendDummyInput()
-        .appendField('min')
+        .appendField('数値幅')
         .appendField(new Blockly.FieldNumber(-Infinity), 'MIN')
-        .appendField('max')
+        .appendField('～')
         .appendField(new Blockly.FieldNumber(Infinity), 'MAX')
-        .appendField('precision')
+        .appendField('精度')
         .appendField(new Blockly.FieldNumber(0, 0), 'PRECISION');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
@@ -298,10 +301,10 @@ Blockly.Blocks['field_angle'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('angle input')
+        .appendField('角度入力欄')
         .appendField(new Blockly.FieldAngle('90'), 'ANGLE')
         .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+        .appendField(new Blockly.FieldTextInput('内容名'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('An input field for the user to enter an angle.');
@@ -316,8 +319,8 @@ Blockly.Blocks['field_dropdown'] = {
   // Dropdown menu.
   init: function() {
     this.appendDummyInput()
-        .appendField('dropdown')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+        .appendField('プルダウンメニュー')
+        .appendField(new Blockly.FieldTextInput('内容名'), 'FIELDNAME');
     this.optionCount_ = 3;
     this.updateShape_();
     this.setPreviousStatement(true, 'Field');
@@ -365,8 +368,8 @@ Blockly.Blocks['field_dropdown'] = {
     this.updateShape_();
     // Restore any data.
     for (var i = 0; i < this.optionCount_; i++) {
-      this.setFieldValue(data[i][0] || 'option', 'USER' + i);
-      this.setFieldValue(data[i][1] || 'OPTIONNAME', 'CPU' + i);
+      this.setFieldValue(data[i][0] || '項目', 'USER' + i);
+      this.setFieldValue(data[i][1] || '名前', 'CPU' + i);
     }
   },
   saveConnections: function(containerBlock) {
@@ -387,9 +390,9 @@ Blockly.Blocks['field_dropdown'] = {
     for (var i = 0; i < this.optionCount_; i++) {
       if (!this.getInput('OPTION' + i)) {
         this.appendDummyInput('OPTION' + i)
-            .appendField(new Blockly.FieldTextInput('option'), 'USER' + i)
+            .appendField(new Blockly.FieldTextInput('表示する文字'), 'USER' + i)
             .appendField(',')
-            .appendField(new Blockly.FieldTextInput('OPTIONNAME'), 'CPU' + i);
+            .appendField(new Blockly.FieldTextInput('項目名'), 'CPU' + i);
       }
     }
     // Remove deleted options.
@@ -412,7 +415,7 @@ Blockly.Blocks['field_dropdown_container'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('add options');
+        .appendField('項目を追加');
     this.appendStatementInput('STACK');
     this.setTooltip('Add, remove, or reorder options\n' +
                     'to reconfigure this dropdown menu.');
@@ -426,7 +429,7 @@ Blockly.Blocks['field_dropdown_option'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('option');
+        .appendField('項目');
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Add a new option to the dropdown menu.');
@@ -440,10 +443,10 @@ Blockly.Blocks['field_checkbox'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('checkbox')
+        .appendField('チェックボックス')
         .appendField(new Blockly.FieldCheckbox('TRUE'), 'CHECKED')
         .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+        .appendField(new Blockly.FieldTextInput('内容名'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('Checkbox field.');
@@ -459,10 +462,10 @@ Blockly.Blocks['field_colour'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('colour')
+        .appendField('色')
         .appendField(new Blockly.FieldColour('#ff0000'), 'COLOUR')
         .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+        .appendField(new Blockly.FieldTextInput('内容名'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('Colour input field.');
@@ -496,10 +499,10 @@ Blockly.Blocks['field_variable'] = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('variable')
-        .appendField(new Blockly.FieldTextInput('item'), 'TEXT')
+        .appendField('変数')
+        .appendField(new Blockly.FieldTextInput('変数名'), 'TEXT')
         .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+        .appendField(new Blockly.FieldTextInput('内容名'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('Dropdown menu for variable names.');
@@ -516,14 +519,14 @@ Blockly.Blocks['field_image'] = {
     this.setColour(160);
     var src = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
     this.appendDummyInput()
-        .appendField('image')
+        .appendField('画像のパス')
         .appendField(new Blockly.FieldTextInput(src), 'SRC');
     this.appendDummyInput()
-        .appendField('width')
+        .appendField('横幅')
         .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH')
-        .appendField('height')
+        .appendField('縦幅')
         .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT')
-        .appendField('alt text')
+        .appendField('altテキスト')
         .appendField(new Blockly.FieldTextInput('*'), 'ALT');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
@@ -562,7 +565,7 @@ Blockly.Blocks['type_group'] = {
       var input = this.appendValueInput('TYPE' + i)
                       .setCheck('Type');
       if (i == 0) {
-        input.appendField('any of');
+        input.appendField('次のいずれか');
       }
     }
   },
@@ -622,7 +625,7 @@ Blockly.Blocks['type_group'] = {
       if (!this.getInput('TYPE' + i)) {
         var input = this.appendValueInput('TYPE' + i);
         if (i == 0) {
-          input.appendField('any of');
+          input.appendField('次のいずれか');
         }
       }
     }
@@ -638,7 +641,7 @@ Blockly.Blocks['type_group_container'] = {
   // Container.
   init: function() {
     this.jsonInit({
-      "message0": "add types %1 %2",
+      "message0": "種類を追加 %1 %2",
       "args0": [
         {"type": "input_dummy"},
         {"type": "input_statement", "name": "STACK"}
@@ -654,7 +657,7 @@ Blockly.Blocks['type_group_item'] = {
   // Add type.
   init: function() {
     this.jsonInit({
-      "message0": "type",
+      "message0": "種類",
       "previousStatement": null,
       "nextStatement": null,
       "colour": 230,
@@ -669,7 +672,7 @@ Blockly.Blocks['type_null'] = {
   valueType: null,
   init: function() {
     this.jsonInit({
-      "message0": "any",
+      "message0": "何でも",
       "output": "Type",
       "colour": 230,
       "tooltip": "Any type is allowed.",
@@ -683,7 +686,7 @@ Blockly.Blocks['type_boolean'] = {
   valueType: 'Boolean',
   init: function() {
     this.jsonInit({
-      "message0": "Boolean",
+      "message0": "真偽値",
       "output": "Type",
       "colour": 230,
       "tooltip": "Booleans (true/false) are allowed.",
@@ -697,7 +700,7 @@ Blockly.Blocks['type_number'] = {
   valueType: 'Number',
   init: function() {
     this.jsonInit({
-      "message0": "Number",
+      "message0": "数値",
       "output": "Type",
       "colour": 230,
       "tooltip": "Numbers (int/float) are allowed.",
@@ -711,7 +714,7 @@ Blockly.Blocks['type_string'] = {
   valueType: 'String',
   init: function() {
     this.jsonInit({
-      "message0": "String",
+      "message0": "文字列",
       "output": "Type",
       "colour": 230,
       "tooltip": "Strings (text) are allowed.",
@@ -725,7 +728,7 @@ Blockly.Blocks['type_list'] = {
   valueType: 'Array',
   init: function() {
     this.jsonInit({
-      "message0": "Array",
+      "message0": "配列",
       "output": "Type",
       "colour": 230,
       "tooltip": "Arrays (lists) are allowed.",
@@ -738,7 +741,7 @@ Blockly.Blocks['type_other'] = {
   // Other type.
   init: function() {
     this.jsonInit({
-      "message0": "other %1",
+      "message0": "その他 %1",
       "args0": [{"type": "field_input", "name": "TYPE", "text": ""}],
       "output": "Type",
       "colour": 230,
@@ -752,7 +755,7 @@ Blockly.Blocks['colour_hue'] = {
   // Set the colour of the block.
   init: function() {
     this.appendDummyInput()
-        .appendField('hue:')
+        .appendField('色相')
         .appendField(new Blockly.FieldAngle('0', this.validator), 'HUE');
     this.setOutput(true, 'Colour');
     this.setTooltip('Paint the block with this colour.');
@@ -772,6 +775,17 @@ Blockly.Blocks['colour_hue'] = {
   },
   domToMutation: function(container) {
     this.setColour(container.getAttribute('colour'));
+  }
+};
+// 独自追加ブロック
+Blockly.Blocks['code'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("OUT 1"), "code");
+    this.setOutput(true, "Code");
+    this.setColour(290);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
   }
 };
 

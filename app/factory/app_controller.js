@@ -100,8 +100,8 @@ AppController.prototype.importBlockLibraryFromFile = function() {
         // Parse the file to get map of block type to XML text.
         blockXmlTextMap = self.formatBlockLibraryForImport_(fileContents);
       } catch (e) {
-        var message = 'Could not load your block library file.\n'
-        window.alert(message + '\nFile Name: ' + file.name);
+        var message = 'ブロックライブラリを読み込むことができませんでした。\n'
+        window.alert(message + '\nファイル名: ' + file.name);
         return;
       }
 
@@ -132,14 +132,12 @@ AppController.prototype.exportBlockLibraryToFile = function() {
   // Concatenate the XMLs, each separated by a blank line.
   var blockLibText = this.formatBlockLibraryForExport_(blockLib);
   // Get file name.
-  var filename = prompt('Enter the file name under which to save your block ' +
-      'library.', 'library.xml');
+  var filename = prompt('保存するブロックライブラリのファイル名を入力してください。', 'ライブラリ.xml');
   // Download file if all necessary parameters are provided.
   if (filename) {
     FactoryUtils.createAndDownloadFile(blockLibText, filename, 'xml');
   } else {
-    alert('Could not export Block Library without file name under which to ' +
-      'save library.');
+    alert('キャンセルしました。');
   }
 };
 
@@ -284,7 +282,7 @@ AppController.prototype.onTab = function() {
     var hasUnsavedChanges =
         !FactoryUtils.savedBlockChanges(this.blockLibraryController);
     if (hasUnsavedChanges &&
-        !confirm('You have unsaved changes in Block Factory.')) {
+        !confirm('保存されていないブロックがありますがよろしいですか？')) {
       // If the user doesn't want to switch tabs with unsaved changes,
       // stay on Block Factory Tab.
       this.setSelected_(AppController.BLOCK_FACTORY);
@@ -501,18 +499,17 @@ AppController.prototype.assignBlockFactoryClickHandlers = function() {
       .addEventListener('click', function() {
         self.exportBlockLibraryToFile();
       });
-
-  document.getElementById('helpButton').addEventListener('click',
-      function() {
-        open('https://developers.google.com/blockly/custom-blocks/block-factory',
-             'BlockFactoryHelp');
-      });
+// ヘルプボタン
+  // document.getElementById('helpButton').addEventListener('click',
+  //     function() {
+  //       open('https://developers.google.com/blockly/custom-blocks/block-factory',
+  //            'BlockFactoryHelp');
+  //     });
 
   document.getElementById('files').addEventListener('change',
       function() {
         // Warn user.
-        var replace = confirm('This imported block library will ' +
-            'replace your current block library.');
+        var replace = confirm('現在のブロックライブラリはインポートによって置き換えられます');
         if (replace) {
           self.importBlockLibraryFromFile();
           // Clear this so that the change event still fires even if the

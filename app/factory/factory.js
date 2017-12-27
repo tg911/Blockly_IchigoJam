@@ -100,7 +100,8 @@ BlockFactory.updateLanguage = function() {
   if (!rootBlock) {
     return;
   }
-  var blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase();
+  // var blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase();
+  var blockType = rootBlock.getFieldValue('NAME');
   if (!blockType) {
     blockType = BlockFactory.UNNAMED;
   }

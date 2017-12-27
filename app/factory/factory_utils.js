@@ -44,7 +44,7 @@ goog.provide('FactoryUtils');
  * @return {string} Block definition.
  */
 FactoryUtils.getBlockDefinition = function(blockType, rootBlock, format, workspace) {
-  blockType = blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1');
+  // blockType = blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1');
   switch (format) {
     case 'JSON':
       var code = FactoryUtils.formatJson_(blockType, rootBlock);
@@ -65,7 +65,7 @@ FactoryUtils.getBlockDefinition = function(blockType, rootBlock, format, workspa
  */
 FactoryUtils.getGeneratorStub = function(block, generatorLanguage) {
   function makeVar(root, name) {
-    name = name.toLowerCase().replace(/\W/g, '_');
+    // name = name.toLowerCase().replace(/\W/g, '_');
     return '  var ' + root + '_' + name;
   }
   // The makevar function lives in the original update generator.
@@ -132,13 +132,14 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage) {
     'PHP': ';',
     'Dart': ';'
   };
-  code.push("  // TODO: Assemble " + language + " into code variable.");
+  // code.push("  // TODO: Assemble " + language + " into code variable.");
   if (block.outputConnection) {
     code.push("  var code = '...';");
-    code.push("  // TODO: Change ORDER_NONE to the correct strength.");
+    // code.push("  // TODO: Change ORDER_NONE to the correct strength.");
     code.push("  return [code, Blockly." + language + ".ORDER_NONE];");
   } else {
     code.push("  var code = '..." + (lineEnd[language] || '') + "\\n';");
+    // code.push("  var code = " + )
     code.push("  return code;");
   }
   code.push("};");

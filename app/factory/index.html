@@ -42,16 +42,16 @@
   </script>
 </head>
 <body onbeforeunload="return blocklyFactory.confirmLeavePage()">
-  <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
-    <a href="../index.html">Demos</a> &gt; Blockly Developer Tools
-    <button id="helpButton" title="View documentation in new window.">
+  <!-- <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
+    <a href="../index.html">Demos</a> &gt; Blockly Developer Tools -->
+    <!-- <button id="helpButton" title="View documentation in new window.">
       <span>Help</span>
-    </button>
-  </h1>
+    </button> -->
+  <!-- </h1> -->
   <div id="tabContainer">
-    <div id="blockFactory_tab" class="tab tabon">Block Factory</div>
-    <div id="blocklibraryExporter_tab" class="tab taboff">Block Exporter</div>
-    <div id="workspaceFactory_tab" class="tab taboff">Workspace Factory</div>
+    <div id="blockFactory_tab" class="tab tabon">ブロックの作成</div>
+    <div id="blocklibraryExporter_tab" class="tab taboff">ブロックをファイルに出力</div>
+    <div id="workspaceFactory_tab" class="tab taboff">ワークスペースの編集</div>
   </div>
 
   <!-- Exporter tab -->
@@ -287,15 +287,14 @@
             <td id="blockLibraryContainer">
             <span>
               <div class="dropdown">
-                <button id="button_blockLib">Block Library</button>
+                <button id="button_blockLib">ブロックライブラリ</button>
                 <div id="dropdownDiv_blockLib" class="dropdown-content">
-                  <a id="createNewBlockButton">Create New Block</a>
+                  <a id="createNewBlockButton">新規ブロック</a>
                 </div>
               </div>
               <select id="blockLibraryDropdown" style="display:none">
               </select>
             </span>
-            </td>
             <td id="blockLibraryControls">
             <button id="saveToBlockLibraryButton" title="Save block to Block Library.">
               Save "block_type"
@@ -311,8 +310,8 @@
         <table id="blockFactoryPreview">
           <tr>
             <td id="previewContainer">
-              <h3>Preview:
-                <select id="direction">
+              <h3>プレビュー:
+                <select id="direction" style="display:none;">
                   <option value="ltr">LTR</option>
                   <option value="rtl">RTL</option>
                 </select>
@@ -323,22 +322,22 @@
                 <img src="link.png" height="21" width="21">
               </button>
               <button id="clearBlockLibraryButton" title="Clear Block Library.">
-                <span>Clear Library</span>
+                <span>ブロックライブラリを初期化する</span>
               </button>
               <label for="files" class="buttonStyle">
-                <span class=>Import Block Library</span>
+                <span class=>別のブロックライブラリを開く</span>
               </label>
               <input id="files" type="file" name="files"
                   accept="application/xml">
               <button id="localSaveButton" title="Save block library XML to a local file.">
-                <span>Download Block Library</span>
+                <span>ブロックライブラリを保存する</span>
               </button>
             </td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr height="80%">
+    <tr height="100%">
       <td id="blocklyWorkspaceContainer">
         <div id="blockly"></div>
         <div id="blocklyMask"></div>
@@ -346,11 +345,11 @@
       <td width="50%">
         <table id="blocklyPreviewContainer">
           <tr>
-            <td height="30%">
+            <td height="70%">
               <div id="preview"></div>
             </td>
           </tr>
-          <tr>
+          <tr style="display:;">
             <td height="5%">
               <h3>Block Definition:
                 <select id="format">
@@ -361,26 +360,27 @@
               </h3>
             </td>
           </tr>
-          <tr>
+          <tr style="display:;">
             <td height="30%">
               <pre id="languagePre"></pre>
               <textarea id="languageTA"></textarea>
             </td>
           </tr>
-          <tr>
+          <tr style="display:;">
             <td height="5%">
               <h3>Generator stub:
                 <select id="language">
-                  <option value="JavaScript">JavaScript</option>
+                  <!-- <option value="JavaScript">JavaScript</option>
                   <option value="Python">Python</option>
                   <option value="PHP">PHP</option>
                   <option value="Lua">Lua</option>
-                  <option value="Dart">Dart</option>
+                  <option value="Dart">Dart</option> -->
+                  <option value="IchigoJamBASIC">IchigoJamBASIC</option>
                 </select>
               </h3>
             </td>
           </tr>
-          <tr>
+          <tr style="display:;">
             <td height="30%">
               <pre id="generatorPre"></pre>
             </td>
@@ -393,7 +393,7 @@
   <div id="modalShadow"></div>
 
   <xml id="blockfactory_toolbox" class="toolbox">
-    <category name="Input">
+    <category name="形">
       <block type="input_value">
         <value name="TYPE">
           <shadow type="type_null"></shadow>
@@ -406,7 +406,7 @@
       </block>
       <block type="input_dummy"></block>
     </category>
-    <category name="Field">
+    <category name="内容">
       <block type="field_static"></block>
       <block type="field_input"></block>
       <block type="field_number"></block>
@@ -422,7 +422,7 @@
       <block type="field_variable"></block>
       <block type="field_image"></block>
     </category>
-    <category name="Type">
+    <category name="種類">
       <block type="type_group"></block>
       <block type="type_null"></block>
       <block type="type_boolean"></block>
@@ -431,7 +431,7 @@
       <block type="type_list"></block>
       <block type="type_other"></block>
     </category>
-    <category name="Colour" id="colourCategory">
+    <category name="色" id="colourCategory">
       <block type="colour_hue"><mutation colour="20"></mutation><field name="HUE">20</field></block>
       <block type="colour_hue"><mutation colour="65"></mutation><field name="HUE">65</field></block>
       <block type="colour_hue"><mutation colour="120"></mutation><field name="HUE">120</field></block>
@@ -441,6 +441,9 @@
       <block type="colour_hue"><mutation colour="260"></mutation><field name="HUE">260</field></block>
       <block type="colour_hue"><mutation colour="290"></mutation><field name="HUE">290</field></block>
       <block type="colour_hue"><mutation colour="330"></mutation><field name="HUE">330</field></block>
+    </category>
+    <category name="コード">
+      <block type="code"></block>
     </category>
   </xml>
 

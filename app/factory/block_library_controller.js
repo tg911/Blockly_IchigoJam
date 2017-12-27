@@ -63,9 +63,11 @@ BlockLibraryController = function(blockLibraryName, opt_blockLibraryStorage) {
  */
 BlockLibraryController.prototype.getCurrentBlockType = function() {
   var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
-  var blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase();
+  // var blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase();
+  var blockType = rootBlock.getFieldValue('NAME');
   // Replace white space with underscores
-  return blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1');
+  // return blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1');
+  return blockType;
 };
 
 /**
@@ -110,7 +112,7 @@ BlockLibraryController.prototype.getSelectedBlockType = function() {
  * updating the dropdown and displaying the starter block (factory_base).
  */
 BlockLibraryController.prototype.clearBlockLibrary = function() {
-  var check = confirm('Delete all blocks from library?');
+  var check = confirm('ブロックを全て消去しますか？');
   if (check) {
     // Clear Block Library Storage.
     this.storage.clear();
@@ -250,8 +252,7 @@ BlockLibraryController.prototype.setNoneSelected = function() {
  */
 BlockLibraryController.prototype.warnIfUnsavedChanges = function() {
   if (!FactoryUtils.savedBlockChanges(this)) {
-    return confirm('You have unsaved changes. By proceeding without saving ' +
-        ' your block first, you will lose these changes.');
+    return confirm('ブロックは編集途中です。保存されていない変更点は失われますがよろしいですか？');
   }
   return true;
 };
