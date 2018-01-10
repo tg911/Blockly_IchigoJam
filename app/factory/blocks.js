@@ -789,6 +789,19 @@ Blockly.Blocks['code'] = {
   }
 };
 
+Blockly.Blocks['textInput'] = {
+  init: function() {
+    this.appendValueInput("名前")
+        .setCheck(null)
+        .appendField("入力欄");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour(20);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 /**
  * Check to see if more than one field has this name.
  * Highly inefficient (On^2), but n is small.

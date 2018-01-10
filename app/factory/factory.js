@@ -118,7 +118,9 @@ BlockFactory.updateLanguage = function() {
  */
 BlockFactory.updateGenerator = function(block) {
   var language = document.getElementById('language').value;
-  var generatorStub = FactoryUtils.getGeneratorStub(block, language);
+  // blockFactoryのworkspaceをgetGeneratorStub内で扱えるようにする
+  // var generatorStub = FactoryUtils.getGeneratorStub(block, language);
+  var generatorStub = FactoryUtils.getGeneratorStub(block, language, BlockFactory.mainWorkspace);
   FactoryUtils.injectCode(generatorStub, 'generatorPre');
 };
 

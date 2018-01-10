@@ -63,7 +63,7 @@ FactoryUtils.getBlockDefinition = function(blockType, rootBlock, format, workspa
  *   'Dart'.
  * @return {string} Generator code for multiple blocks.
  */
-FactoryUtils.getGeneratorStub = function(block, generatorLanguage) {
+FactoryUtils.getGeneratorStub = function(block, generatorLanguage, workspace) {
   function makeVar(root, name) {
     // name = name.toLowerCase().replace(/\W/g, '_');
     return '  var ' + root + '_' + name;
@@ -73,6 +73,11 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage) {
   var code = [];
   code.push("Blockly." + language + "['" + block.type +
             "'] = function(block) {");
+
+  var be = document.createElement("block");
+  var toolbox = document.getElementById("blockfactory_toolbox");
+  var codeCategory = document.getElementById("codeCategory");
+  var fid = null;
 
   // Generate getters for any fields or inputs.
   for (var i = 0, input; input = block.inputList[i]; i++) {
@@ -110,6 +115,14 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage) {
       } else if (field instanceof Blockly.FieldTextInput) {
         code.push(makeVar('text', name) +
                   " = block.getFieldValue('" + name + "');");
+        // むずい　却下
+        // if (fid != field.sourceBlock_.id) {
+        //   be.setAttribute("type", "textInput");
+        //   be.setAttribute("id", field.sourceBlock_.id);
+        //   codeCategory.appendChild(be);
+        //   console.log(field.sourceBlock_.id);
+        // }
+        // fid = be.id;
       }
     }
     var name = input.name;
@@ -143,6 +156,10 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage) {
     code.push("  return code;");
   }
   code.push("};");
+
+  // workspace.updateToolbox(toolbox);
+  console.log(code);
+  // code内の文字列走査してvar text_ とか全部カウントした方が楽そう
 
   return code.join('\n');
 };
