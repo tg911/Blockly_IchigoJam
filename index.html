@@ -6,13 +6,20 @@
   <!--本体モジュール-->
   <script src="js/blockly_compressed.js"></script>
   <!--Block定義モジュール-->
-  <script src="js/blocks_compressed.js"></script>
+  <!-- <script src="js/blocks_compressed.js"></script> -->
   <!--ソースコードジェネレーターモジュール-->
-  <script src="js/ichigojambasic_compressed.js"></script>
+  <!-- <script src="js/ichigojambasic_compressed.js"></script> -->
   <!--翻訳-->
   <script src="js/ja.js"></script>
   <!-- 半角カナの文字コード変換に対応する -->
   <script src="js/encoding.js"></script>
+
+  <!-- ブロック -->
+  <script src="js/blocks.js"></script>
+  <script src="js/ichigojam-basic.js"></script>
+  <script src="js/code.js"></script>
+  <script src="js/blocks_required.js"></script>
+  <script src="js/code_required.js"></script>  
 
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/my.css">
@@ -93,119 +100,45 @@
         </div>
         <div class="modal-body">
           <p>ポート：<select id="portSelecter"></select></p>
-          <p><form id="modeSelecter" action="">
+          <!-- <p><form id="modeSelecter" action="">
             モード切替：
             <input type="radio" name="mode" id="normal"> 通常
             <input type="radio" name="mode" id="evaluation" checked> 評価
-          </form></p>
-          <p>
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#ioPinLabelEditor">入力／出力ピンにラベルを付ける</button>
-            <div class="collapse" id="ioPinLabelEditor">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>ピン</th>
-                    <th>ラベルの名前</th>
-                    <th>何をするか</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <!-- この辺の記述は面倒くさいしhtmlは全部JSから記述した方が綺麗かも -->
-                    <td><label for="pin-IN1">IN1</td>
-                      <td><form class="form-inline">
-                        <div class="form-group">
-                          <input type="text" class="form-control" id="pin-IN1" placeholder="IN1">
-                        </div>
-                      </form></td>
-                    </tr>
-                  <tr>
-                    <td><label for="pin-IN2">IN2</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-IN2" placeholder="IN2">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-IN3">IN3</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-IN3" placeholder="IN3">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-IN4">IN4</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-IN4" placeholder="IN4">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT1">OUT1</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT1" placeholder="OUT1">
-                      </div>
-                    </form></td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="outOn" placeholder="オンにする">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT2">OUT2</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT2" placeholder="OUT2">
-                      </div>
-                    </form></td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="outOff" placeholder="オフにする">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT3">OUT3</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT3" placeholder="OUT3">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT4">OUT4</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT4" placeholder="OUT4">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT5">OUT5</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT5" placeholder="OUT5">
-                      </div>
-                    </form></td>
-                  </tr>
-                  <tr>
-                    <td><label for="pin-OUT6">OUT6</td>
-                    <td><form class="form-inline">
-                      <div class="form-group">
-                        <input type="text" class="form-control" id="pin-OUT6" placeholder="OUT6">
-                      </div>
-                    </form></td>
-                  </tr>
-                </tbody>
-              </table>
-              <p class="text-right">
-                <button type="button" class="btn btn-default accept" id="pinLabelOk">OK</button>
-                <button type="button" class="btn btn-default decline" id="pinLabelCancel">キャンセル</button>
+          </form></p> -->
+          <p id="blockEditor">
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#blockEditorCollapse">ブロックを作成・変更する</button>
+            <div class="collapse" id="blockEditorCollapse">
+              <!-- <div class="dropdown">
+                <label for="InputSelect">編集・追加するブロックを選んでください</label>
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="blockListButton">
+                  ブロック
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" id="blockList">
+                </ul>
+              </div> -->
+              <div class="form-group">
+                <label for="InputSelect">編集・追加するブロック</label>
+                <select class="form-control" id="blockList">
+                </select>
+              </div>
+              <p>
+                <div class="form-group">
+              		<label class="control-label" for="blockEditorText">表示する文字は？</label>
+                  <!-- <div class="col-sm-9"> -->
+                    <input class="form-control" id="blockEditorText" placeholder="LEDを光らせる">
+                  <!-- </div> -->
+                </div>
+                <!-- <div class="form-inline">
+                  <label>ブロックの色は？</label>
+                  <input class="form-control" type="color" id="blockColor" name="color">
+                </div> -->
+                <div class="form-group">
+                  <label class="control-label" for="InputColor">ブロックの色は？</label>
+                  <!-- <div class="col-sm-9"> -->
+                    <span><input type="color" class="form-control" id="InputColor" placeholder="色"></span>
+                  <!-- </div> -->
+                </div>
               </p>
             </div>
           </p>
@@ -233,6 +166,7 @@
   <ul class="nav nav-tabs" id="tab">
     <li class="active"><a href="#blocksTab" data-toggle="tab">ブロック</a></li>
     <li><a href="#basicTab" data-toggle="tab">IchigoJamBASIC</a></li>
+    <li><a href="#blockFactoryTab" data-toggle="tab">ブロック工場</a></li>
   </ul>
 
   <!-- タブ内容 -->
@@ -249,78 +183,46 @@
     <div class="tab-pane" id="basicTab">
       <pre id="outputArea"></pre>
     </div>
+    <div class="tab-pane" id="blockFactoryTab">
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="factory/index.html"></iframe>
+      </div>
+      <!-- <div id="blockFactoryWorkspace" style="position: absolute;">
+        <div id="blockFactoryArea"></div>
+      </div>
+      <div id="blockFactoryDiv" style="position: absolute;"></div> -->
+    </div>
   </div>
   <!--ツールボックス-->
   <xml id="toolbox" style="display: none">
     <!-- <category name="スタート" colour="120">
       <block type="start"></block>
     </category> -->
-    <category name="うごかす" colour="180">
-      <block type="unko"></block>
+    <category name="うごかす" colour="180" id="category1">
+    </category>
+    <category name="くりかえす" colour="65" id="category2">
+    </category>
+    <category name="もし～なら" colour="0" id="category3">
+    </category>
+    <!-- <category name="うごかす" colour="180">
       <block type="led_on_kids"></block>
-      <block type="led_off_kids"></block>
-      <block type="out_led_on"></block>
-      <block type="out_led_off"></block>
-      <block type="play">
-        <value name="note">
-          <block type="note_c">
-            <value name="nextNote">
-              <block type="note_d">
-                <value name="nextNote">
-                  <block type="note_e"></block>
-                </value>
-              </block>
-            </value>
-          </block>
-        </value>
-      </block>
-      <block type="out_2"></block>
-      <block type="play_tune"></block>
-      <block type="servo"></block>
-      <block type="wait_kids">
-        <value name="second">
-          <block type="number">
-            <field name="num">1</field>
-          </block>
-        </value>
-      </block>
     </category>
     <category name="くりかえす" colour="65">
       <block type="loop_infinite"></block>
-      <block type="loop_number">
-        <value name="number">
-          <block type="number">
-            <field name="num">3</field>
-          </block>
-        </value>
-      </block>
     </category>
     <category name="もし～なら" colour="0">
       <block type="if_kids"></block>
-      <block type="if_else_kids"></block>
-      <block type="btn_kids"></block>
-      <block type="ana_infrared_sensor"></block>
-      <block type="ana_light_sensor"></block>
-    </category>
-    <category name="音色" colour="260">
-      <block type="note_c"></block>
-      <block type="note_d"></block>
-      <block type="note_e"></block>
-      <block type="note_f"></block>
-      <block type="note_g"></block>
-      <block type="note_a"></block>
-      <block type="note_b"></block>
-      <block type="note_r_kids"></block>
-      <block type="note_length"></block>
-      <block type="semitone"></block>
-      <block type="note_tempo"></block>
-      <block type="note_length_init"></block>
-      <block type="octave"></block>
-      <block type="octave_updown"></block>
-      <block type="note_loop"></block>
-      <block type="note_end"></block>
-    </category>
+    </category> -->
   </xml>
+  <!-- ブロック工場用ツールボックス -->
+  <!-- <xml id="blockFactoryToolbox" style="display: none">
+    <category name="うごかす" colour="180">
+    </category>
+    <category name="くりかえす" colour="65">
+    </category>
+    <category name="もし～なら" colour="0">
+    </category>
+  </xml> -->
 
   <script src="js/jquery-3.2.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
