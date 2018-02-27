@@ -294,6 +294,24 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage, workspace) {
   return code.join('\n');
 };
 
+//追加
+FactoryUtils.getGeneratorStubForExport = function(block, generatorLanguage, workspace) {
+  var language = generatorLanguage;
+  var code = [];
+
+  code.push("Blockly." + language + "['" + block.type +
+            "'] = function(block) {");
+
+  // console.log('testStorage',localStorage.getItem('test'));
+  // console.log('block',block);
+
+  code.push("  var code = " + localStorage.getItem(block.type) + "'\\n';");
+  code.push("  return code;");
+
+  code.push("};");
+  return code.join('\n');
+};
+
 /**
  * Update the language code as JSON.
  * @param {string} blockType Name of block.

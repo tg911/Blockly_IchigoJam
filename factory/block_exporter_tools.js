@@ -141,9 +141,45 @@ BlockExporterTools.prototype.getGeneratorCode =
       // Render the preview block in the hidden workspace.
       var tempBlock =
           FactoryUtils.getDefinedBlock(blockType, this.hiddenWorkspace);
+          // console.log('tempBlock',tempBlock);
       // Get generator stub for the given block and add to  generator code.
       var blockGenCode =
           FactoryUtils.getGeneratorStub(tempBlock, generatorLanguage);
+          // console.log('xml',xml);
+          // console.log('blockGenCode',blockGenCode);
+    } else {
+      // Append warning comment and write to console.
+      var blockGenCode = '// No generator stub generated for ' + blockType +
+        '. Block was not found in Block Library Storage.';
+      console.log('No block generator stub generated for ' + blockType +
+        '. Block was not found in Block Library Storage.');
+    }
+    multiblockCode.push(blockGenCode);
+  }
+  return multiblockCode.join("\n\n");
+};
+
+// 追加
+BlockExporterTools.prototype.getGeneratorCodeForExport =
+    function(blockXmlMap, generatorLanguage) {
+  var multiblockCode = [];
+  // Define the custom blocks in order to be able to create instances of
+  // them in the exporter workspace.
+  this.addBlockDefinitions(blockXmlMap);
+
+  for (var blockType in blockXmlMap) {
+    var xml = blockXmlMap[blockType];
+    // console.log('xml',xml);
+    if (xml) {
+      // Render the preview block in the hidden workspace.
+      var tempBlock =
+          FactoryUtils.getDefinedBlock(blockType, this.hiddenWorkspace);
+          // console.log('tempBlock',tempBlock);
+      // Get generator stub for the given block and add to  generator code.
+      var blockGenCode =
+          FactoryUtils.getGeneratorStubForExport(tempBlock, generatorLanguage);
+          // console.log('xml',xml);
+          // console.log('blockGenCode',blockGenCode);
     } else {
       // Append warning comment and write to console.
       var blockGenCode = '// No generator stub generated for ' + blockType +

@@ -121,7 +121,7 @@ BlockExporterController.prototype.export = function() {
       alert('Please enter a filename for your generator stub(s) download.');
     } else {
       // Get generator stub code in the selected language for the blocks.
-      var genStubs = this.tools.getGeneratorCode(blockXmlMap,
+      var genStubs = this.tools.getGeneratorCodeForExport(blockXmlMap,
           language);
       // Get the correct file extension.
       var fileType = (language == 'JavaScript') ? 'javascript' : 'plain';
@@ -278,7 +278,8 @@ BlockExporterController.prototype.updatePreview = function() {
   // Generate preview code for selected blocks.
   var blockDefs = this.getBlockDefinitionsOfSelected();
   var genStubs = this.getGeneratorStubsOfSelected();
-
+// console.log('genStubs',genStubs);
+  // genStubs = genStubs + 'helloooo'
   // Update the text areas containing the code.
   FactoryUtils.injectCode(blockDefs, 'blockDefs_textArea');
   FactoryUtils.injectCode(genStubs, 'genStubs_textArea');
@@ -316,16 +317,17 @@ BlockExporterController.prototype.getBlockDefinitionsOfSelected = function() {
 BlockExporterController.prototype.getGeneratorStubsOfSelected = function() {
   // Get selected blocks' information.
   var blockXmlMap = this.getSelectedBlockXmlMap();
+  // console.log(blockXmlMap);
 
   var div = document.createElement('div');
   var count = 0;
   for (var bxm in blockXmlMap) {
-    console.log('bxm',bxm);
+    // console.log('bxm',bxm);
     // div.style.display = 'none';
     // div.id = bxm + "_" + count;
     div.innerHTML = blockXmlMap[bxm].innerHTML;
-    console.log('div',div);
-    console.log(div.children[0].children[8].children[0]);
+    // console.log('div',div);
+    // console.log('child',div.children[0].children[8].children[0]);
     // console.log(div);
     // document.body.appendChild(div);
     // console.log('node', document.getElementsByName("CODE"));
@@ -335,5 +337,5 @@ BlockExporterController.prototype.getGeneratorStubsOfSelected = function() {
 
   // Get generator stub code in the selected language for the blocks.
   var language = document.getElementById('exportLanguage').value;
-  return this.tools.getGeneratorCode(blockXmlMap, language);
+  return this.tools.getGeneratorCodeForExport(blockXmlMap, language);
 };

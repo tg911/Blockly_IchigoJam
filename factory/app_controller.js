@@ -35,7 +35,6 @@ goog.require('goog.dom.classlist');
 goog.require('goog.ui.PopupColorPicker');
 goog.require('goog.ui.ColorPicker');
 
-
 /**
  * Controller for the Blockly Factory
  * @constructor
@@ -467,6 +466,82 @@ AppController.prototype.assignLibraryClickHandlers = function() {
   document.getElementById('saveToBlockLibraryButton').addEventListener('click',
       function() {
         self.blockLibraryController.saveToBlockLibrary();
+        var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
+        var codeBlock = rootBlock.getInputTargetBlock('CODE');
+        var codeText = "";
+        var codeType = ""
+
+        if (codeBlock != null) {
+          if (codeBlock.getInputTargetBlock('nextCode')) {
+            if (codeBlock.type == 'code') {
+              codeText = "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
+            } else if (codeBlock.type == 'code_free'){
+              codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
+            } else if (codeBlock.type == 'code_operator' || codeBlock.type == 'code_num'){
+              codeText = codeBlock.inputList[0].fieldRow[0].text_;
+            } else {
+              if (codeBlock.type == 'code_input') codeType = "text";
+              if (codeBlock.type == 'code_number') codeType = "number";
+              if (codeBlock.type == 'code_angle') codeType = "angle";
+              if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
+              if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
+              if (codeBlock.type == 'code_colour') codeType = "colour";
+              if (codeBlock.type == 'code_variable') codeType = "variable";
+              if (codeBlock.type == 'code_value') codeType = "value";
+              if (codeBlock.type == 'code_statements') codeType = "statements";
+              codeText = codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
+            }
+            while (codeBlock.getInputTargetBlock('nextCode')) {
+              codeBlock = codeBlock.getInputTargetBlock('nextCode');
+              if (codeBlock.type == 'code') {
+                codeText += "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
+              } else if (codeBlock.type == 'code_free'){
+                codeText += codeBlock.inputList[0].fieldRow[0].text_ + " + ";
+              } else if (codeBlock.type == 'code_operator'){
+                codeText = codeText.slice(0, -2)
+                codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
+              } else if (codeBlock.type == 'code_num'){
+                codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
+              } else {
+                if (codeBlock.type == 'code_input') codeType = "text";
+                if (codeBlock.type == 'code_number') codeType = "number";
+                if (codeBlock.type == 'code_angle') codeType = "angle";
+                if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
+                if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
+                if (codeBlock.type == 'code_colour') codeType = "colour";
+                if (codeBlock.type == 'code_variable') codeType = "variable";
+                if (codeBlock.type == 'code_value') codeType = "value";
+                if (codeBlock.type == 'code_statements') codeType = "statements";
+                codeText += codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
+              }
+            }
+          } else {
+            if (codeBlock.type == 'code') {
+              codeText = "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
+            } else if (codeBlock.type == 'code_free'){
+              codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
+            } else if (codeBlock.type == 'code_operator'){
+              codeText = codeText.slice(0, -2)
+              codeText = codeBlock.inputList[0].fieldRow[0].text_ + " ";
+            } else if (codeBlock.type == 'code_num'){
+              codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
+            } else {
+              if (codeBlock.type == 'code_input') codeType = "text";
+              if (codeBlock.type == 'code_number') codeType = "number";
+              if (codeBlock.type == 'code_angle') codeType = "angle";
+              if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
+              if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
+              if (codeBlock.type == 'code_colour') codeType = "colour";
+              if (codeBlock.type == 'code_variable') codeType = "variable";
+              if (codeBlock.type == 'code_value') codeType = "value";
+              if (codeBlock.type == 'code_statements') codeType = "statements";
+              codeText = codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
+            }
+          }
+        }
+        localStorage.setItem(rootBlock.inputList[0].fieldRow[1].text_, codeText);
+        // console.log('set ok', rootBlock.inputList[0].fieldRow[1].text_ + ':' +
+        // localStorage.getItem(rootBlock.inputList[0].fieldRow[1].text_));
       });
 
   // Button for removing selected block from library.
