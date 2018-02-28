@@ -96,83 +96,8 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage, workspace) {
   // var textInputNum = 0;
   // var fid = null;
   // rootBlock = factory_baseブロック？
-  var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
-  var codeBlock = rootBlock.getInputTargetBlock('CODE');
-  // var codeBlockNext = codeBlock.getInputTargetBlock('next');
-  var codeText = "";
-  var codeType = ""
-  // console.log('rootBlock',rootBlock);
-  // console.log('codeBlock',codeBlock);
-  // console.log('codeBlockBlock', codeBlock.getInputTargetBlock('CODE'));
-  // factory_baseに接続されたブロックのテキスト
-  if (codeBlock != null) {
-    if (codeBlock.getInputTargetBlock('nextCode')) {
-      if (codeBlock.type == 'code') {
-        codeText = "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
-      } else if (codeBlock.type == 'code_free'){
-        codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
-      } else if (codeBlock.type == 'code_operator' || codeBlock.type == 'code_num'){
-        codeText = codeBlock.inputList[0].fieldRow[0].text_;
-      } else {
-        if (codeBlock.type == 'code_input') codeType = "text";
-        if (codeBlock.type == 'code_number') codeType = "number";
-        if (codeBlock.type == 'code_angle') codeType = "angle";
-        if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
-        if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
-        if (codeBlock.type == 'code_colour') codeType = "colour";
-        if (codeBlock.type == 'code_variable') codeType = "variable";
-        if (codeBlock.type == 'code_value') codeType = "value";
-        if (codeBlock.type == 'code_statements') codeType = "statements";
-        codeText = codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
-      }
-      while (codeBlock.getInputTargetBlock('nextCode')) {
-        codeBlock = codeBlock.getInputTargetBlock('nextCode');
-        if (codeBlock.type == 'code') {
-          codeText += "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
-        } else if (codeBlock.type == 'code_free'){
-          codeText += codeBlock.inputList[0].fieldRow[0].text_ + " + ";
-        } else if (codeBlock.type == 'code_operator'){
-          codeText = codeText.slice(0, -2)
-          codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
-        } else if (codeBlock.type == 'code_num'){
-          codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
-        } else {
-          if (codeBlock.type == 'code_input') codeType = "text";
-          if (codeBlock.type == 'code_number') codeType = "number";
-          if (codeBlock.type == 'code_angle') codeType = "angle";
-          if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
-          if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
-          if (codeBlock.type == 'code_colour') codeType = "colour";
-          if (codeBlock.type == 'code_variable') codeType = "variable";
-          if (codeBlock.type == 'code_value') codeType = "value";
-          if (codeBlock.type == 'code_statements') codeType = "statements";
-          codeText += codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
-        }
-      }
-    } else {
-      if (codeBlock.type == 'code') {
-        codeText = "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
-      } else if (codeBlock.type == 'code_free'){
-        codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
-      } else if (codeBlock.type == 'code_operator'){
-        codeText = codeText.slice(0, -2)
-        codeText = codeBlock.inputList[0].fieldRow[0].text_ + " ";
-      } else if (codeBlock.type == 'code_num'){
-        codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
-      } else {
-        if (codeBlock.type == 'code_input') codeType = "text";
-        if (codeBlock.type == 'code_number') codeType = "number";
-        if (codeBlock.type == 'code_angle') codeType = "angle";
-        if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
-        if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
-        if (codeBlock.type == 'code_colour') codeType = "colour";
-        if (codeBlock.type == 'code_variable') codeType = "variable";
-        if (codeBlock.type == 'code_value') codeType = "value";
-        if (codeBlock.type == 'code_statements') codeType = "statements";
-        codeText = codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
-      }
-    }
-  }
+
+  var codeText = FactoryUtils.createCodeText();
 
   // if (codeBlock != null) {
   //   while (codeBlock.getInputTargetBlock('nextCode')) {
@@ -296,19 +221,89 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage, workspace) {
 
 //追加
 FactoryUtils.getGeneratorStubForExport = function(block, generatorLanguage, workspace) {
+  function makeVar(root, name) {
+    // name = name.toLowerCase().replace(/\W/g, '_');
+    return '  var ' + root + '_' + name;
+  }
+
   var language = generatorLanguage;
   var code = [];
 
   code.push("Blockly." + language + "['" + block.type +
             "'] = function(block) {");
 
-  // console.log('testStorage',localStorage.getItem('test'));
-  // console.log('block',block);
+  for (var i = 0, input; input = block.inputList[i]; i++) {
+    for (var j = 0, field; field = input.fieldRow[j]; j++) {
+      var name = field.name;
+      if (!name) {
+        continue;
+      }
+      if (field instanceof Blockly.FieldVariable) {
+        // Subclass of Blockly.FieldDropdown, must test first.
+        code.push(makeVar('variable', name) +
+                  " = Blockly." + language +
+                  ".variableDB_.getName(block.getFieldValue('" + name +
+                  "'), Blockly.Variables.NAME_TYPE);");
+      } else if (field instanceof Blockly.FieldAngle) {
+        // Subclass of Blockly.FieldTextInput, must test first.
+        code.push(makeVar('angle', name) +
+                  " = block.getFieldValue('" + name + "');");
+      } else if (Blockly.FieldDate && field instanceof Blockly.FieldDate) {
+        // Blockly.FieldDate may not be compiled into Blockly.
+        code.push(makeVar('date', name) +
+                  " = block.getFieldValue('" + name + "');");
+      } else if (field instanceof Blockly.FieldColour) {
+        code.push(makeVar('colour', name) +
+                  " = block.getFieldValue('" + name + "');");
+      } else if (field instanceof Blockly.FieldCheckbox) {
+        code.push(makeVar('checkbox', name) +
+                  " = block.getFieldValue('" + name + "') == 'TRUE';");
+      } else if (field instanceof Blockly.FieldDropdown) {
+        code.push(makeVar('dropdown', name) +
+                  " = block.getFieldValue('" + name + "');");
+      } else if (field instanceof Blockly.FieldNumber) {
+        code.push(makeVar('number', name) +
+                  " = block.getFieldValue('" + name + "');");
+      } else if (field instanceof Blockly.FieldTextInput) {
+        code.push(makeVar('text', name) +
+                  " = block.getFieldValue('" + name + "');");
+      }
+    }
+    var name = input.name;
+    if (name) {
+      if (input.type == Blockly.INPUT_VALUE) {
+        code.push(makeVar('value', name) +
+                  " = Blockly." + language + ".valueToCode(block, '" + name +
+                  "', Blockly." + language + ".ORDER_ATOMIC);");
+      } else if (input.type == Blockly.NEXT_STATEMENT) {
+        code.push(makeVar('statements', name) +
+                  " = Blockly." + language + ".statementToCode(block, '" +
+                  name + "');");
+      }
+    }
+  }
+  // Most languages end lines with a semicolon.  Python does not.
+  var lineEnd = {
+    'JavaScript': ';',
+    'Python': '',
+    'PHP': ';',
+    'Dart': ';'
+  };
+  // code.push("  // TODO: Assemble " + language + " into code variable.");
 
-  code.push("  var code = " + localStorage.getItem(block.type) + "'\\n';");
-  code.push("  return code;");
-
+  if (block.outputConnection) {
+    // code.push("  var code = '...';");
+    code.push("  var code = " + codeText + "'\\n';");
+    // code.push("  // TODO: Change ORDER_NONE to the correct strength.");
+    code.push("  return [code, Blockly." + language + ".ORDER_NONE];");
+  } else {
+    // code.push("  var code = '..." + (lineEnd[language] || '') + "\\n';");
+    // code.push("  var code = '" + codeText + "\\n';");
+    code.push("  var code = " + localStorage.getItem(block.type) + "'\\n';");
+    code.push("  return code;");
+  }
   code.push("};");
+
   return code.join('\n');
 };
 
@@ -1132,4 +1127,82 @@ FactoryUtils.savedBlockChanges = function(blockLibraryController) {
     return FactoryUtils.sameBlockXml(savedXml, currentXml);
   }
   return false;
+};
+
+//追加
+FactoryUtils.createCodeText = function() {
+  var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
+  var codeBlock = rootBlock.getInputTargetBlock('CODE');
+  var codeText = "";
+  var codeType = "";
+
+  if (codeBlock != null) {
+    if (codeBlock.getInputTargetBlock('nextCode')) {
+      if (codeBlock.type == 'code') {
+        codeText = "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
+      } else if (codeBlock.type == 'code_free'){
+        codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
+      } else if (codeBlock.type == 'code_operator' || codeBlock.type == 'code_num'){
+        codeText = codeBlock.inputList[0].fieldRow[0].text_;
+      } else {
+        if (codeBlock.type == 'code_input') codeType = "text";
+        if (codeBlock.type == 'code_number') codeType = "number";
+        if (codeBlock.type == 'code_angle') codeType = "angle";
+        if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
+        if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
+        if (codeBlock.type == 'code_colour') codeType = "colour";
+        if (codeBlock.type == 'code_variable') codeType = "variable";
+        if (codeBlock.type == 'code_value') codeType = "value";
+        if (codeBlock.type == 'code_statements') codeType = "statements";
+        codeText = codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
+      }
+      while (codeBlock.getInputTargetBlock('nextCode')) {
+        codeBlock = codeBlock.getInputTargetBlock('nextCode');
+        if (codeBlock.type == 'code') {
+          codeText += "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
+        } else if (codeBlock.type == 'code_free'){
+          codeText += codeBlock.inputList[0].fieldRow[0].text_ + " + ";
+        } else if (codeBlock.type == 'code_operator'){
+          codeText = codeText.slice(0, -2)
+          codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
+        } else if (codeBlock.type == 'code_num'){
+          codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
+        } else {
+          if (codeBlock.type == 'code_input') codeType = "text";
+          if (codeBlock.type == 'code_number') codeType = "number";
+          if (codeBlock.type == 'code_angle') codeType = "angle";
+          if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
+          if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
+          if (codeBlock.type == 'code_colour') codeType = "colour";
+          if (codeBlock.type == 'code_variable') codeType = "variable";
+          if (codeBlock.type == 'code_value') codeType = "value";
+          if (codeBlock.type == 'code_statements') codeType = "statements";
+          codeText += codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
+        }
+      }
+    } else {
+      if (codeBlock.type == 'code') {
+        codeText = "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
+      } else if (codeBlock.type == 'code_free'){
+        codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
+      } else if (codeBlock.type == 'code_operator'){
+        codeText = codeText.slice(0, -2)
+        codeText = codeBlock.inputList[0].fieldRow[0].text_ + " ";
+      } else if (codeBlock.type == 'code_num'){
+        codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
+      } else {
+        if (codeBlock.type == 'code_input') codeType = "text";
+        if (codeBlock.type == 'code_number') codeType = "number";
+        if (codeBlock.type == 'code_angle') codeType = "angle";
+        if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
+        if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
+        if (codeBlock.type == 'code_colour') codeType = "colour";
+        if (codeBlock.type == 'code_variable') codeType = "variable";
+        if (codeBlock.type == 'code_value') codeType = "value";
+        if (codeBlock.type == 'code_statements') codeType = "statements";
+        codeText = codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
+      }
+    }
+  }
+  return codeText;
 };
