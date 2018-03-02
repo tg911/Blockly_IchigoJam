@@ -103,7 +103,6 @@ AppController.prototype.importBlockLibraryFromFile = function() {
         window.alert(message + '\nファイル名: ' + file.name);
         return;
       }
-
       // Create a new block library storage object with inputted block library.
       var blockLibStorage = new BlockLibraryStorage(
           self.blockLibraryName, blockXmlTextMap);
@@ -115,6 +114,18 @@ AppController.prototype.importBlockLibraryFromFile = function() {
       self.blockLibraryController.populateBlockLibrary();
       // Update the exporter's block library storage.
       self.exporter.setBlockLibraryStorage(blockLibStorage);
+      // ブロックライブラリインポート時にlocalStorageに各ブロックのコードをセットする
+      var blockList = document.getElementById('dropdownDiv_blockLib');
+      BlockFactory.showStarterBlock();
+      // console.log('blockList',blockList.children);
+      for (var i = 1; i < blockList.children.length; i++) {
+        // console.log(blockList.children[i]);
+        blockList.children[i].click();
+        var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
+        var codeText = FactoryUtils.createCodeText();
+        localStorage.setItem(rootBlock.inputList[0].fieldRow[1].text_, codeText);
+      }
+      blockList.children[0].click();
     });
     // Read the file.
     fileReader.readAsText(file);
@@ -467,81 +478,8 @@ AppController.prototype.assignLibraryClickHandlers = function() {
       function() {
         self.blockLibraryController.saveToBlockLibrary();
         var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
-        var codeBlock = rootBlock.getInputTargetBlock('CODE');
-        var codeText = "";
-        var codeType = ""
-
-        if (codeBlock != null) {
-          if (codeBlock.getInputTargetBlock('nextCode')) {
-            if (codeBlock.type == 'code') {
-              codeText = "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
-            } else if (codeBlock.type == 'code_free'){
-              codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
-            } else if (codeBlock.type == 'code_operator' || codeBlock.type == 'code_num'){
-              codeText = codeBlock.inputList[0].fieldRow[0].text_;
-            } else {
-              if (codeBlock.type == 'code_input') codeType = "text";
-              if (codeBlock.type == 'code_number') codeType = "number";
-              if (codeBlock.type == 'code_angle') codeType = "angle";
-              if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
-              if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
-              if (codeBlock.type == 'code_colour') codeType = "colour";
-              if (codeBlock.type == 'code_variable') codeType = "variable";
-              if (codeBlock.type == 'code_value') codeType = "value";
-              if (codeBlock.type == 'code_statements') codeType = "statements";
-              codeText = codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
-            }
-            while (codeBlock.getInputTargetBlock('nextCode')) {
-              codeBlock = codeBlock.getInputTargetBlock('nextCode');
-              if (codeBlock.type == 'code') {
-                codeText += "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
-              } else if (codeBlock.type == 'code_free'){
-                codeText += codeBlock.inputList[0].fieldRow[0].text_ + " + ";
-              } else if (codeBlock.type == 'code_operator'){
-                codeText = codeText.slice(0, -2)
-                codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
-              } else if (codeBlock.type == 'code_num'){
-                codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
-              } else {
-                if (codeBlock.type == 'code_input') codeType = "text";
-                if (codeBlock.type == 'code_number') codeType = "number";
-                if (codeBlock.type == 'code_angle') codeType = "angle";
-                if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
-                if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
-                if (codeBlock.type == 'code_colour') codeType = "colour";
-                if (codeBlock.type == 'code_variable') codeType = "variable";
-                if (codeBlock.type == 'code_value') codeType = "value";
-                if (codeBlock.type == 'code_statements') codeType = "statements";
-                codeText += codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
-              }
-            }
-          } else {
-            if (codeBlock.type == 'code') {
-              codeText = "'" + codeBlock.inputList[0].fieldRow[0].text_ + "' + ";
-            } else if (codeBlock.type == 'code_free'){
-              codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
-            } else if (codeBlock.type == 'code_operator'){
-              codeText = codeText.slice(0, -2)
-              codeText = codeBlock.inputList[0].fieldRow[0].text_ + " ";
-            } else if (codeBlock.type == 'code_num'){
-              codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
-            } else {
-              if (codeBlock.type == 'code_input') codeType = "text";
-              if (codeBlock.type == 'code_number') codeType = "number";
-              if (codeBlock.type == 'code_angle') codeType = "angle";
-              if (codeBlock.type == 'code_dropdown') codeType = "dropdown";
-              if (codeBlock.type == 'code_checkbox') codeType = "checkbox";
-              if (codeBlock.type == 'code_colour') codeType = "colour";
-              if (codeBlock.type == 'code_variable') codeType = "variable";
-              if (codeBlock.type == 'code_value') codeType = "value";
-              if (codeBlock.type == 'code_statements') codeType = "statements";
-              codeText = codeType + "_" + codeBlock.inputList[0].fieldRow[1].text_ + " + ";
-            }
-          }
-        }
+        var codeText = FactoryUtils.createCodeText();
         localStorage.setItem(rootBlock.inputList[0].fieldRow[1].text_, codeText);
-        // console.log('set ok', rootBlock.inputList[0].fieldRow[1].text_ + ':' +
-        // localStorage.getItem(rootBlock.inputList[0].fieldRow[1].text_));
       });
 
   // Button for removing selected block from library.
@@ -549,11 +487,20 @@ AppController.prototype.assignLibraryClickHandlers = function() {
     'click',
       function() {
         self.blockLibraryController.removeFromBlockLibrary();
+        // ブロック削除ボタン押下時にlocalStorage内のデータも削除する
+        var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
+        localStorage.removeItem(rootBlock.inputList[0].fieldRow[1].text_);
       });
 
   // Button for clearing the block library.
   document.getElementById('clearBlockLibraryButton').addEventListener('click',
       function() {
+        // ブロックライブラリ初期化時にlocalStorage内のデータも削除する
+        var blockList = document.getElementById('dropdownDiv_blockLib');
+        for (var i = 1; i < blockList.children.length; i++) {
+          // console.log(blockList.children[i].innerHTML);
+          localStorage.removeItem(blockList.children[i].innerText);
+        }
         self.blockLibraryController.clearBlockLibrary();
       });
 
