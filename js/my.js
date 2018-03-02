@@ -7,31 +7,89 @@ window.onload = function() {
   var ngui = require('nw.gui');
   var nwin = ngui.Window.get();
   nwin.maximize();
-}
+
+  function showCode() {
+    console.log('ws-3', workspace);
+    var outputArea = document.getElementById("outputArea");
+    var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
+    outputArea.innerHTML = code;
+  };
+  // workspaceのリスナーへ登録を忘れずに
+  workspace.addChangeListener(showCode);
+
+  function setLineNumber() {
+    var contents = document.getElementById("outputArea");
+    var lineNum = 10;
+    var code = contents.innerText;
+    var sliceCode = code.split('');
+
+    var sliceCodeLength = sliceCode.length;
+
+    for (var i = 0; i < sliceCodeLength; i++) {
+      if (i == 0) {
+        sliceCode.splice(i, 0, lineNum, " ");
+        sliceCodeLength += 2;
+        lineNum += 10;
+      }
+      if (sliceCode[i] == "\n") {
+        sliceCode.splice(i + 1, 0, lineNum, " ");
+        sliceCodeLength += 2;
+        lineNum += 10;
+      }
+    }
+    sliceCode.splice(sliceCode.length - 2, 2);
+    code = sliceCode.join("");
+    contents.innerText = code;
+  };
+
+  workspace.addChangeListener(setLineNumber);
+
+};
+
+// function insertXml(fileName, place) {
+//     var XMLHR = new XMLHttpRequest();
+//     XMLHR.onreadystatechange = function() {
+//         if (XMLHR.readyState == 4 && XMLHR.status == 200) {
+//             var contents = XMLHR.responseXML;
+//             // console.log(contents.documentElement);
+//             var contentsText = new XMLSerializer().serializeToString(contents.documentElement)
+//             // ＸＭＬファイルではresponseTextではなくresponseXML
+//             document.getElementById(place).innerHTML = contentsText;
+//             console.log('loadXML');
+//         }
+//     }
+//     XMLHR.open("GET", fileName, false);
+//     XMLHR.send(null);
+// };
+//
+// insertXml('toolbox.xml', 'xmlPlace1');
+// insertXml('workspace.xml', 'xmlPlace2');
+
 
 
 var blocklyArea = document.getElementById("blocklyArea");
-var blocklyDiv = document.getElementById("blocklyDiv");
-var workspace = Blockly.inject(blocklyDiv, {
-  toolbox: document.getElementById('toolbox'),
-  grid: {
-    spacing: 20,
-    length: 3,
-    colour: '#ccc',
-    snap: true
-  },
-  media: 'media/',
-  zoom: {
-    controls: true,
-    startScale: 1.0,
-    maxScale: 3,
-    minScale: 0.3,
-    scaleSpeed: 1.2
-  },
-  trashcan: true
-});
+// var blocklyDiv = document.getElementById("blocklyDiv");
+// var workspace = Blockly.inject(blocklyDiv, {
+//   toolbox: document.getElementById('toolbox'),
+//   grid: {
+//     spacing: 20,
+//     length: 3,
+//     colour: '#ccc',
+//     snap: true
+//   },
+//   media: 'media/',
+//   zoom: {
+//     controls: true,
+//     startScale: 1.0,
+//     maxScale: 3,
+//     minScale: 0.3,
+//     scaleSpeed: 1.2
+//   },
+//   trashcan: true
+// });
 
 var onResize = function(e) {
+  console.log('ws-2', workspace);
   // Compute the absolute coordinates and dimensions of blocklyArea
   var element = blocklyArea;
   var x = 0;
@@ -50,8 +108,16 @@ var onResize = function(e) {
   Blockly.svgResize(workspace);
 };
 window.addEventListener('resize', onResize, false);
-onResize();
-Blockly.svgResize(workspace);
+window.addEventListener('resize', Blockly.svgResize(workspace), false);
+//
+// try {
+//   window.addEventListener('resize', Blockly.svgResize(workspace), false);
+// } catch(e) {
+//   console.log('era----',e);
+// }
+// console.log('workspace',workspace);
+// onResize();
+// Blockly.svgResize(workspace);
 
 // マルチワークスペース（マルチツールボックス？）何故かこれで実現できない。要調査。
 // var blockFactoryArea = document.getElementById("blockFactoryArea");
@@ -101,18 +167,19 @@ Blockly.svgResize(workspace);
 // スタートブロックに接続されていないブロックは無効化する
 // メソッド化した方が良いかも？
 // 変数はどっかと競合してないか？
-var xml = '<xml><block type="start" deletable="false"></block></xml>';
-Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
-workspace.addChangeListener(Blockly.Events.disableOrphans);
+// var xml = '<xml><block type="start" deletable="false"></block></xml>';
+// Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+// workspace.addChangeListener(Blockly.Events.disableOrphans);
 //
 
-function showCode() {
-  var outputArea = document.getElementById("outputArea");
-  var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
-  outputArea.innerHTML = code;
-};
-// workspaceのリスナーへ登録を忘れずに
-workspace.addChangeListener(showCode);
+// function showCode() {
+//   console.log('ws-3', workspace);
+//   var outputArea = document.getElementById("outputArea");
+//   var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
+//   outputArea.innerHTML = code;
+// };
+// // workspaceのリスナーへ登録を忘れずに
+// workspace.addChangeListener(showCode);
 
 function discard() {
   // workspaceから全てのブロックを削除
@@ -126,32 +193,32 @@ function discard() {
 
 document.getElementById("discardYes").addEventListener("click", discard, false);
 
-function setLineNumber() {
-  var contents = document.getElementById("outputArea");
-  var lineNum = 10;
-  var code = contents.innerText;
-  var sliceCode = code.split('');
-
-  var sliceCodeLength = sliceCode.length;
-
-  for (var i = 0; i < sliceCodeLength; i++) {
-    if (i == 0) {
-      sliceCode.splice(i, 0, lineNum, " ");
-      sliceCodeLength += 2;
-      lineNum += 10;
-    }
-    if (sliceCode[i] == "\n") {
-      sliceCode.splice(i + 1, 0, lineNum, " ");
-      sliceCodeLength += 2;
-      lineNum += 10;
-    }
-  }
-  sliceCode.splice(sliceCode.length - 2, 2);
-  code = sliceCode.join("");
-  contents.innerText = code;
-};
-
-workspace.addChangeListener(setLineNumber);
+// function setLineNumber() {
+//   var contents = document.getElementById("outputArea");
+//   var lineNum = 10;
+//   var code = contents.innerText;
+//   var sliceCode = code.split('');
+//
+//   var sliceCodeLength = sliceCode.length;
+//
+//   for (var i = 0; i < sliceCodeLength; i++) {
+//     if (i == 0) {
+//       sliceCode.splice(i, 0, lineNum, " ");
+//       sliceCodeLength += 2;
+//       lineNum += 10;
+//     }
+//     if (sliceCode[i] == "\n") {
+//       sliceCode.splice(i + 1, 0, lineNum, " ");
+//       sliceCodeLength += 2;
+//       lineNum += 10;
+//     }
+//   }
+//   sliceCode.splice(sliceCode.length - 2, 2);
+//   code = sliceCode.join("");
+//   contents.innerText = code;
+// };
+//
+// workspace.addChangeListener(setLineNumber);
 
 // アラートを表示する
 function showAlert(alertStatus, message) {
@@ -629,7 +696,7 @@ function addToolbox() {
 
   workspace.updateToolbox(toolbox);
 }
-addToolbox();
+// addToolbox();
 
 // function showBlockList() {
 //   var toolbox = document.getElementById("toolbox");
@@ -708,7 +775,7 @@ function showBlockList() {
   }
 }
 
-showBlockList();
+// showBlockList();
 
 // window.onload = function(){
 //   addToolbox();

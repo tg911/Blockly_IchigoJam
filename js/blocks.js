@@ -1,8 +1,7 @@
-Blockly.Blocks['LEDオンオフ'] = {
+Blockly.Blocks['LEDを光らせる'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("LEDを")
-        .appendField(new Blockly.FieldDropdown([["オンにする", "1"], ["オフにする", "0"]]), "選択肢");
+        .appendField("LEDを光らせる");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(160);

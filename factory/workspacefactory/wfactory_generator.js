@@ -171,7 +171,7 @@ WorkspaceFactoryGenerator.prototype.generateInjectString = function() {
       'var toolbox = document.getElementById("toolbox");\n\n';
   finalStr += 'var options = { \n' + attributes + '};';
   finalStr += '\n\n/* Inject your workspace */ \nvar workspace = Blockly.' +
-      'inject(/* TODO: Add ID of div to inject Blockly into */, options);';
+      'inject(document.getElementById("blocklyDiv"), options);';
   finalStr += '\n\n/* Load Workspace Blocks from XML to workspace. ' +
       'Remove all code below if no blocks to load */\n\n' +
       '/* TODO: Change workspace blocks XML ID if necessary. Can export' +
