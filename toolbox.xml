@@ -1,0 +1,16 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
+  <category name="うごかす" colour="#5ba593">
+    <block type="LEDを光らせる"></block>
+    <block type="LEDをけす"></block>
+    <block type="待つ">
+      <value name="数値">
+        <shadow type="数値">
+          <field name="数値">1</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+  <category name="じょうけん" colour="#a55b93">
+    <block type="ボタン"></block>
+  </category>
+</xml>

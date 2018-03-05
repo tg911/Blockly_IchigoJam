@@ -1,0 +1,763 @@
+<!-- TODO(quachtina96): move the CSS out to a separate file -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="target-densitydpi=device-dpi, height=660, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Blockly Demo: Blockly Developer Tools</title>
+  <script src="blockly_compressed.js"></script>
+  <script src="javascript_compressed.js"></script>
+  <script src="en.js"></script>
+  <script src="blocks_compressed.js"></script>
+  <script src="../build/closure-library/closure/goog/base.js"></script>
+  <script src="factory_utils.js"></script>
+  <script src="workspacefactory/wfactory_model.js"></script>
+  <script src="standard_categories.js"></script>
+  <script src="workspacefactory/wfactory_controller.js"></script>
+  <script src="workspacefactory/wfactory_view.js"></script>
+  <script src="workspacefactory/wfactory_generator.js"></script>
+  <script src="workspacefactory/wfactory_init.js"></script>
+  <script src="block_option.js"></script>
+  <script src="factory.js"></script>
+  <script src="block_library_view.js"></script>
+  <script src="block_library_storage.js"></script>
+  <script src="block_library_controller.js"></script>
+  <script src="block_exporter_tools.js"></script>
+  <script src="block_exporter_view.js"></script>
+  <script src="block_exporter_controller.js"></script>
+  <script src="blocks.js"></script>
+  <script src="app_controller.js"></script>
+  <!-- <script src="/storage.js"></script> -->
+  <link rel="stylesheet" href="factory.css">
+  <link rel="stylesheet" href="prettify.css">
+  <script src="prettify.js"></script>
+  <script>
+    var blocklyFactory;
+    var init = function() {
+      blocklyFactory = new AppController();
+      blocklyFactory.init();
+    };
+    window.addEventListener('load', init);
+  </script>
+</head>
+<body onbeforeunload="return blocklyFactory.confirmLeavePage()">
+  <!-- <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
+    <a href="../index.html">Demos</a> &gt; Blockly Developer Tools -->
+    <!-- <button id="helpButton" title="View documentation in new window.">
+      <span>Help</span>
+    </button> -->
+  <!-- </h1> -->
+  <div id="tabContainer">
+    <div id="blockFactory_tab" class="tab tabon">ブロックの作成</div>
+    <div id="blocklibraryExporter_tab" class="tab taboff">ブロックをファイルに出力</div>
+    <div id="workspaceFactory_tab" class="tab taboff">ワークスペースの編集</div>
+  </div>
+
+  <!-- Exporter tab -->
+  <div id="blockLibraryExporter">
+    <div id="exportSelector">
+      <br>
+      <h3>ブロックを選ぶ</h3>
+      <div class="dropdown">
+        <button id="button_setBlocks">まとめて選択</button>
+        <div id="dropdownDiv_setBlocks" class="dropdown-content">
+          <a id="dropdown_addAllFromLib" title="Select all block library blocks.">ブロックライブラリ内の全てのブロックを選択</a>
+          <a id="dropdown_addAllUsed" title="Select all block library blocks used in workspace factory.">ワークスペースに使われている全てのブロックを選択</a>
+        </div>
+        <button id="clearSelectedButton" title="Clear selected blocks.">選択済みを解除</a>
+      </div>
+
+      <div id="blockSelector"></div>
+    </div>
+
+    <!-- Users may customize export settings through this form -->
+    <div id="exportSettings">
+      <br>
+      <h3>出力オプション</h3>
+      <form id="exportSettingsForm">
+
+        <div id="selectedBlocksTextContainer">
+          <p>選択されているブロック：</p>
+          <p id="selectedBlocksText" style="border:#ddd 1px solid; padding: 5px"></p>
+        </div>
+        <label><input type="checkbox" id="blockDefCheck">ブロックの定義ファイル</label><br>
+        <div id="blockDefSettings" class="subsettings">
+          <label style="visibility:hidden;">ファイル形式：
+          <select id="exportFormat" style="visibility:hidden;">
+            <option value="JavaScript">JavaScript</option>
+          </select></label>
+          <br>
+          <label>ファイル名：<br>
+          <input type="text" id="blockDef_filename" value="blocks.js"></label>
+        </div>
+        <br>
+
+        <label><input type="checkbox" id="genStubCheck">出力コードの定義ファイル</label><br>
+        <div id="genStubSettings" class="subsettings">
+          <label style="visibility:hidden;">言語名：
+          <select id="exportLanguage" style="visibility:hidden;">
+            <option value="IchigoJamBASIC">IchigoJamBASIC</option>
+            <!-- <option value="JavaScript">JavaScript</option>
+            <option value="Python">Python</option>
+            <option value="PHP">PHP</option>
+            <option value="Lua">Lua</option>
+            <option value="Dart">Dart</option> -->
+          </select></label>
+          <br>
+          <label>ファイル名：<br>
+          <input type="text" id="generatorStub_filename" value="code.js"></label><br>
+        </div>
+        <br>
+      </form>
+      <button id="exporterSubmitButton" title="Download block starter code as specified in export settings.">出力する</button>
+    </div>
+    <div id="exportPreview">
+      <br>
+      <h3>ファイルのプレビュー</h3>
+      <div id="blockDefs" class="exportPreviewTextArea">
+        <p id="blockDefs_label">ブロックの定義：</p>
+        <pre id="blockDefs_textArea"></pre>
+      </div>
+      <div id="genStubs" class="exportPreviewTextArea">
+        <p id="genStubs_label">出力コードの定義</p>
+        <pre id="genStubs_textArea"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workspace Factory tab -->
+
+  <div id="workspaceFactoryContent">
+    <div id="factoryHeader">
+      <p>
+        <div class="dropdown">
+        <button id="button_importBlocks">ブロックを読み込む</button>
+          <div id="dropdownDiv_importBlocks" class="dropdown-content">
+            <input type="file" id="input_importBlocksJson" accept=".js, .json, .txt" class="inputfile"</input>
+            <label for="input_importBlocksJson" style="display: none;">JSONファイルから読み込む</label>
+            <input type="file" id="input_importBlocksJs" accept=".js, .txt" class="inputfile"</input>
+            <label for="input_importBlocksJs">JavaScriptファイルから読み込む</label>
+          </div>
+        </div>
+
+        <div class="dropdown">
+        <button id="button_load">読み込んで編集する</button>
+          <div id="dropdownDiv_load" class="dropdown-content">
+            <input type="file" id="input_loadToolbox" accept=".xml" class="inputfile"></input>
+            <label for="input_loadToolbox">ツールボックスを読み込む</label>
+            <input type="file" id="input_loadPreload" accept=".xml" class="inputfile"</input>
+            <label for="input_loadPreload" style="display: none;">ワークスペースのブロックを読み込む</label>
+          </div>
+        </div>
+
+        <div class="dropdown">
+        <button id="button_export">出力する</button>
+          <div id="dropdownDiv_export" class="dropdown-content">
+            <a id="dropdown_exportOptions" style="display: none;">ワークスペース</a>
+            <a id="dropdown_exportToolbox">ツールボックス</a>
+            <a id="dropdown_exportPreload" style="display: none;">ワークスペースに初期配置するブロック</a>
+            <a id="dropdown_exportAll" style="display: none;">上記全て</a>
+          </div>
+        </div>
+
+        <button id="button_clear">リセット</button>
+      </p>
+    </div>
+
+    <section id="createDiv">
+      <div id="createHeader">
+        <h3>編集する</h3>
+        <p id="editHelpText">ツールボックスに設定するブロックをワークスペースへドラッグして下さい。</p>
+      </div>
+      <table id="workspaceTabs" style="width:auto; height:auto">
+        <tr>
+          <td id="tab_toolbox" class="tabon">ツールボックス</td>
+          <td id="tab_preload" class="taboff" style='display: none;'>ワークスペース</td>
+        </tr>
+      </table>
+      <section id="toolbox_section">
+        <div id="toolbox_blocks"></div>
+      </section>
+      <aside id="toolbox_div">
+        <p id="categoryHeader">ブロックをカテゴリに分類するには下のボタンを使います。</p>
+        <table id="categoryTable" style="width:auto; height:auto">
+        </table>
+        <p>&nbsp;</p>
+
+        <div class="dropdown">
+          <button id="button_add" class="large">+</button>
+          <div id="dropdownDiv_add" class="dropdown-content">
+            <a id="dropdown_newCategory">新規カテゴリ</a>
+            <!-- <a id="dropdown_loadCategory">標準カテゴリ</a> -->
+            <a id="dropdown_separator">セパレータ</a>
+            <!-- <a id="dropdown_loadStandardToolbox">標準ツールボックス</a> -->
+          </div>
+        </div>
+
+        <button id="button_remove" class="large">-</button>
+
+        <button id="button_up" class="large">&#8593;</button>
+        <button id="button_down" class="large">&#8595;</button>
+
+        <br>
+        <div class="dropdown">
+          <button id="button_editCategory">カテゴリを編集する</button>
+          <div id="dropdownDiv_editCategory" class="dropdown-content">
+            <a id='dropdown_name'>名前</a>
+            <a id='dropdown_color'>色</a>
+          </div>
+        </div>
+
+      </aside>
+
+      <button id="button_addShadow" style="display: none">ブロックをデフォルト引数にする</button>
+      <button id="button_removeShadow" style="display: none">元に戻す</button>
+
+      <aside id="preload_div" style="display:none">
+        <div id="preloadHelp">
+          <p>カスタムワークスペースに設定するオプションを選択して下さい。</p>
+          <button id="button_optionsHelp">ヘルプ</button>
+          <button class="small" id="button_standardOptions">デフォルトに戻す</button>
+        </div>
+        <div id="workspace_options">
+          <label><input type="checkbox" id="option_readOnly_checkbox">表示のみ</label><br>
+          <label><input type="checkbox" id="option_grid_checkbox">グリッド</label><br>
+          <div id="grid_options" style="display: none">
+            <label>間隔 <input type="number" id="gridOption_spacing_number" style="width: 3em"></label><br>
+            <label>長さ <input type="number" id="gridOption_length_number" style="width: 3em"></label><br>
+            <label>色 <input type="text" id="gridOption_colour_text" style="width: 8em"></label><br>
+            <div id="readonly1">
+              <label><input type="checkbox" id="gridOption_snap_checkbox">グリッドに配置を合わせる</label><br>
+            </div>
+          </div>
+          <label>メディアファイルへのパス <input type="text" id="option_media_text" style="width: 90%"></label><br>
+          <label><input type="checkbox" id="option_rtl_checkbox">RTLレイアウト</label><br>
+          <label><input type="checkbox" id="option_scrollbars_checkbox">スクロールバー</label><br>
+          <label><input type="checkbox" id="option_zoom_checkbox">ズーム</label><br>
+          <div id="zoom_options" style="display: none">
+            <label><input type="checkbox" id="zoomOption_controls_checkbox">ズーム制御ボタン</label><br>
+            <label><input type="checkbox" id="zoomOption_wheel_checkbox">マウスホイールでズーム</label><br>
+            <label>初期スケール <input type="number" id="zoomOption_startScale_number" style="width: 4em"></label><br>
+            <label>最大スケール <input type="number" id="zoomOption_maxScale_number" style="width: 4em"></label><br>
+            <label>最小スケール <input type="number" id="zoomOption_minScale_number" style="width: 4em"></label><br>
+            <label title="スケール = スケールスピード^ズームイン(orアウト)ステップ">スケールスピード <input type="number" id="zoomOption_scaleSpeed_number" style="width: 4em"></label><br>
+          </div>
+          <label><input type="checkbox" id="option_css_checkbox">CSSを使用する</label><br>
+          <div id="readonly2">
+            <label><input type="checkbox" id="option_collapse_checkbox">ブロックの折り畳み</label><br>
+            <label><input type="checkbox" id="option_comments_checkbox">ブロックへのコメント</label><br>
+            <label><input type="checkbox" id="option_disable_checkbox">ブロックの無効化</label><br>
+            <label><input type="checkbox" id="option_infiniteBlocks_checkbox">設置ブロック数を無限に</label><br>
+            <div id="maxBlockNumber_option" style="display: none">
+              <label>最大数 <input type="number" id="option_maxBlocks_number" style="width: 5em"></label><br>
+            </div>
+            <label><input type="checkbox" id="option_horizontalLayout_checkbox">ツールボックスの水平レイアウト</label><br>
+            <label><input type="checkbox" id="option_toolboxPosition_checkbox">ツールボックスを反対側に</label><br>
+            <label><input type="checkbox" id="option_oneBasedIndex_checkbox">配列や文字列の添字を1オリジンに</label><br>
+            <label><input type="checkbox" id="option_sounds_checkbox">音<br>
+            <label><input type="checkbox" id="option_trashcan_checkbox">ごみ箱</label><br>
+          </div>
+        </div>
+      </aside>
+
+    </section>
+
+    <aside id="previewDiv">
+      <div id="previewBorder">
+        <div id="previewHelp">
+          <h3>プレビュー</h3>
+          <p>カスタムワークスペースはこのようになります。</p>
+        </div>
+        <div id="preview_blocks" class="content"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Blockly Factory Tab -->
+  <table id="blockFactoryContent">
+    <tr width="100%" height="10%">
+      <td width="50%" height="5%">
+        <table>
+          <tr id="blockLibrary">
+            <td id="blockLibraryContainer">
+            <span>
+              <div class="dropdown">
+                <button id="button_blockLib">ブロックライブラリ</button>
+                <div id="dropdownDiv_blockLib" class="dropdown-content">
+                  <a id="createNewBlockButton">新規ブロック</a>
+                </div>
+              </div>
+              <select id="blockLibraryDropdown" style="display:none">
+              </select>
+            </span>
+            <td id="blockLibraryControls">
+            <button id="saveToBlockLibraryButton" title="Save block to Block Library.">
+              Save "block_type"
+            </button>
+            <button id="removeBlockFromLibraryButton" title="Remove block from Block Library.">
+              Delete "block_type"
+            </button>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td height="5%">
+        <table id="blockFactoryPreview">
+          <tr>
+            <td id="previewContainer" width="20%">
+              <h3>プレビュー:
+                <select id="direction" style="display:none;">
+                  <option value="ltr">LTR</option>
+                  <option value="rtl">RTL</option>
+                </select>
+              </h3>
+            </td>
+            <td id="buttonContainer">
+              <button id="linkButton" title="Save and link to blocks.">
+                <img src="link.png" height="21" width="21">
+              </button>
+              <button id="clearBlockLibraryButton" title="Clear Block Library.">
+                <span>ブロックライブラリを初期化する</span>
+              </button>
+              <label for="files" class="buttonStyle">
+                <span>別のブロックライブラリを開く</span>
+              </label>
+              <input id="files" type="file" name="files"
+                  accept="application/xml">
+              <button id="localSaveButton" title="Save block library XML to a local file.">
+                <span>ブロックライブラリを保存する</span>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr height="100%">
+      <td id="blocklyWorkspaceContainer">
+        <div id="blockly"></div>
+        <div id="blocklyMask"></div>
+      </td>
+      <td width="50%">
+        <table id="blocklyPreviewContainer">
+          <tr>
+            <td height="40%">
+              <div id="preview"></div>
+            </td>
+          </tr>
+          <tr style="visibility:;">
+            <td height="5%">
+              <h3>ブロックの定義：
+                <select id="format" style="visibility:hidden">
+                  <option value="JavaScript">JavaScript</option>
+                </select>
+              </h3>
+            </td>
+          </tr>
+          <tr style="visibility:;">
+            <td height="30%">
+              <pre id="languagePre"></pre>
+              <textarea id="languageTA"></textarea>
+            </td>
+          </tr>
+          <tr style="visibility:;">
+            <td height="5%">
+              <h3>出力コードの定義：
+                <select id="language" style="visibility:hidden;">
+                  <!-- <option value="JavaScript">JavaScript</option>
+                  <option value="Python">Python</option>
+                  <option value="PHP">PHP</option>
+                  <option value="Lua">Lua</option>
+                  <option value="Dart">Dart</option> -->
+                  <option value="IchigoJamBASIC">IchigoJamBASIC</option>
+                </select>
+              </h3>
+            </td>
+          </tr>
+          <tr style="visibility:;">
+            <td height="30%">
+              <pre id="generatorPre"></pre>
+            </td>
+          </tr>
+        </table>
+      </td>
+      </tr>
+  </table>
+
+  <div id="modalShadow"></div>
+
+  <xml id="blockfactory_toolbox" class="toolbox">
+    <category name="形">
+      <block type="input_value">
+        <value name="TYPE">
+          <shadow type="type_null"></shadow>
+        </value>
+      </block>
+      <!-- <block type="input_statement">
+        <value name="TYPE">
+          <shadow type="type_null"></shadow>
+        </value>
+      </block> -->
+      <block type="input_dummy"></block>
+      <!-- <block type="base_loop">
+        <value name="TYPE">
+          <shadow type="type_null"></shadow>
+        </value>
+      </block> -->
+    </category>
+    <category name="内容">
+      <block type="field_static"></block>
+      <block type="field_input"></block>
+      <block type="field_number"></block>
+      <block type="field_angle"></block>
+      <block type="field_dropdown"></block>
+      <block type="field_checkbox"></block>
+      <block type="field_colour"></block>
+      <!--
+      Date picker commented out since it increases footprint by 60%.
+      Add it only if you need it.  See also goog.require in blockly.js.
+      <block type="field_date"></block>
+      -->
+      <block type="field_variable"></block>
+      <block type="field_image"></block>
+    </category>
+    <category name="種類">
+      <block type="type_group"></block>
+      <block type="type_null"></block>
+      <block type="type_boolean"></block>
+      <block type="type_number"></block>
+      <block type="type_string"></block>
+      <block type="type_list"></block>
+      <block type="type_other"></block>
+    </category>
+    <category name="色" id="colourCategory">
+      <block type="colour_hue"><mutation colour="20"></mutation><field name="HUE">20</field></block>
+      <block type="colour_hue"><mutation colour="65"></mutation><field name="HUE">65</field></block>
+      <block type="colour_hue"><mutation colour="120"></mutation><field name="HUE">120</field></block>
+      <block type="colour_hue"><mutation colour="160"></mutation><field name="HUE">160</field></block>
+      <block type="colour_hue"><mutation colour="210"></mutation><field name="HUE">210</field></block>
+      <block type="colour_hue"><mutation colour="230"></mutation><field name="HUE">230</field></block>
+      <block type="colour_hue"><mutation colour="260"></mutation><field name="HUE">260</field></block>
+      <block type="colour_hue"><mutation colour="290"></mutation><field name="HUE">290</field></block>
+      <block type="colour_hue"><mutation colour="330"></mutation><field name="HUE">330</field></block>
+    </category>
+    <category name="コード" id="codeCategory">
+      <block type="end"></block>
+      <block type="code_free"></block>
+      <block type="code"></block>
+      <block type="code_crlf"></block>
+      <!-- <block type="code_crlf_end"></block> -->
+      <block type="code_num"></block>
+      <block type="code_operator"></block>
+      <block type="code_value"></block>
+      <!-- <block type="code_statements"></block> -->
+      <block type="code_input"></block>
+      <block type="code_number"></block>
+      <block type="code_angle"></block>
+      <block type="code_dropdown"></block>
+      <block type="code_checkbox"></block>
+      <block type="code_colour"></block>
+      <block type="code_variable"></block>
+    </category>
+  </xml>
+
+  <xml id="workspacefactory_toolbox" class="toolbox">
+    <!-- <category name="Logic" colour="210">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null"></block>
+      <block type="logic_ternary"></block>
+    </category>
+    <category name="Loops" colour="120">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+        <value name="BY">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
+    </category>
+    <category name="Math" colour="230">
+      <block type="math_number"></block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_single">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_trig">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">45</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constant"></block>
+      <block type="math_number_property">
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_round">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">3.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_on_list"></block>
+      <block type="math_modulo">
+        <value name="DIVIDEND">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="DIVISOR">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constrain">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="LOW">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="HIGH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_int">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_float"></block>
+    </category>
+    <category name="Text" colour="160">
+      <block type="text"></block>
+      <block type="text_join"></block>
+      <block type="text_append">
+        <value name="TEXT">
+          <shadow type="text"></shadow>
+        </value>
+      </block>
+      <block type="text_length">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_isEmpty">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">text</field>
+          </block>
+        </value>
+        <value name="FIND">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_charAt">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">text</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_getSubstring">
+        <value name="STRING">
+          <block type="variables_get">
+            <field name="VAR">text</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_changeCase">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_trim">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="Lists" colour="260">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+    </category>
+    <category name="Colour" colour="20">
+      <block type="colour_picker"></block>
+      <block type="colour_random"></block>
+      <block type="colour_rgb">
+        <value name="RED">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="GREEN">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="BLUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="colour_blend">
+        <value name="COLOUR1">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#ff0000</field>
+          </shadow>
+        </value>
+        <value name="COLOUR2">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#3333ff</field>
+          </shadow>
+        </value>
+        <value name="RATIO">
+          <shadow type="math_number">
+            <field name="NUM">0.5</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <sep></sep>
+    <category name="Variables" colour="330" custom="VARIABLE"></category>
+    <category name="Functions" colour="290" custom="PROCEDURE"></category>
+    <sep></sep> -->
+    <category name="Block Library" colour="260" id="blockLibCategory"></category>
+  </xml>
+</body>
+</html>

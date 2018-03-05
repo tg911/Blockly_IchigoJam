@@ -2,6 +2,75 @@ connectionId = -1;
 // loopInfiniteNum = 0; 没になったループブロックに必要？　没？
 forVar = "I"; // くりかえしブロックで使うFORコマンドの変数を異なるようにする
 
+// 起動時にウィンドウを最大化する
+window.onload = function() {
+  var ngui = require('nw.gui');
+  var nwin = ngui.Window.get();
+  nwin.maximize();
+
+  // function showCode() {
+  //   // console.log('ws-3', workspace);
+  //   var outputArea = document.getElementById("outputArea");
+  //   var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
+  //   outputArea.innerHTML = code;
+  // };
+  // // workspaceのリスナーへ登録を忘れずに
+  // workspace.addChangeListener(showCode);
+
+  // function setLineNumber() {
+  //   var contents = document.getElementById("outputArea");
+  //   var lineNum = 10;
+  //   var code = contents.innerText;
+  //   var sliceCode = code.split('');
+  //
+  //   var sliceCodeLength = sliceCode.length;
+  //
+  //   for (var i = 0; i < sliceCodeLength; i++) {
+  //     if (i == 0) {
+  //       sliceCode.splice(i, 0, lineNum, " ");
+  //       sliceCodeLength += 2;
+  //       lineNum += 10;
+  //     }
+  //     if (sliceCode[i] == "\n") {
+  //       sliceCode.splice(i + 1, 0, lineNum, " ");
+  //       sliceCodeLength += 2;
+  //       lineNum += 10;
+  //     }
+  //   }
+  //   sliceCode.splice(sliceCode.length - 2, 2);
+  //   code = sliceCode.join("");
+  //   contents.innerText = code;
+  // };
+  //
+  // workspace.addChangeListener(setLineNumber);
+  //
+  // var xml = '<xml><block type="start" deletable="false"></block></xml>';
+  // Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+  // workspace.addChangeListener(Blockly.Events.disableOrphans);
+
+};
+
+// function insertXml(fileName, place) {
+//     var XMLHR = new XMLHttpRequest();
+//     XMLHR.onreadystatechange = function() {
+//         if (XMLHR.readyState == 4 && XMLHR.status == 200) {
+//             var contents = XMLHR.responseXML;
+//             // console.log(contents.documentElement);
+//             var contentsText = new XMLSerializer().serializeToString(contents.documentElement)
+//             // ＸＭＬファイルではresponseTextではなくresponseXML
+//             document.getElementById(place).innerHTML = contentsText;
+//             console.log('loadXML');
+//         }
+//     }
+//     XMLHR.open("GET", fileName, false);
+//     XMLHR.send(null);
+// };
+//
+// insertXml('toolbox.xml', 'xmlPlace1');
+// insertXml('workspace.xml', 'xmlPlace2');
+
+
+
 var blocklyArea = document.getElementById("blocklyArea");
 var blocklyDiv = document.getElementById("blocklyDiv");
 var workspace = Blockly.inject(blocklyDiv, {
@@ -24,6 +93,7 @@ var workspace = Blockly.inject(blocklyDiv, {
 });
 
 var onResize = function(e) {
+  // console.log('ws-2', workspace);
   // Compute the absolute coordinates and dimensions of blocklyArea
   var element = blocklyArea;
   var x = 0;
@@ -42,8 +112,61 @@ var onResize = function(e) {
   Blockly.svgResize(workspace);
 };
 window.addEventListener('resize', onResize, false);
-onResize();
-Blockly.svgResize(workspace);
+window.addEventListener('resize', Blockly.svgResize(workspace), false);
+//
+// try {
+//   window.addEventListener('resize', Blockly.svgResize(workspace), false);
+// } catch(e) {
+//   console.log('era----',e);
+// }
+// console.log('workspace',workspace);
+// onResize();
+// Blockly.svgResize(workspace);
+
+// マルチワークスペース（マルチツールボックス？）何故かこれで実現できない。要調査。
+// var blockFactoryArea = document.getElementById("blockFactoryArea");
+// var blockFactoryDiv = document.getElementById("blockFactoryDiv");
+// // console.log(blockFactoryDiv);
+// var blockFactoryWorkspace = Blockly.inject(blockFactoryDiv, {
+//   toolbox: document.getElementById('blockFactoryToolbox'),
+//   grid: {
+//     spacing: 20,
+//     length: 3,
+//     colour: '#ccc',
+//     snap: true
+//   },
+//   media: 'media/',
+//   zoom: {
+//     controls: true,
+//     startScale: 1.0,
+//     maxScale: 3,
+//     minScale: 0.3,
+//     scaleSpeed: 1.2
+//   },
+//   trashcan: true
+// });
+//
+// var onResizeBlockFactory = function(e) {
+//   // Compute the absolute coordinates and dimensions of blocklyArea
+//   var element = blockFactoryArea;
+//   var x = 0;
+//   var y = 0;
+//
+//   do {
+//     x += element.offsetLeft;
+//     y += element.offsetTop;
+//     element = element.offsetParent;
+//   } while (element);
+//   //Position blocklyDiv over blocklyArea
+//   blockFactoryDiv.style.left = x + 'px';
+//   blockFactoryDiv.style.top = y + 'px';
+//   blockFactoryDiv.style.width = blockFactoryArea.offsetWidth + 'px';
+//   blockFactoryDiv.style.height = blockFactoryArea.offsetHeight + 'px';
+//   Blockly.svgResize(blockFactoryWorkspace);
+// };
+// window.addEventListener('resize', onResizeBlockFactory, false);
+// onResizeBlockFactory();
+// Blockly.svgResize(blockFactoryWorkspace);
 
 // スタートブロックに接続されていないブロックは無効化する
 // メソッド化した方が良いかも？
@@ -51,9 +174,10 @@ Blockly.svgResize(workspace);
 var xml = '<xml><block type="start" deletable="false"></block></xml>';
 Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
 workspace.addChangeListener(Blockly.Events.disableOrphans);
-//
+
 
 function showCode() {
+  // console.log('ws-3', workspace);
   var outputArea = document.getElementById("outputArea");
   var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
   outputArea.innerHTML = code;
@@ -121,6 +245,7 @@ document.getElementById("alert").addEventListener("click", function(e) {
 function save() {
   var fileName = document.getElementById("fileName").value;
   var xml = Blockly.Xml.workspaceToDom(workspace);
+  // console.log(xml);
   var xmlText = Blockly.Xml.domToPrettyText(xml);
   var blob = new Blob([xmlText], {
     type: 'text/xml'
@@ -272,7 +397,7 @@ function sendToIchigoJam() {
     // 半角カナ文字に対応するには8bitの文字にする必要がある。（charCodeAtは16bitになる？）
     // var encoder = new TextEncoder("utf-8");
     // view[i] = encoder.encode(sliceCode[i]);
-    console.log("view:" + view[i])
+    // console.log("view:" + view[i])
     view[i] = sliceCode[i].charCodeAt(0);
   }
   var intervalId = setInterval(function() {
@@ -280,7 +405,7 @@ function sendToIchigoJam() {
     progressValue = (count / viewLength) * 100;
     count++;
     sendCharacter(view[0]);
-    console.log(view)
+    // console.log(view)
     view = view.slice(1);
     if (view.length == 0) {
       setTimeout(function() {
@@ -481,7 +606,7 @@ function modeChange() {
   }
   workspace.updateToolbox(toolbox);
 };
-document.getElementById("modeSelecter").addEventListener("click", modeChange, false);
+// document.getElementById("modeSelecter").addEventListener("click", modeChange, false);
 
 // ツールボックスのフライアウトが開いた状態でモードを切り替えると、どこかクリックするまでフライアウトが残るのを防ぐ
 function settingEvent() {
@@ -504,40 +629,261 @@ function forVarCount() {
 workspace.addChangeListener(forVarCount);
 
 // test
-function createPinLabel() {
-  var options = [];
-  for (var i = 1; i <= 3; i++) {
-    var pin = document.getElementById("pin-OUT" + i).value;
-    console.log("pin:" + i + ":" + pin)
-    // options[i] = [pin, String(i+1)];
-    options.push([pin, String(i)]);
-    console.log("options:",options)
-  }
-  return options;
-};
+// function createPinLabel() {
+//   var options = [];
+//   for (var i = 1; i <= 3; i++) {
+//     var pin = document.getElementById("pin-OUT" + i).value;
+//     console.log("pin:" + i + ":" + pin)
+//     // options[i] = [pin, String(i+1)];
+//     options.push([pin, String(i)]);
+//     console.log("options:",options)
+//   }
+//   return options;
+// };
 
-function editPinLabel() {
-  // var dropdown = new Blockly.FieldDropdown(createPinLabel);
-  // // var dropdown = new Blockly.FieldDropdown([["うんこ","1"],["aaa", "2"], ["ハロー", "3"]]);
-  // console.log("cPL:" + createPinLabel())
-  // Blockly.Blocks['test'] = {
-  //   init: function() {
-  //     this.appendDummyInput()
-  //         .appendField(dropdown, "test");
-  //         // .appendField(new Blockly.FieldDropdown([["OUT1","1"], ["OUT2","2"], ["OUT3","3"]]), "test");
-  //     this.setPreviousStatement(true, null);
-  //     this.setNextStatement(true, null);
-  //     this.setColour(240);
-  //     this.setTooltip('');
-  //     this.setHelpUrl('');
-  //   }
-  // };
-  // var toolbox = document.getElementById("toolbox");
-  // workspace.toolbox_.refreshSelection();
-  // workspace.toolbox_.render;
-  var xml = Blockly.Xml.workspaceToDom(workspace);
-  workspace.clear();
-  Blockly.Xml.domToWorkspace(workspace, xml);
+// function editPinLabel() {
+//   // var dropdown = new Blockly.FieldDropdown(createPinLabel);
+//   // // var dropdown = new Blockly.FieldDropdown([["うんこ","1"],["aaa", "2"], ["ハロー", "3"]]);
+//   // console.log("cPL:" + createPinLabel())
+//   // Blockly.Blocks['test'] = {
+//   //   init: function() {
+//   //     this.appendDummyInput()
+//   //         .appendField(dropdown, "test");
+//   //         // .appendField(new Blockly.FieldDropdown([["OUT1","1"], ["OUT2","2"], ["OUT3","3"]]), "test");
+//   //     this.setPreviousStatement(true, null);
+//   //     this.setNextStatement(true, null);
+//   //     this.setColour(240);
+//   //     this.setTooltip('');
+//   //     this.setHelpUrl('');
+//   //   }
+//   // };
+//   // var toolbox = document.getElementById("toolbox");
+//   // workspace.toolbox_.refreshSelection();
+//   // workspace.toolbox_.render;
+//   var xml = Blockly.Xml.workspaceToDom(workspace);
+//   workspace.clear();
+//   Blockly.Xml.domToWorkspace(workspace, xml);
+// }
+
+// document.getElementById("pinLabelOk").addEventListener("click", editPinLabel, false);
+
+function addToolbox() {
+  var toolbox = document.getElementById("toolbox");
+  // console.log(toolbox);
+  var blocks = Blockly.Blocks;
+  // console.log("blocks:",blocks);
+
+  var category;
+  var blockId;
+  var blockDiv;
+  for (var block in blocks) {
+    blockCategory = blocks[block].category;
+    // console.log('blockCategory',blockCategory);
+    if (blockCategory == undefined) {
+      blockDiv = document.createElement("block");
+      blockDiv.setAttribute("type", block);
+      // console.log(toolbox.children[blockId]);
+      toolbox.children['category1'].appendChild(blockDiv);
+      continue;
+    }
+    // console.log('hoge');
+    if (blockCategory != "category0") {
+      blockDiv = document.createElement("block");
+      blockDiv.setAttribute("type", block);
+      // console.log(toolbox.children[blockId]);
+      toolbox.children[blockCategory].appendChild(blockDiv);
+      // category = document.getElementById(blockId);
+      // category.appendChild(blockDiv);
+    }
+    // console.log(category);
+  }
+
+  workspace.updateToolbox(toolbox);
+}
+// addToolbox();
+
+// function showBlockList() {
+//   var toolbox = document.getElementById("toolbox");
+//   var blockList = document.getElementById("blockList");
+//   var li;
+//
+//   for (var i = 0; i < toolbox.children.length; i++) {
+//     li = document.createElement("li");
+//     li.setAttribute("role", "presentation");
+//     li.setAttribute("class", "dropdown-header");
+//     li.setAttribute("id", "bl-" + toolbox.children[i].id);
+//     li.innerHTML = toolbox.children[i].getAttribute("name");
+//     // console.log(li);
+//     blockList.appendChild(li)
+//   }
+//
+//   var blocks = Blockly.Blocks;
+//   var a;
+//   var categoryLi;
+//
+//   for (var block in blocks) {
+//     // console.log(block);
+//     li = document.createElement("li");
+//     li.setAttribute("role", "presentation");
+//     a = document.createElement("a");
+//     a.setAttribute("href", "#");
+//     a.innerHTML = block;
+//     li.appendChild(a);
+//     console.log(blocks[block].category);
+//     if (blocks[block].category != "category0") {
+//       categoryLi = document.getElementById("bl-" + blocks[block].category);
+//       categoryLi.parentNode.insertBefore(li, categoryLi.nextSibling);
+//     }
+//   }
+// }
+//
+// function showBlockNameToDropdown() {
+//
+// }
+
+// document.getElementById("blockListButton").addEventListener("click", showBlockNameToDropdown , false);
+
+function showBlockList() {
+  var toolbox = document.getElementById("toolbox");
+  var blockList = document.getElementById("blockList");
+  var option;
+
+  // for (var i = 0; i < toolbox.children.length; i++) {
+  //   option = document.createElement("option");
+  //   option.setAttribute("role", "presentation");
+  //   option.setAttribute("class", "dropdown-header");
+  //   option.setAttribute("id", "bl-" + toolbox.children[i].id);
+  //   option.innerHTML = toolbox.children[i].getAttribute("name");
+  //   // console.log(option);
+  //   blockList.appendChild(option)
+  // }
+
+  var blocks = Blockly.Blocks;
+  var a;
+  var categoryLi;
+
+  for (var block in blocks) {
+    // console.log(block);
+    option = document.createElement("option");
+    option.innerHTML = block;
+    blockList.appendChild(option)
+    // a = document.createElement("a");
+    // a.setAttribute("href", "#");
+    // a.innerHTML = block;
+    // option.appendChild(a);
+    // console.log(blocks[block].category);
+    // if (blocks[block].category != "category0") {
+    //   categoryLi = document.getElementById("bl-" + blocks[block].category);
+    //   categoryLi.parentNode.insertBefore(option, categoryLi.nextSibling);
+    // }
+  }
 }
 
-document.getElementById("pinLabelOk").addEventListener("click", editPinLabel, false);
+// showBlockList();
+
+// window.onload = function(){
+//   addToolbox();
+// }
+
+// function addToolbox2() {
+//   var toolbox = document.getElementById("toolbox");
+//   console.log(toolbox);
+//   var blocks = Blockly.Blocks;
+//   // console.log("blocks:",blocks);
+//
+//   var category;
+//   var blockDiv;
+//   for (var block in blocks) {
+//     blockDiv = document.createElement("block");
+//     blockDiv.setAttribute("type", block)
+//     toolbox.children.category1.appendChild(blockDiv);
+//     // console.log(category);
+//   }
+//
+//   workspace.updateToolbox(toolbox);
+// }
+//
+// addToolbox2();
+
+function errorHandler(e) {
+  var msg = '';
+
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      msg = 'QUOTA_EXCEEDED_ERR';
+      break;
+    case FileError.NOT_FOUND_ERR:
+      msg = 'NOT_FOUND_ERR';
+      break;
+    case FileError.SECURITY_ERR:
+      msg = 'SECURITY_ERR';
+      break;
+    case FileError.INVALID_MODIFICATION_ERR:
+      msg = 'INVALID_MODIFICATION_ERR';
+      break;
+    case FileError.INVALID_STATE_ERR:
+      msg = 'INVALID_STATE_ERR';
+      break;
+    default:
+      msg = 'Unknown Error';
+      break;
+  };
+
+  // console.log('Error: ' + msg);
+}
+
+window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+
+// function onInitFs(fs) {
+//   fs.root.getFile('log.txt', {}, function(fileEntry) {
+//     console.log(fileEntry);
+//   }, errorHandler);
+// }
+
+// function onInitFs(fs) {
+//   fs.root.getFile('..\fs-test01.txt', {create: true, exclusive: true}, function(fileEntry) {
+//     // fileEntry.isFile === true
+//     // fileEntry.name == 'log.txt'
+//     // fileEntry.fullPath == '/log.txt'
+//     console.log("ok");
+//   }, errorHandler);
+// }
+//
+// window.requestFileSystem(window.TEMPORARY, 1024*1024, onInitFs, errorHandler);
+
+function createBlocksFile() {
+  var fileName = "blocks";
+  var text = "";
+  var blocks = Blockly.Blocks;
+
+  for (var block in blocks) {
+    text += "Blockly.Blocks[\"" + block + "\"] = {\n" + "init: " + blocks[block].init + ",\n" + "\"category\": \"" + blocks[block].category + "\"\n};\n"
+  }
+
+  var blob = new Blob([text], {
+    type: 'text/plain'
+  });
+  // イベントトリガがbuttonタグなので、aタグを生成する。（download属性はaタグのみ）
+  var a = document.createElement("a");
+  a.href = window.URL.createObjectURL(blob);
+  a.download = fileName + ".js";
+  a.click();
+  window.URL.revokeObjectURL(a.href); // blobとobjectURLの関連を削除（メモリ解放）
+  showAlert("success", "プログラム　<strong> " + fileName + "</strong>　を保存しました。（場所：ダウンロードフォルダ）");
+};
+// createBlocksFile();
+
+function addNewBlock(blockName, categoryName, blockColor) {
+  var blockName;
+
+  Blockly.Blocks[blockName] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField(blockName);
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(blockColor);
+    },
+    "category": categoryName
+  }
+};
