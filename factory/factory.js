@@ -64,8 +64,15 @@ BlockFactory.oldDir = null;
  * The starting XML for the Block Factory main workspace. Contains the
  * unmovable, undeletable factory_base block.
  */
-BlockFactory.STARTER_BLOCK_XML_TEXT = '<xml><block type="factory_base" ' +
-    'deletable="false" movable="false"></block></xml>';
+BlockFactory.STARTER_BLOCK_XML_TEXT = '<xml><block type="factory_base" deletable="false" movable="false">' +
+      '<value name="CODE">' +
+        '<block type="code_crlf">' +
+          '<value name="nextCode">' +
+            '<block type="end"></block>' +
+          '</value>' +
+        '</block>' +
+      '</value>' +
+    '</block></xml>';
 
 /**
  * Change the language code format.
@@ -257,8 +264,34 @@ BlockFactory.showStarterBlock = function() {
  */
 BlockFactory.isStarterBlock = function() {
   var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
+  var codeBlock = rootBlock.getInputTargetBlock('CODE');
+  var codeFlag = true;
+
+  // console.log('codeBlock', codeBlock.type);
+  // console.log(codeBlock.getInputTargetBlock('nextCode'));
+  if (codeBlock != null) {
+    if (codeBlock.type == 'code_crlf' && codeBlock.getInputTargetBlock('nextCode').type == 'end') {
+      console.log('2');
+      codeFlag = false;
+    } else {
+      console.log('3');
+      codeFlag = true;
+    }
+  } else {
+    codeFlag = false;
+  }
+
+  // console.log('child',rootBlock.getChildren());
+
+  // console.log('rootBlock.code',rootBlock.getInputTargetBlock('CODE'));
+  // console.log('flag', codeFlag);
+  // console.log('codeBlock.type',codeBlock.type);
+  // console.log('nextCode',codeBlock.getInputTargetBlock('nextCode'));
+  // console.log(code);
   // The starter block does not have blocks nested into the factory_base block.
-  return !(rootBlock.getChildren().length > 0 ||
+  return !(codeFlag ||
+
+      // rootBlock.getChildren().length > 0 ||
       // The starter block's name is the default, 'block_type'.
       // デフォルトのブロック名の定義
       rootBlock.getFieldValue('NAME').trim().toLowerCase() != 'ブロック名' ||
@@ -266,4 +299,5 @@ BlockFactory.isStarterBlock = function() {
       rootBlock.getFieldValue('CONNECTIONS') != 'NONE' ||
       // The starter block has automatic inputs.
       rootBlock.getFieldValue('INLINE') != 'AUTO');
+
 };

@@ -135,7 +135,7 @@
         <button id="button_importBlocks">ブロックを読み込む</button>
           <div id="dropdownDiv_importBlocks" class="dropdown-content">
             <input type="file" id="input_importBlocksJson" accept=".js, .json, .txt" class="inputfile"</input>
-            <label for="input_importBlocksJson">JSONファイルから読み込む</label>
+            <label for="input_importBlocksJson" style="display: none;">JSONファイルから読み込む</label>
             <input type="file" id="input_importBlocksJs" accept=".js, .txt" class="inputfile"</input>
             <label for="input_importBlocksJs">JavaScriptファイルから読み込む</label>
           </div>
@@ -147,17 +147,17 @@
             <input type="file" id="input_loadToolbox" accept=".xml" class="inputfile"></input>
             <label for="input_loadToolbox">ツールボックスを読み込む</label>
             <input type="file" id="input_loadPreload" accept=".xml" class="inputfile"</input>
-            <label for="input_loadPreload">ワークスペースのブロックを読み込む</label>
+            <label for="input_loadPreload" style="display: none;">ワークスペースのブロックを読み込む</label>
           </div>
         </div>
 
         <div class="dropdown">
         <button id="button_export">出力する</button>
           <div id="dropdownDiv_export" class="dropdown-content">
-            <a id="dropdown_exportOptions">ワークスペース</a>
+            <a id="dropdown_exportOptions" style="display: none;">ワークスペース</a>
             <a id="dropdown_exportToolbox">ツールボックス</a>
-            <a id="dropdown_exportPreload">ワークスペースに初期配置するブロック</a>
-            <a id="dropdown_exportAll">上記全て</a>
+            <a id="dropdown_exportPreload" style="display: none;">ワークスペースに初期配置するブロック</a>
+            <a id="dropdown_exportAll" style="display: none;">上記全て</a>
           </div>
         </div>
 
@@ -173,7 +173,7 @@
       <table id="workspaceTabs" style="width:auto; height:auto">
         <tr>
           <td id="tab_toolbox" class="tabon">ツールボックス</td>
-          <td id="tab_preload" class="taboff">ワークスペース</td>
+          <td id="tab_preload" class="taboff" style='display: none;'>ワークスペース</td>
         </tr>
       </table>
       <section id="toolbox_section">
@@ -393,12 +393,17 @@
           <shadow type="type_null"></shadow>
         </value>
       </block>
-      <block type="input_statement">
+      <!-- <block type="input_statement">
         <value name="TYPE">
           <shadow type="type_null"></shadow>
         </value>
-      </block>
+      </block> -->
       <block type="input_dummy"></block>
+      <!-- <block type="base_loop">
+        <value name="TYPE">
+          <shadow type="type_null"></shadow>
+        </value>
+      </block> -->
     </category>
     <category name="内容">
       <block type="field_static"></block>
@@ -437,12 +442,15 @@
       <block type="colour_hue"><mutation colour="330"></mutation><field name="HUE">330</field></block>
     </category>
     <category name="コード" id="codeCategory">
+      <block type="end"></block>
       <block type="code_free"></block>
       <block type="code"></block>
+      <block type="code_crlf"></block>
+      <!-- <block type="code_crlf_end"></block> -->
       <block type="code_num"></block>
       <block type="code_operator"></block>
       <block type="code_value"></block>
-      <block type="code_statements"></block>
+      <!-- <block type="code_statements"></block> -->
       <block type="code_input"></block>
       <block type="code_number"></block>
       <block type="code_angle"></block>

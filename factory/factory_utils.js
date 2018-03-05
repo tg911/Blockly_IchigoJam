@@ -180,9 +180,11 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage, workspace) {
     var name = input.name;
     if (name) {
       if (input.type == Blockly.INPUT_VALUE) {
+        // code.push(makeVar('value', name) +
+        //           " = Blockly." + language + ".valueToCode(block, '" + name +
+        //           "', Blockly." + language + ".ORDER_ATOMIC);");
         code.push(makeVar('value', name) +
-                  " = Blockly." + language + ".valueToCode(block, '" + name +
-                  "', Blockly." + language + ".ORDER_ATOMIC);");
+                  " = Blockly." + language + ".valueToCode(block, '" + name + "');");
       } else if (input.type == Blockly.NEXT_STATEMENT) {
         code.push(makeVar('statements', name) +
                   " = Blockly." + language + ".statementToCode(block, '" +
@@ -201,13 +203,13 @@ FactoryUtils.getGeneratorStub = function(block, generatorLanguage, workspace) {
 
   if (block.outputConnection) {
     // code.push("  var code = '...';");
-    code.push("  var code = " + codeText + "'\\n';");
+    code.push("  var code = " + codeText);
     // code.push("  // TODO: Change ORDER_NONE to the correct strength.");
-    code.push("  return [code, Blockly." + language + ".ORDER_NONE];");
+    code.push("  return [code, Blockly.IchigoJamBASIC.ORDER_NONE]");
   } else {
     // code.push("  var code = '..." + (lineEnd[language] || '') + "\\n';");
     // code.push("  var code = '" + codeText + "\\n';");
-    code.push("  var code = " + codeText + "'\\n';");
+    code.push("  var code = " + codeText);
     code.push("  return code;");
   }
   code.push("};");
@@ -272,9 +274,11 @@ FactoryUtils.getGeneratorStubForExport = function(block, generatorLanguage, work
     var name = input.name;
     if (name) {
       if (input.type == Blockly.INPUT_VALUE) {
+        // code.push(makeVar('value', name) +
+        //           " = Blockly." + language + ".valueToCode(block, '" + name +
+        //           "', Blockly." + language + ".ORDER_ATOMIC);");
         code.push(makeVar('value', name) +
-                  " = Blockly." + language + ".valueToCode(block, '" + name +
-                  "', Blockly." + language + ".ORDER_ATOMIC);");
+                  " = Blockly." + language + ".valueToCode(block, '" + name + "');");
       } else if (input.type == Blockly.NEXT_STATEMENT) {
         code.push(makeVar('statements', name) +
                   " = Blockly." + language + ".statementToCode(block, '" +
@@ -293,13 +297,13 @@ FactoryUtils.getGeneratorStubForExport = function(block, generatorLanguage, work
 
   if (block.outputConnection) {
     // code.push("  var code = '...';");
-    code.push("  var code = " + codeText + "'\\n';");
+    code.push("  var code = " + localStorage.getItem(block.type));
     // code.push("  // TODO: Change ORDER_NONE to the correct strength.");
-    code.push("  return [code, Blockly." + language + ".ORDER_NONE];");
+    code.push("  return [code, Blockly.IchigoJamBASIC.ORDER_NONE];");
   } else {
     // code.push("  var code = '..." + (lineEnd[language] || '') + "\\n';");
     // code.push("  var code = '" + codeText + "\\n';");
-    code.push("  var code = " + localStorage.getItem(block.type) + "'\\n';");
+    code.push("  var code = " + localStorage.getItem(block.type));
     code.push("  return code;");
   }
   code.push("};");
@@ -1144,6 +1148,12 @@ FactoryUtils.createCodeText = function() {
         codeText = codeBlock.inputList[0].fieldRow[0].text_ + " + ";
       } else if (codeBlock.type == 'code_operator' || codeBlock.type == 'code_num'){
         codeText = codeBlock.inputList[0].fieldRow[0].text_;
+      } else if (codeBlock.type == 'code_crlf'){
+        codeText = "'\\n'" + " + ";
+      // } else if (codeBlock.type == 'code_crlf_end'){
+      //   codeText = "'\\n'";
+      } else if (codeBlock.type == 'end'){
+        codeText = codeText.slice(0, -2);
       } else {
         if (codeBlock.type == 'code_input') codeType = "text";
         if (codeBlock.type == 'code_number') codeType = "number";
@@ -1166,7 +1176,13 @@ FactoryUtils.createCodeText = function() {
           codeText = codeText.slice(0, -2)
           codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
         } else if (codeBlock.type == 'code_num'){
-          codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
+          codeText += codeBlock.inputList[0].fieldRow[0].text_ + " + ";
+        } else if (codeBlock.type == 'code_crlf'){
+          codeText += "'\\n'" + " + ";
+        // } else if (codeBlock.type == 'code_crlf_end'){
+        //   codeText += "'\\n'";
+        } else if (codeBlock.type == 'end'){
+          codeText = codeText.slice(0, -2);
         } else {
           if (codeBlock.type == 'code_input') codeType = "text";
           if (codeBlock.type == 'code_number') codeType = "number";
@@ -1189,7 +1205,13 @@ FactoryUtils.createCodeText = function() {
         codeText = codeText.slice(0, -2)
         codeText = codeBlock.inputList[0].fieldRow[0].text_ + " ";
       } else if (codeBlock.type == 'code_num'){
-        codeText += codeBlock.inputList[0].fieldRow[0].text_ + " ";
+        codeText += codeBlock.inputList[0].fieldRow[0].text_ + " + ";
+      } else if (codeBlock.type == 'code_crlf'){
+        codeText += "'\\n'" + " + ";
+      // } else if (codeBlock.type == 'code_crlf_end'){
+      //   codeText += "'\\n'";
+      } else if (codeBlock.type == 'end'){
+        codeText = codeText.slice(0, -2);
       } else {
         if (codeBlock.type == 'code_input') codeType = "text";
         if (codeBlock.type == 'code_number') codeType = "number";

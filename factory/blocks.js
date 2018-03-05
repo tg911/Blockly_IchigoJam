@@ -220,6 +220,38 @@ Blockly.Blocks['input_statement'] = {
   }
 };
 
+// // 分岐ブロック
+// Blockly.Blocks['base_loop'] = {
+//   // Statement input.
+//   init: function() {
+//     this.jsonInit({
+//       "message0": "反復 %1 %2",
+//       "args0": [
+//         {
+//           "type": "field_input",
+//           "name": "INPUTNAME",
+//           "text": "名前"
+//         },
+//         {
+//           "type": "input_dummy"
+//         },
+//       ],
+//       "message1": FIELD_MESSAGE,
+//       "args1": FIELD_ARGS,
+//       "message2": TYPE_MESSAGE,
+//       "args2": TYPE_ARGS,
+//       "previousStatement": "Input",
+//       "nextStatement": "Input",
+//       "colour": 210,
+//       "tooltip": "A statement socket for enclosed vertical stacks.",
+//       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=246"
+//     });
+//   },
+//   onchange: function() {
+//     inputNameCheck(this);
+//   }
+// };
+
 Blockly.Blocks['input_dummy'] = {
   // Dummy input.
   init: function() {
@@ -780,6 +812,17 @@ Blockly.Blocks['colour_hue'] = {
 };
 // 独自追加ブロック
 
+Blockly.Blocks['end'] = {
+  init: function() {
+     this.appendDummyInput()
+         .appendField("終わり");
+     this.setOutput(true, "Code");
+     this.setColour(290);
+     this.setTooltip('');
+     this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 Blockly.Blocks['code_free'] = {
   init: function() {
      this.appendValueInput("nextCode")
@@ -805,6 +848,30 @@ Blockly.Blocks['code'] = {
      this.setHelpUrl('http://www.example.com/');
   }
 };
+
+Blockly.Blocks['code_crlf'] = {
+  init: function() {
+     this.appendValueInput("nextCode")
+         .setCheck("Code")
+         .appendField('改行');
+     this.setInputsInline(false);
+     this.setOutput(true, "Code");
+     this.setColour(290);
+     this.setTooltip('');
+     this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+// Blockly.Blocks['code_crlf_end'] = {
+//   init: function() {
+//      this.appendDummyInput()
+//          .appendField("改行");
+//      this.setOutput(true, "Code");
+//      this.setColour(290);
+//      this.setTooltip('');
+//      this.setHelpUrl('http://www.example.com/');
+//   }
+// };
 
 Blockly.Blocks['code_num'] = {
   init: function() {

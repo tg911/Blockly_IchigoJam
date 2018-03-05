@@ -8,41 +8,45 @@ window.onload = function() {
   var nwin = ngui.Window.get();
   nwin.maximize();
 
-  function showCode() {
-    console.log('ws-3', workspace);
-    var outputArea = document.getElementById("outputArea");
-    var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
-    outputArea.innerHTML = code;
-  };
-  // workspaceのリスナーへ登録を忘れずに
-  workspace.addChangeListener(showCode);
+  // function showCode() {
+  //   // console.log('ws-3', workspace);
+  //   var outputArea = document.getElementById("outputArea");
+  //   var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
+  //   outputArea.innerHTML = code;
+  // };
+  // // workspaceのリスナーへ登録を忘れずに
+  // workspace.addChangeListener(showCode);
 
-  function setLineNumber() {
-    var contents = document.getElementById("outputArea");
-    var lineNum = 10;
-    var code = contents.innerText;
-    var sliceCode = code.split('');
-
-    var sliceCodeLength = sliceCode.length;
-
-    for (var i = 0; i < sliceCodeLength; i++) {
-      if (i == 0) {
-        sliceCode.splice(i, 0, lineNum, " ");
-        sliceCodeLength += 2;
-        lineNum += 10;
-      }
-      if (sliceCode[i] == "\n") {
-        sliceCode.splice(i + 1, 0, lineNum, " ");
-        sliceCodeLength += 2;
-        lineNum += 10;
-      }
-    }
-    sliceCode.splice(sliceCode.length - 2, 2);
-    code = sliceCode.join("");
-    contents.innerText = code;
-  };
-
-  workspace.addChangeListener(setLineNumber);
+  // function setLineNumber() {
+  //   var contents = document.getElementById("outputArea");
+  //   var lineNum = 10;
+  //   var code = contents.innerText;
+  //   var sliceCode = code.split('');
+  //
+  //   var sliceCodeLength = sliceCode.length;
+  //
+  //   for (var i = 0; i < sliceCodeLength; i++) {
+  //     if (i == 0) {
+  //       sliceCode.splice(i, 0, lineNum, " ");
+  //       sliceCodeLength += 2;
+  //       lineNum += 10;
+  //     }
+  //     if (sliceCode[i] == "\n") {
+  //       sliceCode.splice(i + 1, 0, lineNum, " ");
+  //       sliceCodeLength += 2;
+  //       lineNum += 10;
+  //     }
+  //   }
+  //   sliceCode.splice(sliceCode.length - 2, 2);
+  //   code = sliceCode.join("");
+  //   contents.innerText = code;
+  // };
+  //
+  // workspace.addChangeListener(setLineNumber);
+  //
+  // var xml = '<xml><block type="start" deletable="false"></block></xml>';
+  // Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+  // workspace.addChangeListener(Blockly.Events.disableOrphans);
 
 };
 
@@ -68,28 +72,28 @@ window.onload = function() {
 
 
 var blocklyArea = document.getElementById("blocklyArea");
-// var blocklyDiv = document.getElementById("blocklyDiv");
-// var workspace = Blockly.inject(blocklyDiv, {
-//   toolbox: document.getElementById('toolbox'),
-//   grid: {
-//     spacing: 20,
-//     length: 3,
-//     colour: '#ccc',
-//     snap: true
-//   },
-//   media: 'media/',
-//   zoom: {
-//     controls: true,
-//     startScale: 1.0,
-//     maxScale: 3,
-//     minScale: 0.3,
-//     scaleSpeed: 1.2
-//   },
-//   trashcan: true
-// });
+var blocklyDiv = document.getElementById("blocklyDiv");
+var workspace = Blockly.inject(blocklyDiv, {
+  toolbox: document.getElementById('toolbox'),
+  grid: {
+    spacing: 20,
+    length: 3,
+    colour: '#ccc',
+    snap: true
+  },
+  media: 'media/',
+  zoom: {
+    controls: true,
+    startScale: 1.0,
+    maxScale: 3,
+    minScale: 0.3,
+    scaleSpeed: 1.2
+  },
+  trashcan: true
+});
 
 var onResize = function(e) {
-  console.log('ws-2', workspace);
+  // console.log('ws-2', workspace);
   // Compute the absolute coordinates and dimensions of blocklyArea
   var element = blocklyArea;
   var x = 0;
@@ -167,19 +171,19 @@ window.addEventListener('resize', Blockly.svgResize(workspace), false);
 // スタートブロックに接続されていないブロックは無効化する
 // メソッド化した方が良いかも？
 // 変数はどっかと競合してないか？
-// var xml = '<xml><block type="start" deletable="false"></block></xml>';
-// Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
-// workspace.addChangeListener(Blockly.Events.disableOrphans);
-//
+var xml = '<xml><block type="start" deletable="false"></block></xml>';
+Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+workspace.addChangeListener(Blockly.Events.disableOrphans);
 
-// function showCode() {
-//   console.log('ws-3', workspace);
-//   var outputArea = document.getElementById("outputArea");
-//   var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
-//   outputArea.innerHTML = code;
-// };
-// // workspaceのリスナーへ登録を忘れずに
-// workspace.addChangeListener(showCode);
+
+function showCode() {
+  // console.log('ws-3', workspace);
+  var outputArea = document.getElementById("outputArea");
+  var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
+  outputArea.innerHTML = code;
+};
+// workspaceのリスナーへ登録を忘れずに
+workspace.addChangeListener(showCode);
 
 function discard() {
   // workspaceから全てのブロックを削除
@@ -193,32 +197,32 @@ function discard() {
 
 document.getElementById("discardYes").addEventListener("click", discard, false);
 
-// function setLineNumber() {
-//   var contents = document.getElementById("outputArea");
-//   var lineNum = 10;
-//   var code = contents.innerText;
-//   var sliceCode = code.split('');
-//
-//   var sliceCodeLength = sliceCode.length;
-//
-//   for (var i = 0; i < sliceCodeLength; i++) {
-//     if (i == 0) {
-//       sliceCode.splice(i, 0, lineNum, " ");
-//       sliceCodeLength += 2;
-//       lineNum += 10;
-//     }
-//     if (sliceCode[i] == "\n") {
-//       sliceCode.splice(i + 1, 0, lineNum, " ");
-//       sliceCodeLength += 2;
-//       lineNum += 10;
-//     }
-//   }
-//   sliceCode.splice(sliceCode.length - 2, 2);
-//   code = sliceCode.join("");
-//   contents.innerText = code;
-// };
-//
-// workspace.addChangeListener(setLineNumber);
+function setLineNumber() {
+  var contents = document.getElementById("outputArea");
+  var lineNum = 10;
+  var code = contents.innerText;
+  var sliceCode = code.split('');
+
+  var sliceCodeLength = sliceCode.length;
+
+  for (var i = 0; i < sliceCodeLength; i++) {
+    if (i == 0) {
+      sliceCode.splice(i, 0, lineNum, " ");
+      sliceCodeLength += 2;
+      lineNum += 10;
+    }
+    if (sliceCode[i] == "\n") {
+      sliceCode.splice(i + 1, 0, lineNum, " ");
+      sliceCodeLength += 2;
+      lineNum += 10;
+    }
+  }
+  sliceCode.splice(sliceCode.length - 2, 2);
+  code = sliceCode.join("");
+  contents.innerText = code;
+};
+
+workspace.addChangeListener(setLineNumber);
 
 // アラートを表示する
 function showAlert(alertStatus, message) {
@@ -241,7 +245,7 @@ document.getElementById("alert").addEventListener("click", function(e) {
 function save() {
   var fileName = document.getElementById("fileName").value;
   var xml = Blockly.Xml.workspaceToDom(workspace);
-  console.log(xml);
+  // console.log(xml);
   var xmlText = Blockly.Xml.domToPrettyText(xml);
   var blob = new Blob([xmlText], {
     type: 'text/xml'
@@ -393,7 +397,7 @@ function sendToIchigoJam() {
     // 半角カナ文字に対応するには8bitの文字にする必要がある。（charCodeAtは16bitになる？）
     // var encoder = new TextEncoder("utf-8");
     // view[i] = encoder.encode(sliceCode[i]);
-    console.log("view:" + view[i])
+    // console.log("view:" + view[i])
     view[i] = sliceCode[i].charCodeAt(0);
   }
   var intervalId = setInterval(function() {
@@ -401,7 +405,7 @@ function sendToIchigoJam() {
     progressValue = (count / viewLength) * 100;
     count++;
     sendCharacter(view[0]);
-    console.log(view)
+    // console.log(view)
     view = view.slice(1);
     if (view.length == 0) {
       setTimeout(function() {
@@ -674,7 +678,7 @@ function addToolbox() {
   var blockDiv;
   for (var block in blocks) {
     blockCategory = blocks[block].category;
-    console.log('blockCategory',blockCategory);
+    // console.log('blockCategory',blockCategory);
     if (blockCategory == undefined) {
       blockDiv = document.createElement("block");
       blockDiv.setAttribute("type", block);
@@ -682,7 +686,7 @@ function addToolbox() {
       toolbox.children['category1'].appendChild(blockDiv);
       continue;
     }
-    console.log('hoge');
+    // console.log('hoge');
     if (blockCategory != "category0") {
       blockDiv = document.createElement("block");
       blockDiv.setAttribute("type", block);
@@ -825,7 +829,7 @@ function errorHandler(e) {
       break;
   };
 
-  console.log('Error: ' + msg);
+  // console.log('Error: ' + msg);
 }
 
 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;

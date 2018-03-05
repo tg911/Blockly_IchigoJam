@@ -3,19 +3,32 @@ var toolbox = document.getElementById("toolbox");
 
 var options = { 
 	toolbox : toolbox, 
-	collapse : false, 
-	comments : false, 
-	disable : false, 
+	collapse : true, 
+	comments : true, 
+	disable : true, 
 	maxBlocks : Infinity, 
-	trashcan : false, 
+	trashcan : true, 
 	horizontalLayout : false, 
 	toolboxPosition : 'start', 
 	css : true, 
 	media : 'https://blockly-demo.appspot.com/static/media/', 
 	rtl : false, 
-	scrollbars : false, 
+	scrollbars : true, 
 	sounds : true, 
-	oneBasedIndex : true
+	oneBasedIndex : true, 
+	grid : {
+		spacing : 20, 
+		length : 1, 
+		colour : '#888', 
+		snap : false
+	}, 
+	zoom : {
+		controls : true, 
+		wheel : true, 
+		startScale : 1.2, 
+		maxcale : 3, 
+		minScale : 0.3
+	}
 };
 
 /* Inject your workspace */ 
