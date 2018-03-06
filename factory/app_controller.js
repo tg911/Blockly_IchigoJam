@@ -139,8 +139,10 @@ AppController.prototype.importBlockLibraryFromFile = function() {
 AppController.prototype.exportBlockLibraryToFile = function() {
   // Get map of block type to XML.
   var blockLib = this.blockLibraryController.getBlockLibrary();
+  // console.log('blockLib', blockLib);
   // Concatenate the XMLs, each separated by a blank line.
   var blockLibText = this.formatBlockLibraryForExport_(blockLib);
+  // console.log('blt', blockLibText);
   // Get file name.
   var filename = prompt('保存するブロックライブラリのファイル名を入力してください。', 'ライブラリ.xml');
   // Download file if all necessary parameters are provided.
@@ -206,7 +208,9 @@ AppController.prototype.formatBlockLibraryForImport_ = function(xmlText) {
 
     xmlText = Blockly.Xml.domToText(xmlDom);
     // All block types should be lowercase.
-    var blockType = this.getBlockTypeFromXml_(xmlText).toLowerCase();
+    // 小文字にしない
+    // var blockType = this.getBlockTypeFromXml_(xmlText).toLowerCase();
+    var blockType = this.getBlockTypeFromXml_(xmlText);
 
     blockXmlTextMap[blockType] = xmlText;
   }

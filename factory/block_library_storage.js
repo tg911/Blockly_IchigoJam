@@ -156,6 +156,7 @@ BlockLibraryStorage.prototype.isEmpty = function() {
  * @return {!Array.<string>} Map of block type to corresponding XML text.
  */
 BlockLibraryStorage.prototype.getBlockXmlTextMap = function() {
+  // console.log('this.blocks', this.blocks);
   return this.blocks;
 };
 
