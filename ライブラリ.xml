@@ -1,0 +1,213 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="8{23=X#re(9S~^YYKY9g" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">LEDを光らせる</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="?RIVW8E[gPgoy8j!E;bv">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="6P]fP7%*:~hTCx#i?9k^">
+            <field name="TEXT">LEDを光らせる</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="fcFJm3DdrKM_l.FVn*c."></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id=",O^s,R8M!3~#P|Z0|x.2"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="RXe9nDs]AIp@=@R-2{-_">
+        <mutation colour="#5ba58c"></mutation>
+        <field name="HUE">160</field>
+      </block>
+    </value>
+    <value name="CODE">
+      <block type="code" id="Za@I|N+7*L(iE]8+-2c#">
+        <field name="code">LED 1</field>
+        <value name="nextCode">
+          <block type="code_crlf" id="kn?,.PR(9ONLCz6`anYD">
+            <value name="nextCode">
+              <block type="end" id="BSrCG5?qniL[1ula[7sU"></block>
+            </value>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block><block type="factory_base" id=".D2[CwuZX7IKzv9t3S;N" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">LEDをけす</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="Djp[cpbWbzQOI9aq3:$I">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="0g7D*U8FvL}muy;U06_a">
+            <field name="TEXT">LEDをけす</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="%P(0}cC]({347;yQ_Y1{"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="C~zzkzH;n]X0#/Q;lMQL"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="($.1[b_/]WOso@cVIB~0">
+        <mutation colour="#5ba58c"></mutation>
+        <field name="HUE">160</field>
+      </block>
+    </value>
+    <value name="CODE">
+      <block type="code" id="U9V%`5=MAqqPT{u-k^e{">
+        <field name="code">LED 0</field>
+        <value name="nextCode">
+          <block type="code_crlf" id="sVYg%?L]/4VY9zL~r*G4">
+            <value name="nextCode">
+              <block type="end" id="x`):WtV7j(Bz6qwFMqlb"></block>
+            </value>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block><block type="factory_base" id="O){2Kwp+V,N)HHZ7XVE8" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">待つ</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="JV8$/!qR|+$(61JNpM@+">
+        <field name="INPUTNAME">数値</field>
+        <field name="ALIGN">LEFT</field>
+        <value name="TYPE">
+          <shadow type="type_null" id="f3Lh0npS;1urD)Vz4|82"></shadow>
+          <block type="type_number" id="1mYh*EPi3uPPA-hu.,(4"></block>
+        </value>
+        <next>
+          <block type="input_dummy" id="7jW0kY%KL5$PR$MdbBp~">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="1U5rnD`?R#esL!,UF86N">
+                <field name="TEXT">びょうまつ</field>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id=")V}=PfOBF$G(6KTWB%gr"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="!#5W;nwRoRQ65AY6ubo["></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="ZyFA9#%.B-$WGtxRsQ:8">
+        <mutation colour="#5ba58c"></mutation>
+        <field name="HUE">160</field>
+      </block>
+    </value>
+    <value name="CODE">
+      <block type="code" id="l]C{QRXc`zefdUG*+4aZ">
+        <field name="code">WAIT </field>
+        <value name="nextCode">
+          <block type="code_value" id="}lvW{^f2oT]6P`+T8a9U">
+            <field name="value">数値</field>
+            <value name="nextCode">
+              <block type="code_operator" id="WN!.H5BD6x^M7BP13Zh8">
+                <field name="operator">*</field>
+                <value name="nextCode">
+                  <block type="code_num" id="ysR-n/)|CSi%3bQ#jHLM">
+                    <field name="number">60</field>
+                    <value name="nextCode">
+                      <block type="code_crlf" id="^e-j[OD[O5TgR*g6{mVc">
+                        <value name="nextCode">
+                          <block type="end" id="8A!.0FN2[JEDH]Jq/**_"></block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block><block type="factory_base" id="F%KSAgUz/{@.3[/fhM[M" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">数値</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="yP*#Ta,o*V!^(((cBl-9">
+        <field name="ALIGN">CENTRE</field>
+        <statement name="FIELDS">
+          <block type="field_number" id="bDcp{*TWE8ARFoNh}ho~">
+            <field name="VALUE">1</field>
+            <field name="FIELDNAME">数値</field>
+            <field name="MIN">-Infinity</field>
+            <field name="MAX">Infinity</field>
+            <field name="PRECISION">0</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="dniBE$-teLyxKKvP#$BD"></shadow>
+      <block type="type_number" id="LQU9pSx|d[qzU!|t=J?6"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="x}FY%Q|iEl^P;5]s]XsT">
+        <mutation colour="#5b80a5"></mutation>
+        <field name="HUE">210</field>
+      </block>
+    </value>
+    <value name="CODE">
+      <block type="code_number" id="8wi}{$sd5M{@ab:t[Alf">
+        <field name="number">数値</field>
+        <value name="nextCode">
+          <block type="end" id="SgoH_%Ma;ju=3:9xhYCe"></block>
+        </value>
+      </block>
+    </value>
+  </block><block type="factory_base" id="(#qw5_#e?zv]R-6ZC=Zk" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">ボタン</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="|}T%og.!}OJ?24cfqbbb">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="K|bVzpGbHKy^~`pd~xm2">
+            <field name="TEXT">ボタンをおしている</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="X~Mos2VhG7m8E$AYFUm-"></shadow>
+      <block type="type_boolean" id="}+}kIRA$Mi[s-]$Y^o}y"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="WFSbft:y{G)?ZRuDq,H{">
+        <mutation colour="#a55ba5"></mutation>
+        <field name="HUE">300</field>
+      </block>
+    </value>
+    <value name="CODE">
+      <block type="code" id="r/(X(E8]szzCX^*2+.gV">
+        <field name="code">BTN()</field>
+        <value name="nextCode">
+          <block type="end" id="+l{{peeaYYGd7~w#%#Kh"></block>
+        </value>
+      </block>
+    </value>
+  </block></xml>
