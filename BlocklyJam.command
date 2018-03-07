@@ -1,3 +1,2 @@
-cd `dirname $0`
-cd ..
+cd $0
 nwjs.app/Contents/MacOS/nwjs app
