@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly for IchigoJam</title>
+  <!-- <script src="js/osc-browser.min.js"></script> -->
+  <script src="js/osc-chromeapp.min.js"></script>
+  <!-- <script src="js/osc.min.js"></script> -->
   <!--本体モジュール-->
   <script src="js/blockly_compressed.js"></script>
   <!--Block定義モジュール-->
@@ -48,6 +51,7 @@
         <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-save" data-toggle="modal" data-target="#save"> 保存</button>
         <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-folder-open" id="load"> 開く</button>
         <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-trash" data-toggle="modal" data-target="#discard"> 全消し</button>
+        <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-export" id="simulate"> シミュレート</button>
         <button type="button" class="btn btn-default navbar-btn glyphicon glyphicon-cog navbar-right" data-toggle="modal" data-target="#settings"></button>
       </div>
     </div>

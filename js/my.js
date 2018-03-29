@@ -887,3 +887,42 @@ function addNewBlock(blockName, categoryName, blockColor) {
     "category": categoryName
   }
 };
+
+function codeToUnity() {
+  var basicCode = document.getElementById("outputArea").innerText;
+
+  var udpPort = new osc.UDPPort({
+    // localAddress: "127.0.0.1",
+    // localPort: 57121,
+    // metadata: true
+  });
+
+  udpPort.on("error", function (error) {
+    console.log("An error occurred: ", error);
+  });
+  //
+  // udpPort.on("message", function(msg) {
+  //   console.log('received osc:', msg);
+  // });
+
+  // Open the socket.
+  udpPort.open();
+
+  udpPort.on("ready", function () {
+    udpPort.send({
+      address: "/unity",
+      args: [
+        {
+          type: "s",
+          value: basicCode
+        }
+      ]
+    }, "127.0.0.1", 6666);
+    udpPort.close();
+  });
+
+  // おそらく非同期なので、ここでcloseしてもだめ
+  // udpPort.close();
+  // udpPort.close("127.0.0.1", 57121);
+};
+document.getElementById("simulate").addEventListener("click", codeToUnity, false);

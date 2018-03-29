@@ -3,5 +3,11 @@
   "main": "index.html",
   "window": {
     "icon": "icon.png"
+  },
+  "sockets": {
+    "udp": {
+      "send": ["*"],
+      "bind": ["*"]
+    }
   }
 }
