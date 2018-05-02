@@ -1,6 +1,9 @@
 # BlocklyJam
 IchigoJam用のビジュアルプログラミングツールの開発ログです。
 
+栃木県立栃木工業高等学校にて開発されている[SkyBerryJAM](http://www.tochigi-edu.ed.jp/tochigikogyo/nc2/index.php?page_id=212)にも対応しています。
+
+
 ## 使い方
 #### 事前準備
 1. [USBシリアルモジュールのドライバ](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)をインストールする
