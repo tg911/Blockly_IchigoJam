@@ -306,7 +306,7 @@ window.addEventListener("load", showPorts, false);
 
 function setStatus(status) {
   document.getElementById("status").innerText = status;
-  document.getElementById("communicate").innerText = status == "接続中" ? " 切断" : " 接続";
+  document.getElementById("communicate").innerText = status == "接続中" ? " きる" : " つなぐ";
 };
 
 function connect() {
@@ -343,10 +343,10 @@ function communicate() {
     showAlert("warning", "接続先が見つかりません。");
     return;
   }
-  if (buttonStatus == " 接続") {
+  if (buttonStatus == " つなぐ") {
     connect();
   }
-  if (buttonStatus == " 切断") {
+  if (buttonStatus == " きる") {
     disconnect();
   }
 }
@@ -358,6 +358,7 @@ function sendCharacter(char) {
   var buffer = new ArrayBuffer(1); // １バイト分（8bit）のバッファを確保
   var view = new Uint8Array(buffer); // 確保したバッファに格納できる値は符号無し8bit整数に指定
   view[0] = char;
+  console.log(view[0]);
   chrome.serial.send(connectionId, buffer, function(sendInfo) { // arraybufferの内容をconnection先に送る（必要ない？）
     // chrome.serial.flush(connectionId, function(result){ //
     //   console.log("flush:"+ result)
@@ -376,6 +377,7 @@ function sendToIchigoJam() {
   var viewLength = view.length;
   var count = 1;
   var closeButton = document.getElementById("closeProgressBar");
+  var checkBox = document.getElementById("checkSave0");
 
   if (connectionId == -1) {
     showAlert("warning", "パソコンとIchigoJamを接続して下さい。");
@@ -408,6 +410,9 @@ function sendToIchigoJam() {
     // console.log(view)
     view = view.slice(1);
     if (view.length == 0) {
+      if (checkBox.checked) {
+        sendCommand("SAVE0\n");
+      }
       setTimeout(function() {
         progressBar.style.width = progressValue + "%";
       }, 500);
