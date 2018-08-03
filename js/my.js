@@ -8,6 +8,8 @@ window.onload = function() {
   var nwin = ngui.Window.get();
   nwin.maximize();
 
+  Blockly.Flyout.prototype.autoClose = false;
+
   // function showCode() {
   //   // console.log('ws-3', workspace);
   //   var outputArea = document.getElementById("outputArea");
@@ -887,3 +889,11 @@ function addNewBlock(blockName, categoryName, blockColor) {
     "category": categoryName
   }
 };
+
+document.getElementById("flyoutOn").addEventListener("click", function() {
+  Blockly.Flyout.prototype.autoClose = false;
+}, false);
+
+document.getElementById("flyoutOff").addEventListener("click", function() {
+  Blockly.Flyout.prototype.autoClose = true;
+}, false);
