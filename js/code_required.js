@@ -16,6 +16,7 @@ Blockly.IchigoJamBASIC['loop_infinite'] = function(block) {
 
   var code = "FOR " + forVar + "=0 TO 9\n" + statements_contents + "\n" + forVar + "=0\nNEXT\n"
   forVar = String.fromCharCode(forVar.charCodeAt(0) + 1)
+
   return code;
 };
 
@@ -36,6 +37,7 @@ Blockly.IchigoJamBASIC['loop_number'] = function(block) {
 
   var code = "FOR " + forVar + "=1 TO " + value_number + "\n" + statements_contents + "\nNEXT\n"
   forVar = String.fromCharCode(forVar.charCodeAt(0) + 1)
+  
   return code;
 };
 

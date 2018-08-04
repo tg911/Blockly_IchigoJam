@@ -1,6 +1,6 @@
 connectionId = -1;
 // loopInfiniteNum = 0; 没になったループブロックに必要？　没？
-forVar = "I"; // くりかえしブロックで使うFORコマンドの変数を異なるようにする
+// forVar = "A"; // くりかえしブロックで使うFORコマンドの変数を異なるようにする
 
 // 起動時にウィンドウを最大化する
 window.onload = function() {
@@ -50,6 +50,7 @@ window.onload = function() {
   // Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
   // workspace.addChangeListener(Blockly.Events.disableOrphans);
 
+  forVar = "A";
 };
 
 // function insertXml(fileName, place) {
@@ -455,143 +456,143 @@ document.getElementById("toggle").addEventListener("click", function() {
 }, false);
 
 var toolboxNormal = "<category name=\"出力\" colour=\"180\">\
-  <block type=\"led\">\</block>\
-  <block type=\"print\">\
-    <value name=\"arg\">\
-      <block type=\"string\">\
-        <field name=\"strings\">\HELLO</field>\
-      </block>\
-    </value>\
-  </block>\
-  <block type=\"beep\">\</block>\
-  <block type=\"play\">\</block>\
-  <block type=\"tempo\">\</block>\
-  <block type=\"out\">\</block>\
-  <block type=\"pwm\">\</block>\
+<block type=\"led\">\</block>\
+<block type=\"print\">\
+<value name=\"arg\">\
+<block type=\"string\">\
+<field name=\"strings\">\HELLO</field>\
+</block>\
+</value>\
+</block>\
+<block type=\"beep\">\</block>\
+<block type=\"play\">\</block>\
+<block type=\"tempo\">\</block>\
+<block type=\"out\">\</block>\
+<block type=\"pwm\">\</block>\
 </category>\
 <category name=\"入力\" colour=\"210\">\
-  <block type=\"input\">\</block>\
+<block type=\"input\">\</block>\
 </category>\
 <category name=\"繰り返し\" colour=\"45\">\
-  <block type=\"for\">\</block>\
+<block type=\"for\">\</block>\
 </category>\
 <category name=\"条件分岐\" colour=\"0\">\
-  <block type=\"if\">\</block>\
-  <block type=\"if_else\">\</block>\
+<block type=\"if\">\</block>\
+<block type=\"if_else\">\</block>\
 </category>\
 <category name=\"計算\" colour=\"90\">\
-  <block type=\"let\">\</block>\
-  <block type=\"not\">\</block>\
-  <block type=\"number\">\</block>\
-  <block type=\"string\">\</block>\
-  <block type=\"calculation\">\</block>\
-  <block type=\"variable\">\</block>\
-  <block type=\"continuity\">\</block>\
-  <block type=\"label_arg\">\</block>\
+<block type=\"let\">\</block>\
+<block type=\"not\">\</block>\
+<block type=\"number\">\</block>\
+<block type=\"string\">\</block>\
+<block type=\"calculation\">\</block>\
+<block type=\"variable\">\</block>\
+<block type=\"continuity\">\</block>\
+<block type=\"label_arg\">\</block>\
 </category>\
 <category name=\"音符\" colour=\"260\">\
-  <block type=\"note_c\">\</block>\
-  <block type=\"note_d\">\</block>\
-  <block type=\"note_e\">\</block>\
-  <block type=\"note_f\">\</block>\
-  <block type=\"note_g\">\</block>\
-  <block type=\"note_a\">\</block>\
-  <block type=\"note_b\">\</block>\
-  <block type=\"note_r\">\</block>\
-  <block type=\"note_length\">\</block>\
-  <block type=\"semitone\">\</block>\
-  <block type=\"note_tempo\">\</block>\
-  <block type=\"note_length_init\">\</block>\
-  <block type=\"octave\">\</block>\
-  <block type=\"octave_updown\">\</block>\
-  <block type=\"note_loop\">\</block>\
-  <block type=\"note_end\">\</block>\
+<block type=\"note_c\">\</block>\
+<block type=\"note_d\">\</block>\
+<block type=\"note_e\">\</block>\
+<block type=\"note_f\">\</block>\
+<block type=\"note_g\">\</block>\
+<block type=\"note_a\">\</block>\
+<block type=\"note_b\">\</block>\
+<block type=\"note_r\">\</block>\
+<block type=\"note_length\">\</block>\
+<block type=\"semitone\">\</block>\
+<block type=\"note_tempo\">\</block>\
+<block type=\"note_length_init\">\</block>\
+<block type=\"octave\">\</block>\
+<block type=\"octave_updown\">\</block>\
+<block type=\"note_loop\">\</block>\
+<block type=\"note_end\">\</block>\
 </category>\
 <category name=\"関数\" colour=\"315\">\
-  <block type=\"btn\">\</block>\
-  <block type=\"rnd\">\</block>\
-  <block type=\"tick\">\</block>\
-  <block type=\"inkey\">\</block>\
-  <block type=\"chr\">\</block>\
-  <block type=\"asc\">\</block>\
-  <block type=\"scr\">\</block>\
-  <block type=\"in\">\</block>\
-  <block type=\"ana\">\</block>\
+<block type=\"btn\">\</block>\
+<block type=\"rnd\">\</block>\
+<block type=\"tick\">\</block>\
+<block type=\"inkey\">\</block>\
+<block type=\"chr\">\</block>\
+<block type=\"asc\">\</block>\
+<block type=\"scr\">\</block>\
+<block type=\"in\">\</block>\
+<block type=\"ana\">\</block>\
 </category>\
 <category name=\"その他\" colour=\"65\">\
-  <block type=\"wait\">\</block>\
-  <block type=\"goto\">\</block>\
-  <block type=\"label\">\</block>\
-  <block type=\"end\">\</block>\
-  <block type=\"cls\">\</block>\
-  <block type=\"locate\">\</block>\
-  <block type=\"clt\">\</block>\
-  <block type=\"scroll\">\</block>\
+<block type=\"wait\">\</block>\
+<block type=\"goto\">\</block>\
+<block type=\"label\">\</block>\
+<block type=\"end\">\</block>\
+<block type=\"cls\">\</block>\
+<block type=\"locate\">\</block>\
+<block type=\"clt\">\</block>\
+<block type=\"scroll\">\</block>\
 </category>";
 
 var toolboxEvaluation = "<category name=\"うごかす\" colour=\"180\">\
-  <block type=\"led_on_kids\">\</block>\
-  <block type=\"led_off_kids\">\</block>\
-  <block type=\"out_led_on\">\</block>\
-  <block type=\"out_led_off\">\</block>\
-  <block type=\"play\">\
-    <value name=\"note\">\
-      <block type=\"note_c\">\
-        <value name=\"nextNote\">\
-          <block type=\"note_d\">\
-            <value name=\"nextNote\">\
-              <block type=\"note_e\">\</block>\
-            </value>\
-          </block>\
-        </value>\
-      </block>\
-    </value>\
-  </block>\
-  <block type=\"play_tune\">\</block>\
-  <block type=\"test\">\</block>\
-  <block type=\"servo\">\</block>\
-  <block type=\"wait_kids\">\
-    <value name=\"second\">\
-      <block type=\"number\">\
-        <field name=\"num\">1</field>\
-      </block>\
-    </value>\
-  </block>\
+<block type=\"led_on_kids\">\</block>\
+<block type=\"led_off_kids\">\</block>\
+<block type=\"out_led_on\">\</block>\
+<block type=\"out_led_off\">\</block>\
+<block type=\"play\">\
+<value name=\"note\">\
+<block type=\"note_c\">\
+<value name=\"nextNote\">\
+<block type=\"note_d\">\
+<value name=\"nextNote\">\
+<block type=\"note_e\">\</block>\
+</value>\
+</block>\
+</value>\
+</block>\
+</value>\
+</block>\
+<block type=\"play_tune\">\</block>\
+<block type=\"test\">\</block>\
+<block type=\"servo\">\</block>\
+<block type=\"wait_kids\">\
+<value name=\"second\">\
+<block type=\"number\">\
+<field name=\"num\">1</field>\
+</block>\
+</value>\
+</block>\
 </category>\
 <category name=\"くりかえす\" colour=\"65\">\
-  <block type=\"loop_infinite\">\</block>\
-  <block type=\"loop_number\">\
-    <value name=\"number\">\
-      <block type=\"number\">\
-        <field name=\"num\">3</field>\
-      </block>\
-    </value>\
-  </block>\
+<block type=\"loop_infinite\">\</block>\
+<block type=\"loop_number\">\
+<value name=\"number\">\
+<block type=\"number\">\
+<field name=\"num\">3</field>\
+</block>\
+</value>\
+</block>\
 </category>\
 <category name=\"もし～なら\" colour=\"0\">\
-  <block type=\"if_kids\">\</block>\
-  <block type=\"if_else_kids\">\</block>\
-  <block type=\"btn_kids\">\</block>\
-  <block type=\"ana_infrared_sensor\">\</block>\
-  <block type=\"ana_light_sensor\">\</block>\
+<block type=\"if_kids\">\</block>\
+<block type=\"if_else_kids\">\</block>\
+<block type=\"btn_kids\">\</block>\
+<block type=\"ana_infrared_sensor\">\</block>\
+<block type=\"ana_light_sensor\">\</block>\
 </category>\
 <category name=\"音色\" colour=\"260\">\
-  <block type=\"note_c\">\</block>\
-  <block type=\"note_d\">\</block>\
-  <block type=\"note_e\">\</block>\
-  <block type=\"note_f\">\</block>\
-  <block type=\"note_g\">\</block>\
-  <block type=\"note_a\">\</block>\
-  <block type=\"note_b\">\</block>\
-  <block type=\"note_r_kids\">\</block>\
-  <block type=\"note_length\">\</block>\
-  <block type=\"semitone\">\</block>\
-  <block type=\"note_tempo\">\</block>\
-  <block type=\"note_length_init\">\</block>\
-  <block type=\"octave\">\</block>\
-  <block type=\"octave_updown\">\</block>\
-  <block type=\"note_loop\">\</block>\
-  <block type=\"note_end\">\</block>\
+<block type=\"note_c\">\</block>\
+<block type=\"note_d\">\</block>\
+<block type=\"note_e\">\</block>\
+<block type=\"note_f\">\</block>\
+<block type=\"note_g\">\</block>\
+<block type=\"note_a\">\</block>\
+<block type=\"note_b\">\</block>\
+<block type=\"note_r_kids\">\</block>\
+<block type=\"note_length\">\</block>\
+<block type=\"semitone\">\</block>\
+<block type=\"note_tempo\">\</block>\
+<block type=\"note_length_init\">\</block>\
+<block type=\"octave\">\</block>\
+<block type=\"octave_updown\">\</block>\
+<block type=\"note_loop\">\</block>\
+<block type=\"note_end\">\</block>\
 </category>";
 
 // ツールボックスの中身をラジオボタンに応じて書き換える
@@ -625,10 +626,56 @@ document.getElementById("settings").addEventListener("click", settingEvent , fal
 // workspace.addChangeListener(loopInfiniteCount);
 
 function forVarCount() {
-  forVar = "I";
+  forVar = "A";
 };
 
 workspace.addChangeListener(forVarCount);
+
+// typeのブロックの数をカウントする
+function countBlock(type) {
+  var blockCount = 0;
+  for (var blockId in workspace.blockDB_) {
+    if (workspace.blockDB_[blockId].type == type) {
+      blockCount++;
+    }
+  }
+  return blockCount;
+}
+
+function limitLoopBlock() {
+  var category = document.getElementsByName("くりかえす")[0];
+  var loopBlockInf = document.createElement("block");
+  var loopBlockNum = document.createElement("block");
+  var valueTag = document.createElement("value");
+  var shadowTag = document.createElement("shadow");
+  var fieldTag = document.createElement("field");
+  var countedLoopBlock = 0;
+
+  loopBlockInf.setAttribute("type", "loop_infinite");
+  loopBlockNum.setAttribute("type", "loop_number");
+  valueTag.setAttribute("name", "number");
+  shadowTag.setAttribute("type", "数値");
+  fieldTag.setAttribute("name", "num");
+  shadowTag.appendChild(fieldTag);
+  valueTag.appendChild(shadowTag);
+  loopBlockNum.appendChild(valueTag);
+
+  countedLoopBlock = countBlock("loop_infinite") + countBlock("loop_number");
+
+  if (countedLoopBlock >= 26) {
+    loopBlockInf.setAttribute("disabled", "true");
+    loopBlockNum.setAttribute("disabled", "true");
+  } else {
+    loopBlockInf.setAttribute("disabled", "false");
+    loopBlockNum.setAttribute("disabled", "false");
+  }
+  category.textContent = null;
+  category.appendChild(loopBlockInf);
+  category.appendChild(loopBlockNum);
+  workspace.updateToolbox(toolbox);
+}
+
+workspace.addChangeListener(limitLoopBlock);
 
 // test
 // function createPinLabel() {
@@ -812,23 +859,23 @@ function errorHandler(e) {
 
   switch (e.code) {
     case FileError.QUOTA_EXCEEDED_ERR:
-      msg = 'QUOTA_EXCEEDED_ERR';
-      break;
+    msg = 'QUOTA_EXCEEDED_ERR';
+    break;
     case FileError.NOT_FOUND_ERR:
-      msg = 'NOT_FOUND_ERR';
-      break;
+    msg = 'NOT_FOUND_ERR';
+    break;
     case FileError.SECURITY_ERR:
-      msg = 'SECURITY_ERR';
-      break;
+    msg = 'SECURITY_ERR';
+    break;
     case FileError.INVALID_MODIFICATION_ERR:
-      msg = 'INVALID_MODIFICATION_ERR';
-      break;
+    msg = 'INVALID_MODIFICATION_ERR';
+    break;
     case FileError.INVALID_STATE_ERR:
-      msg = 'INVALID_STATE_ERR';
-      break;
+    msg = 'INVALID_STATE_ERR';
+    break;
     default:
-      msg = 'Unknown Error';
-      break;
+    msg = 'Unknown Error';
+    break;
   };
 
   // console.log('Error: ' + msg);
@@ -881,7 +928,7 @@ function addNewBlock(blockName, categoryName, blockColor) {
   Blockly.Blocks[blockName] = {
     init: function() {
       this.appendDummyInput()
-          .appendField(blockName);
+      .appendField(blockName);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(blockColor);
