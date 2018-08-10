@@ -368,6 +368,29 @@ function sendCharacter(char) {
   });
 };
 
+function usbStatus() {
+    var status = "";
+
+    this.get = function() {
+        return status;
+    };
+
+    this.set = function(s) {
+        status = s;
+        // ここに関数書けばstatus変数を監視するような処理ができる
+    };
+}
+// インスタンス生成したけどこの使い方だと普通にグローバル変数でよかった
+
+var usbStatus = new usbStatus();
+
+chrome.serial.onReceiveError.addListener(function (info){
+  console.log(info);
+  if (info.error == "device_lost") {
+    usbStatus.set(info.error)
+  }
+});
+
 function sendToIchigoJam() {
   var code = document.getElementById("outputArea").innerText;
   var sliceCode = code.split("");
@@ -379,8 +402,14 @@ function sendToIchigoJam() {
   var viewLength = view.length;
   var count = 1;
   var closeButton = document.getElementById("closeProgressBar");
+  var status = document.getElementById("status").innerText;
+  var connectionStatus = usbStatus.get();
 
-  if (connectionId == -1) {
+  if (connectionStatus == "device_lost") {
+    connect();
+  }
+
+  if (status == "未接続") {
     showAlert("warning", "パソコンとIchigoJamを接続して下さい。");
     setTimeout(function() {
       closeButton.click();
@@ -389,7 +418,7 @@ function sendToIchigoJam() {
   }
 
   if (code == "") {
-    showAlert("warning", "プログラムを初期化しました。")
+    showAlert("success", "プログラムを初期化しました。")
     setTimeout(function() {
       closeButton.click();
     }, 1000);
