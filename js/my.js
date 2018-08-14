@@ -1004,3 +1004,27 @@ document.getElementById("saveOff").addEventListener("click", function() {
   // this.innerHTML = '<input type="radio" autocomplete="off"> オフ';
   // saveOnElement.innerHTML = '<input type="radio" autocomplete="off" checked> 　　';
 }, false);
+
+document.getElementById("kanji").addEventListener("click", function() {
+  var navbar = document.getElementById("navbar").children;
+  var navbarChars = ["未接続", " 接続", " 送る", " 実行", " 停止", " 保存", " 開く", " 全消し"];
+  var communicateBtn = document.getElementById("communicate");
+
+  for (var i=0; i<navbar.length-1; i++) {
+    if (i == 0) continue;
+    if (i == 1 && communicateBtn.innerText == " きる") navbarChars[i] = " 切断";
+    navbar[i].innerText = navbarChars[i];
+  }
+}, false);
+
+document.getElementById("hiragana").addEventListener("click", function() {
+  var navbar = document.getElementById("navbar").children;
+  var navbarChars = ["せつぞくちゅう", " つなぐ", " おくる", " じっこう", " とめる", " ほぞん", " ひらく", " ぜんぶけす"];
+  var communicateBtn = document.getElementById("communicate");
+
+  for (var i=0; i<navbar.length-1; i++) {
+    if (i == 0) continue;
+    if (i == 1 && communicateBtn.innerText == " 切断") navbarChars[i] = " きる";
+    navbar[i].innerText = navbarChars[i];
+  }
+}, false);
