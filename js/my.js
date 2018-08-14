@@ -381,6 +381,7 @@ function usbStatus() {
     };
 }
 // インスタンス生成したけどこの使い方だと普通にグローバル変数でよかった
+// 追記：グローバル変数はやっぱキモいしこっちの方がいいのか？
 
 var usbStatus = new usbStatus();
 
@@ -404,6 +405,7 @@ function sendToIchigoJam() {
   var closeButton = document.getElementById("closeProgressBar");
   var status = document.getElementById("status").innerText;
   var connectionStatus = usbStatus.get();
+  var saveOption = false;
 
   if (connectionStatus == "device_lost") {
     connect();
@@ -425,6 +427,8 @@ function sendToIchigoJam() {
     return;
   }
 
+  saveOption = document.getElementById("saveOn").firstElementChild.checked;
+
   for (var i = 0; i < sliceCode.length; i++) {
     // 半角カナ文字に対応するには8bitの文字にする必要がある。（charCodeAtは16bitになる？）
     // var encoder = new TextEncoder("utf-8");
@@ -444,6 +448,9 @@ function sendToIchigoJam() {
         progressBar.style.width = progressValue + "%";
       }, 500);
       clearInterval(intervalId);
+      if (saveOption) {
+        sendCommand("SAVE0\n");
+      }
       setTimeout(function() {
         showAlert("success", "プログラムの送信が完了しました。")
         closeButton.click();
@@ -967,9 +974,33 @@ function addNewBlock(blockName, categoryName, blockColor) {
 };
 
 document.getElementById("flyoutOn").addEventListener("click", function() {
+  var flyoutOffElement = document.getElementById("flyoutOff");
+  this.className = "btn btn-success active";
   Blockly.Flyout.prototype.autoClose = false;
+  // this.innerHTML = '<input type="radio" autocomplete="off" checked> オン';
+  // flyoutOffElement.innerHTML = '<input type="radio" autocomplete="off"> 　　';
 }, false);
 
 document.getElementById("flyoutOff").addEventListener("click", function() {
+  var flyoutOnElement = document.getElementById("flyoutOn");
+  flyoutOnElement.className = "btn btn-default";
   Blockly.Flyout.prototype.autoClose = true;
+  // this.innerHTML = '<input type="radio" autocomplete="off" checked> 　　';
+  // flyoutOnElement.innerHTML = '<input type="radio" autocomplete="off"> オフ';
+}, false);
+
+document.getElementById("saveOn").addEventListener("click", function() {
+  var saveOffElement = document.getElementById("saveOff");
+  this.className = "btn btn-success active";
+  this.firstElementChild.checked = true;
+  // this.innerHTML = '<input type="radio" autocomplete="off" checked> オン';
+  // saveOffElement.innerHTML = '<input type="radio" autocomplete="off"> 　　';
+}, false);
+
+document.getElementById("saveOff").addEventListener("click", function() {
+  var saveOnElement = document.getElementById("saveOn")
+  saveOnElement.className = "btn btn-default";
+  saveOnElement.firstElementChild.checked = false;
+  // this.innerHTML = '<input type="radio" autocomplete="off"> オフ';
+  // saveOnElement.innerHTML = '<input type="radio" autocomplete="off" checked> 　　';
 }, false);

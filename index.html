@@ -100,17 +100,30 @@
         </div>
         <div class="modal-body">
           <p>ポート：<select id="portSelecter"></select></p>
-          <span>
-            フライアウトを自動で閉じる：
+          <span>フライアウトを自動で閉じる：</span>
+          <div class="btn-group" data-toggle="buttons">
+            <label id="flyoutOn" class="btn btn-success active">
+              <input type="radio" autocomplete="off" checked> オン
+            </label>
+            <label id="flyoutOff" class="btn btn-default">
+              <input type="radio" autocomplete="off"> オフ
+            </label>
+          </div>
+          <div id="saveOption">
+            <span>プログラム送信時に「SAVE0」を実行する：</span>
             <div class="btn-group" data-toggle="buttons">
-              <label id="flyoutOn" class="btn btn-default active">
+              <label id="saveOn" class="btn btn-success active">
                 <input type="radio" autocomplete="off" checked> オン
               </label>
-              <label id="flyoutOff" class="btn btn-default">
+              <label id="saveOff" class="btn btn-default">
                 <input type="radio" autocomplete="off"> オフ
               </label>
             </div>
-          </span>
+          </div>
+
+
+
+
           <!-- <p><form id="modeSelecter" action="">
           モード切替：
           <input type="radio" name="mode" id="normal"> 通常

@@ -21,3 +21,7 @@ html, body {
 #status {
   color: #e73700;
 }
+
+#saveOption {
+  margin: 10px 0px;
+}
