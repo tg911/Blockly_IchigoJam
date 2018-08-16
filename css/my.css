@@ -25,3 +25,7 @@ html, body {
 .option {
   margin: 10px 0px;
 }
+
+#sideCodeBtn {
+  top: 10px;
+}

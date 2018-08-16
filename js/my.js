@@ -369,16 +369,16 @@ function sendCharacter(char) {
 };
 
 function usbStatus() {
-    var status = "";
+  var status = "";
 
-    this.get = function() {
-        return status;
-    };
+  this.get = function() {
+    return status;
+  };
 
-    this.set = function(s) {
-        status = s;
-        // ここに関数書けばstatus変数を監視するような処理ができる
-    };
+  this.set = function(s) {
+    status = s;
+    // ここに関数書けばstatus変数を監視するような処理ができる
+  };
 }
 // インスタンス生成したけどこの使い方だと普通にグローバル変数でよかった
 // 追記：グローバル変数はやっぱキモいしこっちの方がいいのか？
@@ -388,7 +388,8 @@ var usbStatus = new usbStatus();
 chrome.serial.onReceiveError.addListener(function (info){
   console.log(info);
   if (info.error == "device_lost") {
-    usbStatus.set(info.error)
+    var status = document.getElementById("status");
+    usbStatus.set(info.error);
   }
 });
 
@@ -1028,3 +1029,52 @@ document.getElementById("hiragana").addEventListener("click", function() {
     navbar[i].innerText = navbarChars[i];
   }
 }, false);
+
+document.getElementById("sideCodeBtn").addEventListener("click", function() {
+  var sideCodeBtnClicked = this.dataset.clicked;
+  var blocksTab = document.getElementById("blocksTab");
+  var basicTab = document.getElementById("basicTab");
+  var outputAreaElement = document.createElement("pre");
+  var workspaceElement = document.getElementById("workspace");
+  var outputArea = document.getElementById("outputArea");
+  var basicCode = outputArea.innerText;
+  var codeTab = document.getElementById("codeTab");
+  var tab = document.getElementById("tab");
+
+  if (tab.children[0].className == "active") {
+
+    outputAreaElement.setAttribute("id", "outputArea");
+
+    if (sideCodeBtnClicked == "true") {
+      blocksTab.removeChild(blocksTab.lastElementChild);
+      outputAreaElement.innerText = basicCode;
+      basicTab.appendChild(outputAreaElement);
+      workspaceElement.style.width = "100%";
+      this.dataset.clicked = "false";
+      codeTab.style.pointerEvents = "";
+      codeTab.className = "";
+    } else {
+      var blocklyDivElement = document.getElementById("blocklyDiv");
+      workspaceElement.style.width = "60%";
+      basicTab.innerHTML = "";
+      outputAreaElement.innerText = basicCode;
+      outputAreaElement.style.position = "absolute";
+      outputAreaElement.style.left = workspaceElement.offsetWidth + "px";
+      outputAreaElement.style.height = blocklyDivElement.offsetHeight + "px";
+      outputAreaElement.style.width = "40%";
+      blocksTab.lastElementChild.parentNode.insertBefore(outputAreaElement, blocksTab.lastElementChild.nextSibling);
+      this.dataset.clicked = "true";
+      codeTab.style.pointerEvents = "none";
+      codeTab.className = "disabled";
+    }
+    onResize();
+  }
+}, false);
+
+function sideCodeResize() {
+  var outputAreaElement = document.getElementById("outputArea");
+  var workspaceElement = document.getElementById("workspace");
+  outputAreaElement.style.left = workspaceElement.clientWidth + "px";
+};
+
+window.addEventListener('resize', sideCodeResize, false);
