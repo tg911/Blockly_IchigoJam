@@ -368,6 +368,31 @@ function sendCharacter(char) {
   });
 };
 
+function usbStatus() {
+  var status = "";
+
+  this.get = function() {
+    return status;
+  };
+
+  this.set = function(s) {
+    status = s;
+    // ここに関数書けばstatus変数を監視するような処理ができる
+  };
+}
+// インスタンス生成したけどこの使い方だと普通にグローバル変数でよかった
+// 追記：グローバル変数はやっぱキモいしこっちの方がいいのか？
+
+var usbStatus = new usbStatus();
+
+chrome.serial.onReceiveError.addListener(function (info){
+  console.log(info);
+  if (info.error == "device_lost") {
+    var status = document.getElementById("status");
+    usbStatus.set(info.error);
+  }
+});
+
 function sendToIchigoJam() {
   var code = document.getElementById("outputArea").innerText;
   var sliceCode = code.split("");
@@ -379,8 +404,15 @@ function sendToIchigoJam() {
   var viewLength = view.length;
   var count = 1;
   var closeButton = document.getElementById("closeProgressBar");
+  var status = document.getElementById("status").innerText;
+  var connectionStatus = usbStatus.get();
+  var saveOption = false;
 
-  if (connectionId == -1) {
+  if (connectionStatus == "device_lost") {
+    connect();
+  }
+
+  if (status == "未接続") {
     showAlert("warning", "パソコンとIchigoJamを接続して下さい。");
     setTimeout(function() {
       closeButton.click();
@@ -389,12 +421,14 @@ function sendToIchigoJam() {
   }
 
   if (code == "") {
-    showAlert("warning", "プログラムを初期化しました。")
+    showAlert("success", "プログラムを初期化しました。")
     setTimeout(function() {
       closeButton.click();
     }, 1000);
     return;
   }
+
+  saveOption = document.getElementById("saveOn").firstElementChild.checked;
 
   for (var i = 0; i < sliceCode.length; i++) {
     // 半角カナ文字に対応するには8bitの文字にする必要がある。（charCodeAtは16bitになる？）
@@ -415,6 +449,9 @@ function sendToIchigoJam() {
         progressBar.style.width = progressValue + "%";
       }, 500);
       clearInterval(intervalId);
+      if (saveOption) {
+        sendCommand("SAVE0\n");
+      }
       setTimeout(function() {
         showAlert("success", "プログラムの送信が完了しました。")
         closeButton.click();
@@ -938,9 +975,106 @@ function addNewBlock(blockName, categoryName, blockColor) {
 };
 
 document.getElementById("flyoutOn").addEventListener("click", function() {
+  var flyoutOffElement = document.getElementById("flyoutOff");
+  this.className = "btn btn-success active";
   Blockly.Flyout.prototype.autoClose = false;
+  // this.innerHTML = '<input type="radio" autocomplete="off" checked> オン';
+  // flyoutOffElement.innerHTML = '<input type="radio" autocomplete="off"> 　　';
 }, false);
 
 document.getElementById("flyoutOff").addEventListener("click", function() {
+  var flyoutOnElement = document.getElementById("flyoutOn");
+  flyoutOnElement.className = "btn btn-default";
   Blockly.Flyout.prototype.autoClose = true;
+  // this.innerHTML = '<input type="radio" autocomplete="off" checked> 　　';
+  // flyoutOnElement.innerHTML = '<input type="radio" autocomplete="off"> オフ';
 }, false);
+
+document.getElementById("saveOn").addEventListener("click", function() {
+  var saveOffElement = document.getElementById("saveOff");
+  this.className = "btn btn-success active";
+  this.firstElementChild.checked = true;
+  // this.innerHTML = '<input type="radio" autocomplete="off" checked> オン';
+  // saveOffElement.innerHTML = '<input type="radio" autocomplete="off"> 　　';
+}, false);
+
+document.getElementById("saveOff").addEventListener("click", function() {
+  var saveOnElement = document.getElementById("saveOn")
+  saveOnElement.className = "btn btn-default";
+  saveOnElement.firstElementChild.checked = false;
+  // this.innerHTML = '<input type="radio" autocomplete="off"> オフ';
+  // saveOnElement.innerHTML = '<input type="radio" autocomplete="off" checked> 　　';
+}, false);
+
+document.getElementById("kanji").addEventListener("click", function() {
+  var navbar = document.getElementById("navbar").children;
+  var navbarChars = ["未接続", " 接続", " 送る", " 実行", " 停止", " 保存", " 開く", " 全消し"];
+  var communicateBtn = document.getElementById("communicate");
+
+  for (var i=0; i<navbar.length-1; i++) {
+    if (i == 0) continue;
+    if (i == 1 && communicateBtn.innerText == " きる") navbarChars[i] = " 切断";
+    navbar[i].innerText = navbarChars[i];
+  }
+}, false);
+
+document.getElementById("hiragana").addEventListener("click", function() {
+  var navbar = document.getElementById("navbar").children;
+  var navbarChars = ["せつぞくちゅう", " つなぐ", " おくる", " じっこう", " とめる", " ほぞん", " ひらく", " ぜんぶけす"];
+  var communicateBtn = document.getElementById("communicate");
+
+  for (var i=0; i<navbar.length-1; i++) {
+    if (i == 0) continue;
+    if (i == 1 && communicateBtn.innerText == " 切断") navbarChars[i] = " きる";
+    navbar[i].innerText = navbarChars[i];
+  }
+}, false);
+
+document.getElementById("sideCodeBtn").addEventListener("click", function() {
+  var sideCodeBtnClicked = this.dataset.clicked;
+  var blocksTab = document.getElementById("blocksTab");
+  var basicTab = document.getElementById("basicTab");
+  var outputAreaElement = document.createElement("pre");
+  var workspaceElement = document.getElementById("workspace");
+  var outputArea = document.getElementById("outputArea");
+  var basicCode = outputArea.innerText;
+  var codeTab = document.getElementById("codeTab");
+  var tab = document.getElementById("tab");
+
+  if (tab.children[0].className == "active") {
+
+    outputAreaElement.setAttribute("id", "outputArea");
+
+    if (sideCodeBtnClicked == "true") {
+      blocksTab.removeChild(blocksTab.lastElementChild);
+      outputAreaElement.innerText = basicCode;
+      basicTab.appendChild(outputAreaElement);
+      workspaceElement.style.width = "100%";
+      this.dataset.clicked = "false";
+      codeTab.style.pointerEvents = "";
+      codeTab.className = "";
+    } else {
+      var blocklyDivElement = document.getElementById("blocklyDiv");
+      workspaceElement.style.width = "60%";
+      basicTab.innerHTML = "";
+      outputAreaElement.innerText = basicCode;
+      outputAreaElement.style.position = "absolute";
+      outputAreaElement.style.left = workspaceElement.offsetWidth + "px";
+      outputAreaElement.style.height = blocklyDivElement.offsetHeight + "px";
+      outputAreaElement.style.width = "40%";
+      blocksTab.lastElementChild.parentNode.insertBefore(outputAreaElement, blocksTab.lastElementChild.nextSibling);
+      this.dataset.clicked = "true";
+      codeTab.style.pointerEvents = "none";
+      codeTab.className = "disabled";
+    }
+    onResize();
+  }
+}, false);
+
+function sideCodeResize() {
+  var outputAreaElement = document.getElementById("outputArea");
+  var workspaceElement = document.getElementById("workspace");
+  outputAreaElement.style.left = workspaceElement.clientWidth + "px";
+};
+
+window.addEventListener('resize', sideCodeResize, false);
