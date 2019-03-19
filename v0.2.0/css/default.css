@@ -1,0 +1,168 @@
+@font-face {
+	font-family: 'ichigojam';
+	src: url('../font/IchigoJam-1.2.ttf');
+}
+
+#toast-container {
+    display: block;
+    position: fixed;
+    z-index: 10000;
+}
+/* .toast {
+  background-color: #b71c1c;
+} */
+/* @media only screen and (max-width: 600px) {
+    #toast-container {
+        min-width: 100%;
+        bottom: 0%
+    }
+}
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+    #toast-container {
+        left: 5%;
+        bottom: 7%;
+        max-width: 90%
+    }
+} */
+@media only screen and (min-width: 993px) {
+    #toast-container {
+        top: 30%;
+        right: 10%;
+        max-width: 86%
+    }
+}
+
+body {
+  background-color: #ffebee;
+}
+
+.brand-logo {
+  /* background-image: url("img/logo.png"); */
+  margin-left: 10px;
+}
+
+nav {
+  height: 40px;
+  line-height: 40px;
+}
+
+nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
+  height: 40px;
+  line-height: 40px;
+}
+
+nav .button-collapse i {
+  height: 40px;
+  line-height: 40px;
+}
+
+nav .brand-logo {
+  font-size: 1.6rem;
+}
+
+@media only screen and (min-width: 601px) {
+  nav.nav-extended .nav-wrapper {
+      min-height: 40px;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  nav, nav .nav-wrapper i, nav a.sidenav-trigger, nav a.sidenav-trigger i {
+      height: 40px;
+      line-height: 40px;
+  }
+}
+
+.nav-content {
+  background-color: #ffcdd2;
+  height: 32px;
+}
+
+.nav-content ul{
+  height: 32px;
+}
+
+.nav-content ul .tab {
+  height: 32px;
+  line-height: 32px;
+}
+
+.nav-content .tabs .tab a{
+  color: #757575;
+} /*Black color to the text*/
+
+.nav-content .tabs .tab a:hover {
+  background-color: #fce4ec;
+  color: #757575;
+} /*Text color on hover*/
+
+ .nav-content .tabs .tab a.active {
+  background-color: #ffebee;
+  color: #757575;
+} /*Background and text color when a tab is active*/
+
+ .nav-content .tabs .indicator {
+  background-color: #ef9a9a;
+} /*Color of underline*/
+
+#run {
+  /* color: #4db6ac; */
+  /* z-index: 999; */
+  right: 104px;
+}
+
+#run:hover {
+  /* background-color: #b2dfdb; */
+}
+
+#send {
+  right: 184px;
+}
+
+#workspace {
+  height: 90%;
+  width: 100%;
+}
+
+#blocklyArea {
+  height: 99%;
+  text-align: center;
+}
+
+#outputArea {
+  font-family: 'ichigojam';
+  font-size: 18px;
+  background-color: #e0e0e0;
+}
+
+.blocklyFlyoutBackground {
+  /* fill: #e0f2f1; */
+}
+
+#screenArea {
+  font-family: 'ichigojam';
+  font-size: 12px;
+  color: #fff;
+  background-color: #000;
+  position: absolute;
+  /* width: 406px; */
+  right: 0px;
+  /* display: none; */
+
+}
+
+textarea {
+  width: auto;
+  height: auto;
+  resize: none;
+  overflow: hidden;
+}
+
+#screenSizeSlider {
+  position: absolute;
+  right: 10px;
+  /* display: none; */
+  top: 0px;
+  width: 0px;
+  /* background-color: #ffcdd2; */
+}

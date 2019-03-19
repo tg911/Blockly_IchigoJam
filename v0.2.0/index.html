@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- 文字コード指定しないと文字化けします -->
+  <meta charset="utf-8">
+
+  <!--Import Google Icon Font-->
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+  <link rel="stylesheet" href="iconfont/material-icons.css">
+
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/default.css"  media="screen,projection"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlocklyJam</title>
+</head>
+
+<body>
+
+
+
+  <!-- Dropdown Structure -->
+  <ul id="connectDropdown" class="dropdown-content">
+    <li><a href="#!">切る</a></li>
+  </ul>
+
+  <!-- ブロック全消去ボタン押下時のモーダル -->
+  <div id="clearModal" class="modal">
+    <div class="modal-content">
+      <p id="clearMsg">ブロックを全て消去しますか？</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-light btn" id="clearYes">はい</a>
+      <a href="#!" class="modal-close waves-effect waves-light btn red accent-2">いいえ</a>
+    </div>
+  </div>
+
+  <!-- プログラム保存ボタン押下時のモーダル -->
+  <div id="saveModal" class="modal">
+    <div class="modal-content">
+      <p id="saveMsg">作成したプログラムをファイルに保存します</p>
+      <div class="input-field">
+        <i class="material-icons prefix">mode_edit</i>
+        <textarea id="fileName" class="materialize-textarea"></textarea>
+        <label for="fileName">ファイル名</label>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn" id="saveYes">保存</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red accent-2" id="saveNo">キャンセル</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- オプション画面のモーダル -->
+  <div id="settingModal" class="modal">
+    <div class="modal-content">
+      <table>
+        <tbody>
+          <tr>
+            <td id="flyoutOptionMsg">フライアウトを閉じる</td>
+            <td>
+              <div class="switch">
+                <label>
+                  オフ
+                  <input type="checkbox" id="closeFlyoutToggle">
+                  <span class="lever"></span>
+                  オン
+                </label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td id="saveZeroOptionMsg">プログラム送信後に「SAVE0」を実行する</td>
+            <td>
+              <div class="switch">
+                <label>
+                  オフ
+                  <input type="checkbox" id="save0Toggle">
+                  <span class="lever"></span>
+                  オン
+                </label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td id="languageOptionMsg">文字表記</td>
+            <td>
+              <form action="#">
+                <label>
+                  <input name="language" type="radio" id="kanjiRadioBtn" checked />
+                  <span id="languageOptionKanji">漢字</span>
+                </label>
+                <label>
+                  <input name="language" type="radio" id="hiraganaRadioBtn"/>
+                  <span id="languageOptionHiragana">ひらがな</span>
+                </label>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 送信ボタン押下時のモーダル -->
+  <div id="progressBarModal" class="modal bottom-sheet">
+    <div class="modal-content">
+      <p id="progressMsg">プログラムを送信中...</p>
+      <div class="progress">
+        <div class="determinate" id="progressBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ナビゲーションバー -->
+  <nav class="nav-extended">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">BlocklyJam</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <!-- <li><a href="#"><i class="material-icons">settings_input_hdmi</i></a></li> -->
+        <li><a class="dropdown-trigger" href="#!" data-target="connectDropdown"><i class="material-icons">settings_input_hdmi</i></a></li>
+        <li><a href="#clearModal" id="clear" class="modal-trigger"><i class="material-icons">delete</i></a></li>
+        <li><a href="#" id="screen"><i class="material-icons">picture_in_picture</i></a></li>
+        <li><a href="#saveModal" id="save" class="modal-trigger"><i class="material-icons">file_download</i></a></li>
+        <li><a href="#" id="load"><i class="material-icons">folder_open</i></a></li>
+        <li><a class="waves-effect waves-light modal-trigger" href="#settingModal"><i class="material-icons">settings</i></a></li>
+      </ul>
+    </div>
+
+    <!-- タブ -->
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab" id="blockTab"><a class="active" href="#blockTabContents">ブロック</a></li>
+        <li class="tab"><a href="#codeTabContents">コード</a></li>
+      </ul>
+      <a class="btn-floating btn-large halfway-fab waves-light light-blue accent-4 modal-trigger" id="send" href="#progressBarModal">
+        <i class="material-icons">send</i>
+      </a>
+      <a class="btn-floating btn-large halfway-fab waves-light green accent-4" id="run">
+        <i class="material-icons">play_arrow</i>
+      </a>
+      <a class="btn-floating btn-large halfway-fab waves-light red accent-4" id="stop">
+        <i class="material-icons">stop</i>
+      </a>
+    </div>
+  </nav>
+
+  <!-- モバイル画面で表示されるナビゲーションバー（ハンバーガーの中身） -->
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="#"><i class="material-icons">file_download</i></a></li>
+    <li><a href="#"><i class="material-icons">folder_open</i></a></li>
+  </ul>
+
+  <!-- タブの内容 -->
+  <div id="blockTabContents" class="col s12">
+    <div id="workspace" style="position: absolute;">
+      <div id="blocklyArea"></div>
+    </div>
+    <!-- BlocklyをblocklyAreaに注入 -->
+    <div id="blocklyDiv" style="position: absolute;"></div>
+    <textarea rows="24" cols="32" id="screenArea" readonly></textarea>
+    <form action="#" id="screenSizeSlider" class="scale-transition scale-out">
+      <p class="range-field">
+        <!-- <span id="screenSizeSliderText">大きさ</span><input type="range" min="10" max="24" value="12" /> -->
+        <label>大きさ<input type="range" min="10" max="24" value="12"/></label>
+
+      </p>
+    </form>
+  </div>
+  <div id="codeTabContents" class="col s12">
+    <pre id="outputArea"></pre>
+  </div>
+  <div id="screenTabContents" class="col s12">
+    <!-- <pre id="screenArea"></pre> -->
+    <!-- <textarea rows="24" cols="32" id="screenArea"></textarea> -->
+  </div>
+
+  <div id="toolboxDiv"></div>
+
+
+  <!-- <xml id="toolbox" style="display: none">
+    <category name="出力" colour="210">
+      <block type="LEDを光らせる"></block>
+    </category>
+    <category name="画面" colour="270">
+    </category>
+    <category name="音" colour="315">
+    </category>
+    <category name="制御" colour="60">
+    </category>
+    <category name="調べる" colour="180">
+    </category>
+    <category name="計算" colour="120">
+    </category>
+    <category name="ラベル" colour="#A65C81" custom="VARIABLE"></category>
+
+  </xml>
+   -->
+
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  <script src="js/blockly_compressed.js"></script>
+  <script src="js/ja.js"></script>
+  <script src="js/ichigojam_basic.js"></script>
+
+  <script src="js/blocks_required.js"></script>
+  <script src="js/blocks.js"></script>
+  <script src="js/code_required.js"></script>
+  <script src="js/code.js"></script>
+  <!-- <script src="js/variables_block.js"></script>
+  <script src="js/variables_code.js"></script> -->
+  <script src="js/script.js"></script>
+</body>
+</html>

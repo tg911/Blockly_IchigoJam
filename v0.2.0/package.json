@@ -1,0 +1,7 @@
+{
+  "name": "blockly-ichigojam",
+  "main": "index.html",
+  "window": {
+    "icon": "icon.png"
+  }
+}

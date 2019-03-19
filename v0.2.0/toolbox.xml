@@ -1,0 +1,509 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
+  <category name="出力" colour="#5b80a5">
+    <block type="ichigojam_kanji_led">
+      <value name="arg">
+        <shadow type="ichigojam_kanji_led_arg">
+          <field name="led_arg">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_out">
+      <value name="arg1">
+        <shadow type="ichigojam_kanji_out_arg1">
+          <field name="out_arg1">1</field>
+        </shadow>
+      </value>
+      <value name="arg2">
+        <shadow type="ichigojam_kanji_out_arg2">
+          <field name="out_arg2">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_out_abbreviation">
+      <value name="arg1">
+        <shadow type="ichigojam_kanji_out_abbreviation_arg">
+          <field name="NAME">`0101</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_pwm">
+      <value name="pwm_arg1">
+        <shadow type="ichigojam_kanji_pwm_arg1">
+          <field name="pwm_arg1">2</field>
+        </shadow>
+      </value>
+      <value name="pwm_arg2">
+        <shadow type="ichigojam_kanji_pwm_arg2">
+          <field name="pwm_arg2">100</field>
+        </shadow>
+      </value>
+      <value name="pwm_arg3">
+        <shadow type="ichigojam_kanji_pwm_arg3">
+          <field name="pwm_arg3">2000</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_pwm_abbreviation">
+      <value name="arg1">
+        <shadow type="ichigojam_kanji_pwm_arg1">
+          <field name="pwm_arg1">2</field>
+        </shadow>
+      </value>
+      <value name="arg2">
+        <shadow type="ichigojam_kanji_pwm_arg2">
+          <field name="pwm_arg2">100</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+  <category name="画面" colour="#805ba5">
+    <block type="ichigojam_kanji_cls"></block>
+    <block type="ichigojam_kanji_input">
+      <field name="variables">A</field>
+      <value name="input_arg">
+        <shadow type="ichigojam_kanji_input_arg">
+          <field name="input_arg">?</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_locate">
+      <value name="locate_arg1">
+        <shadow type="ichigojam_kanji_locate_arg1">
+          <field name="locate_arg1">0</field>
+        </shadow>
+      </value>
+      <value name="locate_arg2">
+        <shadow type="ichigojam_kanji_locate_arg2">
+          <field name="locate_arg2">0</field>
+        </shadow>
+      </value>
+      <value name="locate_arg3">
+        <shadow type="ichigojam_kanji_locate_arg3">
+          <field name="locate_arg3"> 1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_print">
+      <value name="print_arg">
+        <shadow type="ichigojam_kanji_print_arg">
+          <field name="print_arg">HELLO</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_scroll">
+      <value name="scroll_arg">
+        <shadow type="ichigojam_kanji_scroll_arg">
+          <field name="scroll_arg">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_scr">
+      <value name="scr_arg1">
+        <shadow type="ichigojam_kanji_scr_arg1">
+          <field name="scr_arg1">0</field>
+        </shadow>
+      </value>
+      <value name="scr_arg2">
+        <shadow type="ichigojam_kanji_scr_arg2">
+          <field name="scr_arg2">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_scr_abbreviation"></block>
+  </category>
+  <category name="音" colour="#a55b93">
+    <block type="ichigojam_kanji_beep">
+      <value name="beep_arg1">
+        <shadow type="ichigojam_kanji_beep_arg1">
+          <field name="beep_arg1">100</field>
+        </shadow>
+      </value>
+      <value name="beep_arg2">
+        <shadow type="ichigojam_kanji_beep_arg2">
+          <field name="beep_arg2">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_beep_abbreviation">
+      <value name="beep_arg1">
+        <shadow type="ichigojam_kanji_beep_arg1">
+          <field name="beep_arg1">100</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_play">
+      <value name="play_arg">
+        <shadow type="ichigojam_kanji_mml_note">
+          <field name="note">C</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_tempo">
+      <value name="tempo_arg">
+        <shadow type="ichigojam_kanji_tempo_arg">
+          <field name="tempo_arg">120</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_mml_note">
+      <field name="note">C</field>
+    </block>
+    <block type="ichigojam_kanji_mml_length">
+      <field name="mml_length">1</field>
+    </block>
+    <block type="ichigojam_kanji_mml_rest">
+      <field name="mml_rest">R</field>
+    </block>
+    <block type="ichigojam_mml_tempo">
+      <field name="mml_tempo">100</field>
+    </block>
+    <block type="ichigojam_mml_length_init">
+      <field name="mml_length">L1</field>
+    </block>
+    <block type="ichigojam_kanji_mml_octave">
+      <field name="mml_octave">1</field>
+    </block>
+    <block type="ichigojam_kanji_mml_octave_up"></block>
+    <block type="ichigojam_kanji_mml_octave_down"></block>
+    <block type="ichigojam_kanji_mml_repeat"></block>
+    <block type="ichigojam_kanji_mml_beep">
+      <field name="mml_beep">1</field>
+    </block>
+    <block type="ichigojam_kanji_mml_end"></block>
+  </category>
+  <category name="制御" colour="#a5a55b">
+    <block type="ichigojam_kanji_for">
+      <field name="variables">A</field>
+      <value name="for_arg1">
+        <shadow type="ichigojam_kanji_for_arg">
+          <field name="for_arg">0</field>
+        </shadow>
+      </value>
+      <value name="for_arg2">
+        <shadow type="ichigojam_kanji_for_arg">
+          <field name="for_arg">10</field>
+        </shadow>
+      </value>
+      <value name="for_arg3">
+        <shadow type="ichigojam_kanji_for_arg">
+          <field name="for_arg">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_goto">
+      <value name="goto_arg">
+        <shadow type="ichigojam_kanji_label_getter"></shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_if">
+      <value name="if_arg">
+        <shadow type="ichigojam_kanji_btn">
+          <value name="btn_arg">
+            <shadow type="ichigojam_kanji_btn_arg">
+              <field name="NAME">0</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_if_else">
+      <value name="if_arg">
+        <shadow type="ichigojam_kanji_btn">
+          <value name="btn_arg">
+            <shadow type="ichigojam_kanji_btn_arg">
+              <field name="NAME">0</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_let">
+      <field name="variables">A</field>
+      <value name="let_arg">
+        <shadow type="ichigojam_kanji_let_arg">
+          <field name="let_arg">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_wait">
+      <value name="wait_arg">
+        <shadow type="ichigojam_kanji_wait_arg">
+          <field name="wait_arg">60</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_end"></block>
+  </category>
+  <category name="調べる" colour="#5ba5a5">
+    <block type="ichigojam_kanji_ana">
+      <value name="ana_arg">
+        <shadow type="ichigojam_kanji_ana_arg">
+          <field name="ana_arg">2</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_asc">
+      <value name="asc_arg">
+        <shadow type="ichigojam_kanji_asc_arg">
+          <field name="asc_arg">A</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_btn">
+      <value name="btn_arg">
+        <shadow type="ichigojam_kanji_btn_arg">
+          <field name="NAME">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_chr">
+      <value name="chr_arg">
+        <shadow type="ichigojam_kanji_chr_arg">
+          <field name="chr_arg">65</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_clt"></block>
+    <block type="ichigojam_kanji_tick"></block>
+    <block type="ichigojam_kanji_in">
+      <value name="in_arg">
+        <shadow type="ichigojam_kanji_in_arg">
+          <field name="in_arg">2</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_in_abbreviation"></block>
+    <block type="ichigojam_kanji_inkey"></block>
+  </category>
+  <category name="計算" colour="#6da55b">
+    <block type="ichigojam_kanji_number">
+      <field name="number_arg">10</field>
+    </block>
+    <block type="ichigojam_kanji_character">
+      <field name="character_arg">A</field>
+    </block>
+    <block type="ichigojam_kanji_calculation_operator">
+      <field name="operator">+</field>
+      <value name="calculation_operator_arg1">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">10</field>
+        </shadow>
+      </value>
+      <value name="calculation_operator_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">10</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_addition">
+      <value name="addition_arg1">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">1</field>
+        </shadow>
+      </value>
+      <value name="addition_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_subtraction">
+      <value name="subtraction_arg1">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">2</field>
+        </shadow>
+      </value>
+      <value name="subtraction_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_multiplication">
+      <value name="multiplication_arg1">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">2</field>
+        </shadow>
+      </value>
+      <value name="multiplication_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">2</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_division">
+      <value name="division_arg1">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">10</field>
+        </shadow>
+      </value>
+      <value name="division_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">2</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_gt">
+      <value name="gt_arg1">
+        <shadow type="ichigojam_kanji_tick"></shadow>
+      </value>
+      <value name="gt_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">1000</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_gteq">
+      <value name="gteq_arg1">
+        <shadow type="ichigojam_kanji_ana">
+          <value name="ana_arg">
+            <shadow type="ichigojam_kanji_ana_arg">
+              <field name="ana_arg">2</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+      <value name="gteq_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">1000</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_lt">
+      <value name="lt_arg1">
+        <shadow type="ichigojam_kanji_tick"></shadow>
+      </value>
+      <value name="lt_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">300</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_lteq">
+      <value name="lteq_arg1">
+        <shadow type="ichigojam_kanji_ana">
+          <value name="ana_arg">
+            <shadow type="ichigojam_kanji_ana_arg">
+              <field name="ana_arg">2</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+      <value name="lteq_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">10</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_equal">
+      <value name="equal_arg1">
+        <shadow type="ichigojam_kanji_inkey"></shadow>
+      </value>
+      <value name="equal_arg2">
+        <shadow type="ichigojam_kanji_asc">
+          <value name="asc_arg">
+            <shadow type="ichigojam_kanji_asc_arg">
+              <field name="asc_arg">A</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_not_equal">
+      <value name="not_equal_arg1">
+        <shadow type="ichigojam_kanji_ana">
+          <value name="ana_arg">
+            <shadow type="ichigojam_kanji_ana_arg">
+              <field name="ana_arg">2</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+      <value name="not_equal_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_and">
+      <value name="and_arg1">
+        <shadow type="ichigojam_kanji_btn">
+          <value name="btn_arg">
+            <shadow type="ichigojam_kanji_btn_arg">
+              <field name="NAME">LEFT</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+      <value name="and_arg2">
+        <shadow type="ichigojam_kanji_btn">
+          <value name="btn_arg">
+            <shadow type="ichigojam_kanji_btn_arg">
+              <field name="NAME">SPACE</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_or">
+      <value name="or_arg1">
+        <shadow type="ichigojam_kanji_btn">
+          <value name="btn_arg">
+            <shadow type="ichigojam_kanji_btn_arg">
+              <field name="NAME">LEFT</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+      <value name="or_arg2">
+        <shadow type="ichigojam_kanji_btn">
+          <value name="btn_arg">
+            <shadow type="ichigojam_kanji_btn_arg">
+              <field name="NAME">RIGHT</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_not">
+      <value name="not_arg">
+        <shadow type="ichigojam_kanji_btn">
+          <value name="btn_arg">
+            <shadow type="ichigojam_kanji_btn_arg">
+              <field name="NAME">0</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_division_remainder">
+      <value name="division_remainder_arg1">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">10</field>
+        </shadow>
+      </value>
+      <value name="division_remainder_arg2">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">3</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ichigojam_kanji_rnd">
+      <value name="rnd_arg">
+        <shadow type="ichigojam_kanji_number">
+          <field name="number_arg">6</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+  <category name="ラベル" colour="#a55b5b" custom="VARIABLE"></category>
+  <category name="test" colour="#a55b5b">
+    <block type="ichigojam_hiragana_led"></block>
+  </category>
+  <!-- <category name="Functions" custom="PROCEDURE"></category> -->
+  <category name="作る" colour="100">
+    <button text="新しいブロック" callbackKey="createNewBlockBtn"></button>
+    <block type="ichigojam_hiragana_create_new_block"></block>
+  </category>
+
+</xml>
